@@ -1,12 +1,10 @@
 import React from 'react';
-import { View, Button } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-
-import {ClosedCaptioning, List} from 'phosphor-react-native'
+import { View, Button, Text, Image, TouchableOpacity } from 'react-native';
 
 import { styles } from './styles';
 
-
+import Soon from '../../assets/Soon.png'
+import { Background } from '../../components/Background';
 
 interface HomeProps{
     
@@ -16,8 +14,20 @@ export function Home() {
   
   
   return (
-    <View style={{flex:1, alignItems:'center', justifyContent: 'center'}}>
-      <List/>
-    </View>
+   <Background>
+     <View style={styles.container}>
+        <View style={styles.containerLogo}>
+          <TouchableOpacity>
+            <Image
+              source={Soon}
+            />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.contenText}>
+          <Text>Bem Vindo</Text>
+          <Text style={styles.subTitle}>Selecione um dia e veja as ocupações dos ambientes</Text>
+        </View>
+      </View>
+   </Background>
   );
 }
