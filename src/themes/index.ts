@@ -13,10 +13,13 @@ export const THEME = {
   
       PRIMARY: '#EFEFEF',
       PRIMARY_DARK:'#060606',
+
+      WHITE: '#FFF',
+
       SUCCESS: '#34D399',
       ALERT: '#F87171',
   
-      FOOTER: ['rgba(0,0,0,0)', 'rgba(0,0,0,0.9)'],
+      TITLE: ['rgba(37,181,233,1)', 'rgba(54,127,191,1)'],
       OVERLAY: 'rgba(0,0,0,0.6)',
     },
   
@@ -24,6 +27,7 @@ export const THEME = {
       REGULAR: 'Inter_400Regular',
       SEMI_BOLD: 'Inter_600SemiBold',
       BOLD: 'Inter_700Bold',
+      EXTRA_BOLD: 'Inter_800ExtraBold',
       BLACK: 'Inter_900Black'
     },
   

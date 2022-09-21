@@ -27,14 +27,20 @@ export const styles = StyleSheet.create({
   },
   titleInitial: {
     fontSize: 35,
-    fontFamily: 'Inter_800ExtraBold',
+    fontFamily: THEME.FONT_FAMILY.EXTRA_BOLD,
     color: '#25B5E9'
   },
   subTitle: {
     fontSize: 18,
-    fontFamily: 'Inter_800ExtraBold',
+    fontFamily: THEME.FONT_FAMILY.EXTRA_BOLD,
     color: '#3F3C3C',
     textAlign: "center",
     paddingHorizontal: 10,
   },
+  containerSearch:{
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginTop:50,
+  }
 });

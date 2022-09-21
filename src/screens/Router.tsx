@@ -30,14 +30,14 @@ function DrawerNavigator() {
       }}
     >
       <Drawer.Screen 
-        name="Home" 
+        name="Inicio" 
         component={Home}
        options={{
         
        }}
       />
-      <Drawer.Screen name="Courses" component={Courses} />
-      <Drawer.Screen name="Environments" component={Environments} />
+      <Drawer.Screen name="Curso" component={Courses} />
+      <Drawer.Screen name="Ambientes" component={Environments} />
  
     </Drawer.Navigator>
   )

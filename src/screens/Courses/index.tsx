@@ -1,11 +1,40 @@
-import { View,Text } from 'react-native';
+import { 
+  View,
+  Text, 
+  Pressable, 
+  Keyboard,
+  FlatList 
+} from 'react-native';
+import { Filter } from '../../components/Filter';
+import { Header } from '../../components/Header';
+import { Search } from '../../components/Search';
 
 import { styles } from './styles';
 
-export function Courses() {
+interface CoursesProps{
+  list:[]
+}
+
+
+export function Courses({list}:CoursesProps) {
+
+
+
   return (
-    <View style={styles.container}>
-      <Text>Courses</Text>
-    </View>
+    <Pressable
+      onPress={Keyboard.dismiss}
+      style={styles.container}
+    >
+      <Header title='Cursos' subTitle='Consulte por cursos'/>
+      <View style={styles.containerSearch}>
+        <Search  placeholder='Buscar Cursos'/>
+        <Filter/>
+      </View>
+   {/*    <FlatList
+        data={list}
+      >
+
+      </FlatList> */}
+    </Pressable>
   );
 }
