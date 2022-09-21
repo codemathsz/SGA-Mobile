@@ -5,18 +5,14 @@ import {
   Keyboard,
   FlatList 
 } from 'react-native';
+import { Background } from '../../components/Background';
 import { Filter } from '../../components/Filter';
 import { Header } from '../../components/Header';
 import { Search } from '../../components/Search';
 
 import { styles } from './styles';
 
-interface CoursesProps{
-  list:[]
-}
-
-
-export function Courses({list}:CoursesProps) {
+export function Courses() {
 
 
 
@@ -25,16 +21,18 @@ export function Courses({list}:CoursesProps) {
       onPress={Keyboard.dismiss}
       style={styles.container}
     >
-      <Header title='Cursos' subTitle='Consulte por cursos'/>
-      <View style={styles.containerSearch}>
-        <Search  placeholder='Buscar Cursos'/>
-        <Filter/>
-      </View>
-   {/*    <FlatList
-        data={list}
-      >
+      <Background>
+        <Header title='Cursos' subTitle='Consulte por cursos'/>
+        <View style={styles.containerSearch}>
+          <Search  placeholder='Buscar Cursos'/>
+          <Filter/>
+        </View>
+        {/*    <FlatList
+              data={list}
+            >
 
-      </FlatList> */}
+            </FlatList> */}
+      </Background>
     </Pressable>
   );
 }

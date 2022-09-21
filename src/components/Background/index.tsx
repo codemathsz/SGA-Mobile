@@ -10,7 +10,7 @@ interface Props{
 
 export function Background({children}: Props) {
   return (
-    <View >
+    <View style={styles.container}>
       {children}
     </View>
   );

@@ -36,7 +36,7 @@ function DrawerNavigator() {
         
        }}
       />
-      <Drawer.Screen name="Curso" component={Courses} />
+      <Drawer.Screen name="Curso" component={Courses}/>
       <Drawer.Screen name="Ambientes" component={Environments} />
  
     </Drawer.Navigator>

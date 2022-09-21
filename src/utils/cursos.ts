@@ -1,0 +1,26 @@
+export const CURSOS= [
+    {
+        "id":"1",
+        "name":"photoshop",
+        "cargaHoraria":"40",
+        "tipoCurso":"FIC"
+    },
+    {
+        "id":"2",
+        "name":"photoshop",
+        "cargaHoraria":"40",
+        "tipoCurso":"FIC"
+    },
+    {
+        "id":"3",
+        "name":"photoshop",
+        "cargaHoraria":"40",
+        "tipoCurso":"FIC"
+    },
+    {
+        "id":"4",
+        "name":"photoshop",
+        "cargaHoraria":"40",
+        "tipoCurso":"FIC"
+    }
+]

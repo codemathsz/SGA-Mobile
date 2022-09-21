@@ -1,12 +1,25 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Pressable, Keyboard } from 'react-native';
+import { Background } from '../../components/Background';
+import { Filter } from '../../components/Filter';
+import { Header } from '../../components/Header';
+import { Search } from '../../components/Search';
 
 import { styles } from './styles';
 
 export function Environments() {
   return (
-    <View style={styles.container}>
-        <Text> Screen Environments</Text>
-    </View>
+    <Pressable
+      onPress={Keyboard.dismiss}
+      style={styles.container}
+    >
+      <Background>
+        <Header title='Ambientes' subTitle='Consulte os ambientes'/>
+        <View style={styles.containerSearch}>
+          <Search placeholder='Procurar ambientes'/>
+          <Filter/>
+        </View>
+      </Background>
+    </Pressable>
   );
 }
