@@ -1,9 +1,20 @@
 import React from 'react';
-import { View,Text, Pressable, Keyboard } from 'react-native';
+
+import { 
+  View,
+  Text, 
+  Pressable, 
+  Keyboard ,
+  FlatList
+} from 'react-native';
+
 import { Background } from '../../components/Background';
 import { Filter } from '../../components/Filter';
 import { Header } from '../../components/Header';
+import { ProfessoresCard } from '../../components/ProfessoresCard';
 import { Search } from '../../components/Search';
+
+import { PROFESSORES } from '../../utils/professores';
 
 import { styles } from './styles';
 
@@ -19,6 +30,18 @@ export function Teachers() {
           <Search placeholder='Busca professor'/>
           <Filter/>
         </View>
+        <FlatList
+          data={PROFESSORES}
+          keyExtractor={item => item.id}
+          renderItem={({item}) =>(
+            <ProfessoresCard
+              data={item}
+            />
+          )}
+          horizontal={false}
+          showsVerticalScrollIndicator
+          style={styles.list}
+        />
       </Background>
     </Pressable>
   );

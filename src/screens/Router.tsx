@@ -28,13 +28,7 @@ function DrawerNavigator() {
         
       }}
     >
-      <Drawer.Screen 
-        name="Inicio" 
-        component={Home}
-       options={{
-        
-       }}
-      />
+      <Drawer.Screen  name="Inicio"  component={Home}/>
       <Drawer.Screen name="Curso" component={Courses}/>
       <Drawer.Screen name="Ambientes" component={Environments} />
       <Drawer.Screen name="Professores" component={Teachers} />

@@ -4,6 +4,7 @@ import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { styles } from './styles';
 
 import ProfessorFoto from '../../assets/foto_chile.png'
+import { THEME } from '../../themes';
 
 export interface ProfessoresCardProps{
     id: string,
@@ -22,8 +23,8 @@ interface Props{
 export function ProfessoresCard({data, ...rest}:Props) {
   return (
     <View style={styles.container} {...rest}>
-         <TouchableOpacity  >
-                <View >
+         <TouchableOpacity  style={styles.card} >
+                <View style={styles.contentMain}>
                    <Image
                         source={ProfessorFoto}
                         style={{
@@ -32,17 +33,32 @@ export function ProfessoresCard({data, ...rest}:Props) {
                             borderRadius: 12
                         }}
                     /> 
-                    <View >
-                        <Text >{data.name}</Text>
-                        <View>
-                            <Text >Capacidade: </Text>
-                        </View>
+                    <View style={styles.infoPerson}>
+                        <Text 
+                            style={{
+                                fontFamily: THEME.FONT_FAMILY.SEMI_BOLD
+                            }}
+                        >{data.name}</Text>
+                        <Text 
+                            style={{
+
+                            }}
+                        >Carga Horária:{data.cargaHoraria} </Text>
                     </View>
                 </View>
-                <View>
-                    <TouchableOpacity >
-                        <Text>{data.status}</Text>
+                <View style={styles.contentSkills}>
+                    <TouchableOpacity style={styles.skill} >
+                        <Text
+                            style={{
+                                fontFamily: THEME.FONT_FAMILY.SEMI_BOLD
+                            }}
+                        >{data.habilidade}</Text>
                     </TouchableOpacity>
+                    <Text
+                        style={{
+                            fontFamily: THEME.FONT_FAMILY.EXTRA_BOLD
+                        }}
+                    >{data.status}</Text>
                 </View>
             </TouchableOpacity>
     </View>
