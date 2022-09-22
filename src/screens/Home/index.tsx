@@ -2,11 +2,14 @@ import React from 'react';
 import { View, Button, Text, Image, TouchableOpacity } from 'react-native';
 
 import { Calendar, LocaleConfig } from 'react-native-calendars';
-/* LocaleConfig.locales['br'] = {
-  monthName: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'agosto'],
-
+LocaleConfig.locales['pt-br'] = {
+  monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+  monthNamesShort: ['jan', 'fev', 'mar', 'abr', 'maio', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'],
+  today:['Hoje'],
+  dayNames: ['Domingo, Segunda, Terça, Quarta, Quinta, Sexta, Sábado'],
+  dayNamesShort: ['Dom', 'Seg', 'Terç', 'Qua', 'Qui', 'Sex', 'Sáb']
 }
-LocaleConfig.defaultLocale='br' */
+LocaleConfig.defaultLocale='pt-br'
 
 import { styles } from './styles';
 
@@ -24,7 +27,6 @@ import {
 import {useFonts} from 'expo-font';
 import AppLoading from 'expo-app-loading';
 
-import Soon from '../../assets/Soon.png'
 import { Background } from '../../components/Background';
 import { Header } from '../../components/Header';
 import { Search } from '../../components/Search';
@@ -68,6 +70,8 @@ export function Home() {
         theme={{
           backgroundColor: '#FCFCFD',
           calendarBackground: '#FCFCFD',
+  
+
           textSectionTitleColor: '#1E1E40',
           textSectionTitleDisabledColor: 'rgb(17, 17, 17, 0.2)',
           selectedDayBackgroundColor: '#25B5E9',
@@ -75,7 +79,7 @@ export function Home() {
           todayTextColor: '#25B5E9',
           dayTextColor: '#1E1E40',
           textDisabledColor: 'rgba(17, 17, 17, 0.2)',
-          dotColor: '#111',
+          dotColor: '#fff',
           selectedDotColor: '#25B5E9',
           arrowColor: '#1E1E40',
           disabledArrowColor: '#d9e1e8',
@@ -94,15 +98,15 @@ export function Home() {
         minDate={'2022-09-20'}
 
         enableSwipeMonths={true}
-
+        
         // Props para os dias do calendário
         // dayComponent={}
 
         // Props para o dia selecionado
-        // onDayPress={(e) => {
-
-        // }}
-
+        onDayPress={day => {
+          console.log('selected day', day);
+        }}
+        markingType='dot'
 
       />
       <View style={styles.containerSearch}>
