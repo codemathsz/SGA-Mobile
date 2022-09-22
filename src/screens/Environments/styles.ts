@@ -10,5 +10,10 @@ export const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-around'
+  },
+  list:{
+    width: '100%',
+    marginTop:15,
+    paddingTop:20,
   }
 });

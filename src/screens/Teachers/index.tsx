@@ -1,12 +1,25 @@
 import React from 'react';
-import { View,Text } from 'react-native';
+import { View,Text, Pressable, Keyboard } from 'react-native';
+import { Background } from '../../components/Background';
+import { Filter } from '../../components/Filter';
+import { Header } from '../../components/Header';
+import { Search } from '../../components/Search';
 
 import { styles } from './styles';
 
 export function Teachers() {
   return (
-    <View style={styles.container}>
-        <Text>Screen Teachers</Text>
-    </View>
+    <Pressable
+      onPress={Keyboard.dismiss}
+      style={styles.container}
+    >
+      <Background>
+        <Header title='Professores' subTitle='Consulte os professores'/>
+        <View style={styles.containerSearch}>
+          <Search placeholder='Busca professor'/>
+          <Filter/>
+        </View>
+      </Background>
+    </Pressable>
   );
 }

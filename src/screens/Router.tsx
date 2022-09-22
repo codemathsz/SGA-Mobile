@@ -1,15 +1,14 @@
 import React from 'react';
-
+// import navigations
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createStackNavigator } from "@react-navigation/stack";
 
-
+// telas
 import { Home } from './Home'
 import { Courses } from './Courses';
 import { Environments } from './Environments';
 import { Teachers } from './Teachers';
 
-import {TouchableOpacity, View} from 'react-native'
 
 const Drawer = createDrawerNavigator()
 const Stack = createStackNavigator()
@@ -38,7 +37,7 @@ function DrawerNavigator() {
       />
       <Drawer.Screen name="Curso" component={Courses}/>
       <Drawer.Screen name="Ambientes" component={Environments} />
- 
+      <Drawer.Screen name="Professores" component={Teachers} />
     </Drawer.Navigator>
   )
 }

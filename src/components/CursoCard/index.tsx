@@ -16,17 +16,28 @@ interface Props extends TouchableOpacityProps{
 }
 export function CursoCard({data, ...rest}: Props) {
   return (
-    <TouchableOpacity style={styles.container}>
-      <View>
-        <Image
-          source={IconCurso}
-          style={{
-            width:20,
-            height:20
-          }}
-        />
-        <Text>{data.name}</Text>
-      </View>
-    </TouchableOpacity>
+    <View style={styles.container}>
+        <TouchableOpacity style={styles.content} {...rest}>
+          <View style={styles.informations}>
+            <Image
+              source={IconCurso}
+              style={{
+                width:60,
+                height:60,
+                borderRadius:15
+              }}
+            />
+            <View style={styles.contentText}>
+              <Text style={styles.txtName}>{data.name}</Text>
+              <Text style={styles.txtCH}>Carga Horária:{data.cargaHoraria}</Text>
+            </View>
+          </View>
+          <View>
+              <TouchableOpacity style={styles.typeCourse}>
+                <Text style={styles.txtType}>{data.tipoCurso}</Text>
+              </TouchableOpacity>
+          </View>
+      </TouchableOpacity>
+    </View>
   );
 }
