@@ -8,6 +8,7 @@ import { Home } from './Home'
 import { Courses } from './Courses';
 import { Environments } from './Environments';
 import { Teachers } from './Teachers';
+import { ProfileTeacher } from './ProfileTeacher';
 
 
 const Drawer = createDrawerNavigator()
@@ -39,7 +40,7 @@ export function Router() {
   return (
     <Stack.Navigator screenOptions={{}}>
       <Stack.Screen options={{ headerShown: false }} name="Drawer" component={DrawerNavigator} />
-      <Stack.Screen name="Teachers" component={Teachers} />
+      <Stack.Screen name="ProfileTeacher" component={ProfileTeacher} />
     </Stack.Navigator>
   );
 }

@@ -3,7 +3,7 @@ import { View, TouchableOpacity , Image} from 'react-native';
 
 import { styles } from './styles';
 import IconFilter from '../../assets/icon_filter.png'
-export function Filter() {
+export function Filter  (){
   return (
     <View style={styles.container}>
         <TouchableOpacity>

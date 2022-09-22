@@ -23,7 +23,9 @@ interface Props{
 export function ProfessoresCard({data, ...rest}:Props) {
   return (
     <View style={styles.container} {...rest}>
-         <TouchableOpacity  style={styles.card} >
+         <TouchableOpacity  
+            style={styles.card} 
+            >
                 <View style={styles.contentMain}>
                    <Image
                         source={ProfessorFoto}

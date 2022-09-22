@@ -16,5 +16,11 @@ export const styles = StyleSheet.create({
     width: '100%',
     marginTop:15,
     paddingTop:20,
+  },
+  modal:{
+    width:'80%',
+    height: '80%',
+    position: 'absolute',
+    zIndex: 1000
   }
 });

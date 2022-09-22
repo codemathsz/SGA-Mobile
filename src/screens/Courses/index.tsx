@@ -27,7 +27,9 @@ export function Courses() {
         <Header title='Cursos' subTitle='Consulte por cursos'/>
         <View style={styles.containerSearch}>
           <Search  placeholder='Buscar Cursos'/>
-          <Filter/>
+          <Filter
+            
+          />
         </View>
         <FlatList
               data={CURSOS}
@@ -46,4 +48,12 @@ export function Courses() {
       </Background>
     </Pressable>
   );
+}
+
+function ModalCourse(){
+  return(
+    <View style={styles.modal}>
+      <Text>Olá modal!</Text>
+    </View>
+  )
 }
