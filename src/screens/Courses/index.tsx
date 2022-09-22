@@ -6,9 +6,11 @@ import {
   FlatList 
 } from 'react-native';
 import { Background } from '../../components/Background';
+import { CursoCard } from '../../components/CursoCard';
 import { Filter } from '../../components/Filter';
 import { Header } from '../../components/Header';
 import { Search } from '../../components/Search';
+import { CURSOS } from '../../utils/cursos';
 
 import { styles } from './styles';
 
@@ -27,11 +29,20 @@ export function Courses() {
           <Search  placeholder='Buscar Cursos'/>
           <Filter/>
         </View>
-        {/*    <FlatList
-              data={list}
+        <FlatList
+              data={CURSOS}
+              keyExtractor={item => item.id}
+              renderItem={({item}) => (
+                <CursoCard
+                  data={item}
+                />
+              )}
+              horizontal={false}
+              showsVerticalScrollIndicator
+              style={styles.list}
             >
 
-            </FlatList> */}
+          </FlatList> 
       </Background>
     </Pressable>
   );

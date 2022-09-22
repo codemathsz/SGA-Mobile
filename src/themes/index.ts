@@ -3,7 +3,7 @@ export const THEME = {
       BACKGROUND_900: '#121214',
       BACKGROUND_800: '#18181B',
   
-      TEXT: '#FFFFFF',
+      TEXT: '#3F3C3C',
   
       CAPTION_500: '#71717A',
       CAPTION_400: '#A1A1AA',
@@ -21,6 +21,9 @@ export const THEME = {
   
       TITLE: ['rgba(37,181,233,1)', 'rgba(54,127,191,1)'],
       OVERLAY: 'rgba(0,0,0,0.6)',
+
+      AZUL_300: '#25B5E9'
+
     },
   
     FONT_FAMILY: {
