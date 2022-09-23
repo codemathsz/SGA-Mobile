@@ -37,6 +37,17 @@ export const styles = StyleSheet.create({
     textAlign: "center",
     paddingHorizontal: 10,
   },
+  sectionCalendar: {
+    width: '100%',
+    borderBottomRightRadius: 30,
+    backgroundColor: '#FCFCFD',
+    elevation: 8,
+    paddingBottom: 15,
+  },
+  sectionCentralization: {
+    width: '100%',
+    alignItems: 'center',
+  },
   containerSearch:{
     width: '100%',
     flexDirection: 'row',
