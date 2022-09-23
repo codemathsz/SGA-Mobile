@@ -62,6 +62,8 @@ import { Filter } from "../../components/Filter";
 interface HomeProps {}
 
 export function Home() {
+  
+  const [showModal, setShowModal] = useState(false)
   const [daySelected, setDaySelected] = useState(null);
 
   // função para retornar as fonts depois do loading do app
@@ -152,7 +154,9 @@ export function Home() {
         </View>
         <View style={styles.containerSearch}>
           <Search placeholder="Pesquisar..." />
-          <Filter />
+          <TouchableOpacity style={styles.btnModal} onPress={() => setShowModal(true)}>
+            <Filter />
+          </TouchableOpacity>
         </View>
       </View>
     </Background>

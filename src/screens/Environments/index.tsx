@@ -1,40 +1,139 @@
-import React from 'react';
-import { View, Text, Pressable, Keyboard, FlatList } from 'react-native';
+import React, { useState } from 'react';
+import {
+  View,
+  Text,
+  Pressable,
+  Keyboard,
+  FlatList,
+  TouchableOpacity,
+  Image,
+  TextInput
+} from 'react-native';
+
+import Icon from '../../assets/icon_curso.png'
+
 import { AmbienteCard } from '../../components/AmbienteCard';
 import { Background } from '../../components/Background';
 import { Filter } from '../../components/Filter';
 import { Header } from '../../components/Header';
 import { Search } from '../../components/Search';
+
+
 import { AMBIENTES } from '../../utils/ambientes';
+import { LISTA_AMBIENTES } from '../../utils/listAmbientes';
 
 import { styles } from './styles';
 
 export function Environments() {
+
+  const [showModal, setShowModal] = useState(false)
+
   return (
     <Pressable
       onPress={Keyboard.dismiss}
       style={styles.container}
     >
       <Background>
-        <Header title='Ambientes' subTitle='Consulte os ambientes'/>
+        <Header title='Ambientes' subTitle='Consulte os ambientes' />
         <View style={styles.containerSearch}>
-          <Search placeholder='Buscar ambientes'/>
-          <Filter/>
+          <Search placeholder='Buscar ambientes' />
+          <TouchableOpacity style={styles.btnModal} onPress={() => setShowModal(true)}>
+            <Filter />
+          </TouchableOpacity>
         </View>
         <FlatList
-              data={AMBIENTES}
-              keyExtractor={item => item.id}
-              renderItem={({item}) => (
-                <AmbienteCard
-                  data={item}
-                />
-              )}
-              horizontal={false}
-              showsVerticalScrollIndicator
-              style={styles.list}
-            >
+          data={AMBIENTES}
+          keyExtractor={item => item.id}
+          renderItem={({ item }) => (
+            <AmbienteCard
+              data={item}
+            />
+          )}
+          horizontal={false}
+          showsVerticalScrollIndicator
+          style={styles.list}
+        >
 
-          </FlatList> 
+        </FlatList>
+        {
+          showModal == true ?
+            <View style={styles.background}>
+              <View style={styles.modal}>
+                <View style={styles.vwTitle}>
+                  <Text style={styles.title} >Filtragem  Ambiente</Text>
+                </View>
+                <View style={styles.containerFilter}>
+                  <View style={styles.contentFilter}>
+                    <TextInput style={styles.input} placeholder='Selecione um ambiente' />
+                    <TouchableOpacity style={styles.containerImg}>
+                      <Image
+                        source={Icon}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                  <View style={styles.contentFilter}>
+                    <TextInput style={styles.input} placeholder='Selecione um periodo' />
+                    <TouchableOpacity style={styles.containerImg}>
+                      <Image
+                        source={Icon}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                  <View style={styles.contentFilter}>
+                    <TextInput style={styles.input} placeholder='Data inicio...' />
+                    <TouchableOpacity style={styles.containerImg}>
+                      <Image
+                        source={Icon}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                  <View style={styles.contentFilter}>
+                    <TextInput style={styles.input} placeholder='Data final...' />
+                    <TouchableOpacity style={styles.containerImg}>
+                      <Image
+                        source={Icon}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+                <View style={{width:'100%', justifyContent: 'center', alignItems: 'center'}}>
+                  <View style={styles.vwTitle}>
+                    <Text style={styles.title}>Ambientes Atuais</Text>
+                  </View>
+                  <FlatList
+                    data={LISTA_AMBIENTES}
+                    keyExtractor={item => item.id}
+                    renderItem={({ item }) => (
+                      <View style={styles.containerList}>
+                        <TouchableOpacity style={styles.card}>
+                          <View style={styles.contentData}>
+                            <Text>{item.data}</Text>
+                          </View>
+                          <View style={styles.contentProfessor}>
+                            <Text>{item.professor}</Text>
+                          </View>
+                          <View style={styles.contentPerido}>
+                            <Text>{item.periodo}</Text>
+                          </View>
+                          <View style={styles.contentDia}>
+                            <Text>{item.diaSemana}</Text>
+                          </View>
+                        </TouchableOpacity>
+                      </View>
+                    )}
+                    showsVerticalScrollIndicator
+                    style={{width:'100%', height: 100, paddingTop: 15}}  
+                  >
+
+                  </FlatList>
+                </View>
+                <TouchableOpacity style={styles.button} onPress={() => setShowModal(false)}>
+                  <Text style={styles.txtButton}>Buscar</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+            : ''
+        }
       </Background>
     </Pressable>
   );

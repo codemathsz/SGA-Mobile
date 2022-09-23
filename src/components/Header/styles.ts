@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
       contenText: {
         width: "100%",
         alignItems: "center",
-        marginTop: 30,
+        marginTop: 20,
         marginBottom: 20
       },
       titleInitial: {
