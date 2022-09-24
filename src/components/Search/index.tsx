@@ -12,10 +12,8 @@ interface SearchProps{
 
 export  function  Search({placeholder}:SearchProps) {
   return (
-        <Pressable
-          onPress={Keyboard.dismiss}
-        >
-          <TextInput  style={styles.main} editable placeholderTextColor={'#3F3C3C'} placeholder={placeholder}   selectionColor={'#000'} activeUnderlineColor={'transparent'} mode={'flat'} underlineColor={'transparent'} /> 
-        </Pressable>
+
+    <TextInput  style={styles.main} editable placeholderTextColor={'#3F3C3C'} placeholder={placeholder}   selectionColor={'#000'} activeUnderlineColor={'transparent'} mode={'flat'} underlineColor={'transparent'} /> 
+       
   );
 }

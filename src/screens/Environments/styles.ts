@@ -47,13 +47,14 @@ export const styles = StyleSheet.create({
   },
   modal:{
     width:'90%',
-    height: '90%',
+    height: 500,
     position: 'absolute',
     zIndex: 1001,
     backgroundColor: '#fff',
     alignItems: 'center',
     flexDirection: 'column',
-    padding:4
+    padding:4,
+    overflow: 'scroll'
   },
   close:{
     position: 'absolute',
@@ -130,7 +131,7 @@ export const styles = StyleSheet.create({
     height:40,
     backgroundColor: THEME.COLORS.AZUL_500,
     position: 'absolute',
-    bottom: 20,
+    bottom: '10%',
     borderRadius:8,
     justifyContent: 'center',
     alignItems: 'center',

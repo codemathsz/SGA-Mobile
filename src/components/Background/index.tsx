@@ -1,4 +1,4 @@
-import { ImageBackground, View } from 'react-native';
+import { ImageBackground, View , Pressable, Keyboard} from 'react-native';
 
 import backgroundImg from '../../assets/background-galaxy.png'
 
@@ -10,8 +10,10 @@ interface Props{
 
 export function Background({children}: Props) {
   return (
-    <View style={styles.container}>
+    <Pressable style={styles.container}
+      onPress={Keyboard.dismiss}
+    >
       {children}
-    </View>
+    </Pressable>
   );
 }

@@ -1,12 +1,15 @@
-import React from 'react';
+import React,{useState} from 'react';
 
 import { 
   View,
   Text, 
   Pressable, 
   Keyboard ,
-  FlatList
+  FlatList,
+  TouchableOpacity,
+  Image
 } from 'react-native';
+import { TextInput } from 'react-native-paper';
 
 import { Background } from '../../components/Background';
 import { Filter } from '../../components/Filter';
@@ -16,9 +19,14 @@ import { Search } from '../../components/Search';
 
 import { PROFESSORES } from '../../utils/professores';
 
+import Icon from '../../assets/icon_curso.png'
+
 import { styles } from './styles';
 
 export function Teachers() {
+
+  const [showModal, setShowModal] = useState(false)
+
   return (
     <Pressable
       onPress={Keyboard.dismiss}
@@ -28,7 +36,9 @@ export function Teachers() {
         <Header title='Professores' subTitle='Consulte os professores'/>
         <View style={styles.containerSearch}>
           <Search placeholder='Busca professor'/>
-          <Filter/>
+          <TouchableOpacity style={styles.btnModal} onPress={() => setShowModal(true)}>
+            <Filter />
+          </TouchableOpacity>
         </View>
         <FlatList
           data={PROFESSORES}
@@ -42,6 +52,54 @@ export function Teachers() {
           showsVerticalScrollIndicator
           style={styles.list}
         />
+         {
+          showModal == true ?
+            <View style={styles.background}>
+              <View style={styles.modal}>
+                <View style={styles.vwTitle}>
+                  <Text style={styles.title} >Filtragem  Professores</Text>
+                </View>
+                <View style={styles.containerFilter}>
+                  <View style={styles.contentFilter}>
+                    <TextInput style={styles.input} placeholder='Selecione um professor' />
+                    <TouchableOpacity style={styles.containerImg}>
+                      <Image
+                        source={Icon}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                  <View style={styles.contentFilter}>
+                    <TextInput style={styles.input} placeholder='Selecione um periodo' />
+                    <TouchableOpacity style={styles.containerImg}>
+                      <Image
+                        source={Icon}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                  <View style={styles.contentFilter}>
+                    <TextInput style={styles.input} placeholder='Data inicio...' />
+                    <TouchableOpacity style={styles.containerImg}>
+                      <Image
+                        source={Icon}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                  <View style={styles.contentFilter}>
+                    <TextInput style={styles.input} placeholder='Data final...' />
+                    <TouchableOpacity style={styles.containerImg}>
+                      <Image
+                        source={Icon}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+                <TouchableOpacity style={styles.button} onPress={() => setShowModal(false)}>
+                  <Text style={styles.txtButton}>Buscar</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+            : ''
+        }
       </Background>
     </Pressable>
   );

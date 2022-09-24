@@ -123,7 +123,7 @@ export const styles = StyleSheet.create({
     height:40,
     backgroundColor: THEME.COLORS.AZUL_500,
     position: 'absolute',
-    bottom: 20,
+    bottom: '10%',
     borderRadius:8,
     justifyContent: 'center',
     alignItems: 'center',

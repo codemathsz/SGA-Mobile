@@ -5,6 +5,7 @@ import { styles } from './styles';
 
 import ProfessorFoto from '../../assets/foto_chile.png'
 import { THEME } from '../../themes';
+import { useNavigation } from '@react-navigation/native';
 
 export interface ProfessoresCardProps{
     id: string,
@@ -21,10 +22,13 @@ interface Props{
 
 
 export function ProfessoresCard({data, ...rest}:Props) {
+
+    const navigation = useNavigation();
   return (
     <View style={styles.container} {...rest}>
          <TouchableOpacity  
             style={styles.card} 
+            onPress={() => navigation.navigate("Profile")}
             >
                 <View style={styles.contentMain}>
                    <Image

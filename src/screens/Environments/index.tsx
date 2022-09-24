@@ -96,37 +96,6 @@ export function Environments() {
                     </TouchableOpacity>
                   </View>
                 </View>
-                <View style={{width:'100%', justifyContent: 'center', alignItems: 'center'}}>
-                  <View style={styles.vwTitle}>
-                    <Text style={styles.title}>Ambientes Atuais</Text>
-                  </View>
-                  <FlatList
-                    data={LISTA_AMBIENTES}
-                    keyExtractor={item => item.id}
-                    renderItem={({ item }) => (
-                      <View style={styles.containerList}>
-                        <TouchableOpacity style={styles.card}>
-                          <View style={styles.contentData}>
-                            <Text>{item.data}</Text>
-                          </View>
-                          <View style={styles.contentProfessor}>
-                            <Text>{item.professor}</Text>
-                          </View>
-                          <View style={styles.contentPerido}>
-                            <Text>{item.periodo}</Text>
-                          </View>
-                          <View style={styles.contentDia}>
-                            <Text>{item.diaSemana}</Text>
-                          </View>
-                        </TouchableOpacity>
-                      </View>
-                    )}
-                    showsVerticalScrollIndicator
-                    style={{width:'100%', height: 100, paddingTop: 15}}  
-                  >
-
-                  </FlatList>
-                </View>
                 <TouchableOpacity style={styles.button} onPress={() => setShowModal(false)}>
                   <Text style={styles.txtButton}>Buscar</Text>
                 </TouchableOpacity>

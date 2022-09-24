@@ -38,9 +38,13 @@ function DrawerNavigator() {
 }
 export function Router() {
   return (
-    <Stack.Navigator screenOptions={{}}>
+    <Stack.Navigator  screenOptions={{
+      headerShadowVisible: false, 
+      headerTitle:'', 
+      headerTransparent: true, 
+    }} >
       <Stack.Screen options={{ headerShown: false }} name="Drawer" component={DrawerNavigator} />
-      <Stack.Screen name="ProfileTeacher" component={ProfileTeacher} />
+      <Stack.Screen   name="Profile" component={ProfileTeacher} />
     </Stack.Navigator>
   );
 }

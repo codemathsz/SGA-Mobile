@@ -61,22 +61,22 @@ export function Courses() {
         {
           showModal == true ?
             <View style={styles.background}>
-                <View style={styles.modal}>
-              <View style={styles.vwTitle}>
-                <Text style={styles.title} >Filtragem  Curso</Text>
-              </View>
-              <View style={styles.containerFilter}>
-                <TextInput style={styles.input} placeholder='TIPO DE CURSO' />
-                <TouchableOpacity style={styles.containerImg}>
-                  <Image
-                    source={IconSearch}
-                  />
+              <View style={styles.modal}>
+                <View style={styles.vwTitle}>
+                  <Text style={styles.title} >Filtragem  Curso</Text>
+                </View>
+                <View style={styles.containerFilter}>
+                  <TextInput style={styles.input} placeholder='TIPO DE CURSO' />
+                  <TouchableOpacity style={styles.containerImg}>
+                    <Image
+                      source={IconSearch}
+                    />
+                  </TouchableOpacity>
+                </View>
+                <TouchableOpacity style={styles.button} onPress={() => setShowModal(false)}>
+                  <Text style={styles.txtButton}>Buscar</Text>
                 </TouchableOpacity>
               </View>
-              <TouchableOpacity style={styles.button} onPress={() => setShowModal(false)}>
-                <Text style={styles.txtButton}>Buscar</Text>
-              </TouchableOpacity>
-            </View>
             </View>
             : ''
         }
