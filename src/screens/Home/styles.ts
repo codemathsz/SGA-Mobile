@@ -1,5 +1,4 @@
 import { StyleSheet } from "react-native";
-import { color } from "react-native-reanimated";
 import { THEME } from "../../themes";
 
 export const styles = StyleSheet.create({
@@ -40,9 +39,46 @@ export const styles = StyleSheet.create({
   sectionCalendar: {
     width: '100%',
     borderBottomRightRadius: 30,
-    backgroundColor: '#FCFCFD',
+    borderTopWidth: 2,
+    borderColor: 'rgba(0,0,0,0.001)',
+    backgroundColor: '#FEFEFE',
     elevation: 8,
     paddingBottom: 15,
+  },
+  containerRadios:{
+    width: '100%',
+    marginTop: 25,
+    paddingBottom: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center'
+  },
+  containerRadio:{
+    flexDirection: 'row',
+  },
+  textRadioOne: {
+    paddingTop: 6,
+    fontSize: THEME.FONT_SIZE.MD,
+    fontFamily: THEME.FONT_FAMILY.BOLD,
+    color: THEME.COLORS.BLACK
+  },
+  textRadioTwo: {
+    paddingTop: 6,
+    fontFamily: THEME.FONT_FAMILY.BOLD,
+    fontSize: THEME.FONT_SIZE.MD,
+    color: THEME.COLORS.AZUL_400
+  },
+  textRadioThree: {
+    paddingTop: 6,
+    fontFamily: THEME.FONT_FAMILY.BOLD,
+    fontSize: THEME.FONT_SIZE.MD,
+    color: THEME.COLORS.AZUL_500
+  },
+  textRadioFour: {
+    paddingTop: 6,
+    fontFamily: THEME.FONT_FAMILY.BOLD,
+    fontSize: THEME.FONT_SIZE.MD,
+    color: THEME.COLORS.AZUL_600
   },
   sectionCentralization: {
     width: '100%',

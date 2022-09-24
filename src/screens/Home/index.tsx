@@ -1,7 +1,19 @@
 import React, { useState } from "react";
-import { View, Button, Text, Image, TouchableOpacity } from "react-native";
+import {
+  View,
+  Button,
+  Text,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  FlatList,
+} from "react-native";
 
 import { Calendar, LocaleConfig } from "react-native-calendars";
+import { RadioButton } from "react-native-paper";
+
+
+// definindo a linguagem da biblioteca do calendário em português
 LocaleConfig.locales["pt-br"] = {
   monthNames: [
     "Janeiro",
@@ -58,13 +70,19 @@ import { Background } from "../../components/Background";
 import { Header } from "../../components/Header";
 import { Search } from "../../components/Search";
 import { Filter } from "../../components/Filter";
+import { THEME } from "../../themes";
+import { MAIN } from "../../utils/listMain";
+
+
+import {InicioCard} from '../../components/InicioCard'
+
 
 interface HomeProps {}
 
 export function Home() {
-  
-  const [showModal, setShowModal] = useState(false)
-  const [daySelected, setDaySelected] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [daySelected, setDaySelected] = useState(0);
+  const [periodSelected, setPeriodSelected] = useState("all");
 
   // função para retornar as fonts depois do loading do app
 
@@ -93,28 +111,33 @@ export function Home() {
   var yearCurrent = date.getFullYear();
   const dateCurrent = yearCurrent + "-" + monthCurrent + "-" + dayCurrent;
 
-  // função para o componente "ViewDay"
-  const daySelectedView = setDaySelected;
+  // função para o componente "ViewDay",
+  // por Padrão de inicio ele recebe o dia atual
+  if (daySelected === 0) {
+    var passDay = Number(dayCurrent);
+    setDaySelected(passDay);
+  }
 
   return (
     <Background>
-      <View>
-        <Header
-          title="Bem Vindo"
-          subTitle="Selecione um dia e veja as ocupações dos ambientes"
-        />
+      <Header
+        title="Bem Vindo"
+        subTitle="Selecione um dia e veja as ocupações dos ambientes"
+      />
 
+      <ScrollView>
         <View style={styles.sectionCalendar}>
           <Calendar
             // Para estilização do calendário
             style={{
               width: "90%",
               height: "auto",
+
               marginHorizontal: 20,
             }}
             theme={{
-              backgroundColor: "#FCFCFD",
-              calendarBackground: "#FCFCFD",
+              backgroundColor: "#FEFEFE",
+              calendarBackground: "#FEFEFE",
               textSectionTitleColor: "#1E1E40",
               textSectionTitleDisabledColor: "rgb(17, 17, 17, 0.2)",
               selectedDayBackgroundColor: "#25B5E9",
@@ -145,20 +168,83 @@ export function Home() {
             // Props para o dia selecionado
             onDayPress={(day) => {
               console.log("selected day", day);
-              let passDay = day.day;
+              var passDate = day.day;
+              setDaySelected(passDate);
             }}
           />
           <View style={styles.sectionCentralization}>
-            <ViewDay dateSelected={'22'} />
+            <ViewDay dateSelected={daySelected} />
           </View>
         </View>
+
         <View style={styles.containerSearch}>
           <Search placeholder="Pesquisar..." />
-          <TouchableOpacity style={styles.btnModal} onPress={() => setShowModal(true)}>
+          <TouchableOpacity
+            style={styles.btnModal}
+            onPress={() => setShowModal(true)}
+          >
             <Filter />
           </TouchableOpacity>
         </View>
-      </View>
+
+        <View style={styles.containerRadios}>
+          <View style={styles.containerRadio}>
+            <RadioButton
+              value="all"
+              color='black'
+              status={periodSelected === "all" ? "checked" : "unchecked"}
+              onPress={() => setPeriodSelected("all")}
+            />
+            <Text style={styles.textRadioOne}>Todos</Text>
+          </View>
+          <View style={styles.containerRadio}>
+            <RadioButton
+              value="morning"
+              color='black'
+              status={
+                periodSelected === "morning" ? "checked" : "unchecked"
+              }
+              onPress={() => setPeriodSelected("morning")}
+            />
+            <Text style={styles.textRadioTwo}>Manhã</Text>
+          </View>
+          <View style={styles.containerRadio}>
+            <RadioButton
+              value="afternoon"
+              color='black'
+              status={
+                periodSelected === "afternoon" ? "checked" : "unchecked"
+              }
+              onPress={() => setPeriodSelected("afternoon")}
+            />
+            <Text style={styles.textRadioThree}>Tarde</Text>
+          </View>
+          <View style={styles.containerRadio}>
+            <RadioButton
+              value="night"
+              color='black'
+              status={
+                periodSelected === "night" ? "checked" : "unchecked"
+              }
+              onPress={() => setPeriodSelected("night")}
+            />
+            <Text style={styles.textRadioFour}>Noite</Text>
+          </View>
+        </View>
+        <View>
+          <FlatList
+            data={MAIN}
+            keyExtractor={item  => item.id}
+            renderItem={({item}) =>(
+              <InicioCard
+                data={item}
+              />
+            )}
+          >
+
+          </FlatList>
+        </View>
+      </ScrollView>
     </Background>
   );
 }
