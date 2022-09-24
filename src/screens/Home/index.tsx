@@ -119,13 +119,14 @@ export function Home() {
   }
 
   return (
+    <ScrollView>
     <Background>
       <Header
         title="Bem Vindo"
         subTitle="Selecione um dia e veja as ocupações dos ambientes"
       />
 
-      <ScrollView>
+      
         <View style={styles.sectionCalendar}>
           <Calendar
             // Para estilização do calendário
@@ -244,7 +245,8 @@ export function Home() {
 
           </FlatList>
         </View>
-      </ScrollView>
+     
     </Background>
+    </ScrollView>
   );
 }

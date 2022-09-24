@@ -17,7 +17,9 @@ export const styles = StyleSheet.create({
     marginBottom:20,
     borderTopRightRadius:14,
     borderTopLeftRadius:14,
-    backgroundColor: THEME.COLORS.WHITE,
+    borderBottomRightRadius:14,
+    borderBottomLeftRadius:14,
+    backgroundColor: THEME.COLORS.WHITE ,
    
  },
   header:{

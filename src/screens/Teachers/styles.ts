@@ -48,7 +48,7 @@ export const styles = StyleSheet.create({
   modal:{
     width:'90%',
     height: 500,
-    position: 'absolute',
+    position: 'relative',
     zIndex: 1001,
     backgroundColor: '#fff',
     alignItems: 'center',

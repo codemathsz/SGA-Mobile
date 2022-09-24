@@ -22,9 +22,7 @@ function DrawerNavigator() {
   return (
     <Drawer.Navigator
       screenOptions={{
-        headerShadowVisible: false, 
         headerTitle:'', 
-        headerTransparent: true, 
         drawerPosition:'right', 
         
       }}
@@ -39,9 +37,9 @@ function DrawerNavigator() {
 export function Router() {
   return (
     <Stack.Navigator  screenOptions={{
-      headerShadowVisible: false, 
+      
       headerTitle:'', 
-      headerTransparent: true, 
+   
     }} >
       <Stack.Screen options={{ headerShown: false }} name="Drawer" component={DrawerNavigator} />
       <Stack.Screen   name="Profile" component={ProfileTeacher} />
