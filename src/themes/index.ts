@@ -1,7 +1,7 @@
 export const THEME = {
     COLORS: {
       BACKGROUND_900: '#121214',
-      BACKGROUND_800: '#18181B',
+     
   
       TEXT: '#3F3C3C',
   
@@ -11,9 +11,10 @@ export const THEME = {
   
       SHAPE: '#2A2634',
   
-      PRIMARY: '#EFEFEF',
+      PRIMARY: '#F9F9F9',
       PRIMARY_DARK:'#060606',
 
+      BLACK: '#000',
       WHITE: '#FFF',
 
       SUCCESS: '#34D399',
@@ -23,7 +24,9 @@ export const THEME = {
       OVERLAY: 'rgba(0,0,0,0.6)',
 
       AZUL_300: '#25B5E9',
-      AZUL_500: '#367FBF'
+      AZUL_400: '#5AADD1',
+      AZUL_500: '#367FBF',
+      AZUL_600: '#0031B0',
 
     },
   
