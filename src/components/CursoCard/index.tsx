@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, TouchableOpacity, TouchableOpacityProps, Image, Text } from 'react-native';
 
 import { styles } from './styles';
@@ -15,6 +15,8 @@ interface Props extends TouchableOpacityProps{
   data: CursoCardProps
 }
 export function CursoCard({data, ...rest}: Props) {
+
+  
   return (
     <View style={styles.container}>
         <TouchableOpacity style={styles.content} {...rest}>

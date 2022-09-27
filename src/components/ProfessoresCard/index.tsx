@@ -6,26 +6,20 @@ import { styles } from './styles';
 import ProfessorFoto from '../../assets/foto_chile.png'
 import { THEME } from '../../themes';
 import { useNavigation } from '@react-navigation/native';
+import { Professores } from '../../screens/Teachers';
 
-export interface ProfessoresCardProps{
-    id: string,
-    name: string,
-    cargaHoraria: string
-    habilidade: string
-    status: string
 
-}
 
 interface Props{
-    data: ProfessoresCardProps
+    data: Professores
 }
 
 
-export function ProfessoresCard({data, ...rest}:Props) {
+export function ProfessoresCard({data}:Props) {
 
     const navigation = useNavigation();
   return (
-    <View style={styles.container} {...rest}>
+    <View style={styles.container} >
          <TouchableOpacity  
             style={styles.card} 
             onPress={() => navigation.navigate("Profile")}
@@ -44,27 +38,28 @@ export function ProfessoresCard({data, ...rest}:Props) {
                             style={{
                                 fontFamily: THEME.FONT_FAMILY.SEMI_BOLD
                             }}
-                        >{data.name}</Text>
+                        >{data.nome}</Text>
                         <Text 
                             style={{
 
                             }}
-                        >Carga Horária:{data.cargaHoraria} </Text>
+                        >Carga Semanal:{data.cargaSemanal} </Text>
                     </View>
                 </View>
                 <View style={styles.contentSkills}>
                     <TouchableOpacity style={styles.skill} >
                         <Text
                             style={{
-                                fontFamily: THEME.FONT_FAMILY.SEMI_BOLD
+                                fontFamily: THEME.FONT_FAMILY.SEMI_BOLD,
+                                color: THEME.COLORS.WHITE
                             }}
-                        >{data.habilidade}</Text>
+                        >Disponivel</Text>
                     </TouchableOpacity>
                     <Text
                         style={{
                             fontFamily: THEME.FONT_FAMILY.EXTRA_BOLD
                         }}
-                    >{data.status}</Text>
+                    >{data.id}</Text>
                 </View>
             </TouchableOpacity>
     </View>

@@ -1,10 +1,10 @@
-import React,{useState} from 'react';
+import React, { useState, useEffect } from 'react';
 
-import { 
+import {
   View,
-  Text, 
-  Pressable, 
-  Keyboard ,
+  Text,
+  Pressable,
+  Keyboard,
   FlatList,
   TouchableOpacity,
   Image
@@ -17,15 +17,36 @@ import { Header } from '../../components/Header';
 import { ProfessoresCard } from '../../components/ProfessoresCard';
 import { Search } from '../../components/Search';
 
-import { PROFESSORES } from '../../utils/professores';
 
 import Icon from '../../assets/icon_curso.png'
 
 import { styles } from './styles';
 
+import API from '../../services/api'
+
+export interface Professores{
+  id: string,
+  nome: string,
+  cargaSemanal: string
+  competencia: []
+  ativo: boolean
+  email: string
+
+}
+
 export function Teachers() {
 
   const [showModal, setShowModal] = useState(false)
+  const [professor, setProfessor] = useState<Professores[]>([])
+
+  async function getProfessorDidMout() {
+    const response = await API.get('/api/professor')
+    setProfessor(response.data)
+  }
+
+  useEffect(() =>{
+    getProfessorDidMout()
+  },[])
 
   return (
     <Pressable
@@ -33,17 +54,17 @@ export function Teachers() {
       style={styles.container}
     >
       <Background>
-        <Header title='Professores' subTitle='Consulte os professores'/>
+        <Header title='Professores' subTitle='Consulte os professores' />
         <View style={styles.containerSearch}>
-          <Search placeholder='Busca professor'/>
+          <Search placeholder='Busca professor' />
           <TouchableOpacity style={styles.btnModal} onPress={() => setShowModal(true)}>
             <Filter />
           </TouchableOpacity>
         </View>
         <FlatList
-          data={PROFESSORES}
-          keyExtractor={item => item.id}
-          renderItem={({item}) =>(
+          data={professor}
+          keyExtractor={item => item.id.toString()}
+          renderItem={({ item }) => (
             <ProfessoresCard
               data={item}
             />
@@ -52,7 +73,7 @@ export function Teachers() {
           showsVerticalScrollIndicator
           style={styles.list}
         />
-         {
+        {
           showModal == true ?
             <View style={styles.background}>
               <View style={styles.modal}>

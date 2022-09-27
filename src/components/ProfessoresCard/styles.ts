@@ -35,13 +35,13 @@ export const styles = StyleSheet.create({
         alignItems: 'center'
       },
       skill:{
-        width:100,
+        width:120,
         position: 'relative',
         backgroundColor: THEME.COLORS.AZUL_300,
         padding:2,
-        marginRight: 8,
+        marginRight: 2,
         marginTop:8,
-        borderRadius:8,
+        borderRadius:2,
         alignItems: 'center',
 
       }

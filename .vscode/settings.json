@@ -38,7 +38,7 @@
       "dotenv" : "tune"
     },
     "typescript.updateImportsOnFileMove.enabled" : "never",
-    "workbench.colorTheme" : "Omni",
+    "workbench.colorTheme" : "Bearded Theme Monokai Reversed",
     "material-icon-theme.files.associations" : {
       "tsconfig.json" : "tune",
       "*.webpack.js" : "webpack",
@@ -142,5 +142,5 @@
     },
     "tabnine.experimentalAutoImports" : true,
     "gitlens.codeLens.enabled": false,
-    "workbench.iconTheme": "material-icon-theme"
+    "workbench.iconTheme": "vscode-icons"
   }
