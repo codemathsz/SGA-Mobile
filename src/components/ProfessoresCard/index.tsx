@@ -10,44 +10,46 @@ import { Professores } from '../../screens/Teachers';
 
 
 
-interface Props{
+interface Props {
     data: Professores
 }
 
 
-export function ProfessoresCard({data}:Props) {
+export function ProfessoresCard({ data }: Props) {
 
     const navigation = useNavigation();
-  return (
-    <View style={styles.container} >
-         <TouchableOpacity  
-            style={styles.card} 
-            onPress={() => navigation.navigate("Profile")}
+    return (
+        <View style={styles.container} >
+            <TouchableOpacity
+                style={styles.card}
+                onPress={() => navigation.navigate("Profile")}
             >
                 <View style={styles.contentMain}>
-                   <Image
-                        source={ProfessorFoto}
-                        style={{
-                            width: 60,
-                            height: 60,
-                            borderRadius: 12
-                        }}
-                    /> 
+                    <View>
+                        <Image
+                            source={ProfessorFoto}
+                            style={{
+                                width: 60,
+                                height: 60,
+                                borderRadius: 12
+                            }}
+                        />
+                    </View>
                     <View style={styles.infoPerson}>
-                        <Text 
+                        <Text
                             style={{
                                 fontFamily: THEME.FONT_FAMILY.SEMI_BOLD
                             }}
                         >{data.nome}</Text>
-                        <Text 
+                        <Text
                             style={{
 
                             }}
-                        >Carga Semanal:{data.cargaSemanal} </Text>
+                        >Carga Semanal: {data.cargaSemanal}Hrs </Text>
                     </View>
                 </View>
-                <View style={styles.contentSkills}>
-                    <TouchableOpacity style={styles.skill} >
+                <View style={styles.contentDisponobilidade}>
+                    <TouchableOpacity style={styles.disponobilidade} >
                         <Text
                             style={{
                                 fontFamily: THEME.FONT_FAMILY.SEMI_BOLD,
@@ -59,9 +61,9 @@ export function ProfessoresCard({data}:Props) {
                         style={{
                             fontFamily: THEME.FONT_FAMILY.EXTRA_BOLD
                         }}
-                    >{data.id}</Text>
+                    ></Text>
                 </View>
             </TouchableOpacity>
-    </View>
-  );
+        </View>
+    );
 }

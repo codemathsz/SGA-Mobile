@@ -4,41 +4,39 @@ import { View, TouchableOpacity, TouchableOpacityProps, Image, Text } from 'reac
 import { styles } from './styles';
 
 import IconCurso from '../../assets/icon_curso.png'
-export interface CursoCardProps{
-  id: string
-  name: string
-  cargaHoraria: string
-  tipoCurso: string
-}
+import { Curso } from '../../screens/Courses';
 
-interface Props extends TouchableOpacityProps{
-  data: CursoCardProps
-}
-export function CursoCard({data, ...rest}: Props) {
 
-  
+interface Props extends TouchableOpacityProps {
+  data: Curso
+}
+export function CursoCard({ data }: Props) {
+
+  console.log(data)
   return (
     <View style={styles.container}>
-        <TouchableOpacity style={styles.content} {...rest}>
-          <View style={styles.informations}>
+      <TouchableOpacity style={styles.content} >
+        <View style={styles.informations}>
+          <View>
             <Image
               source={IconCurso}
               style={{
-                width:60,
-                height:60,
-                borderRadius:15
+                width: 60,
+                height: 60,
+                borderRadius: 15
               }}
             />
-            <View style={styles.contentText}>
-              <Text style={styles.txtName}>{data.name}</Text>
-              <Text style={styles.txtCH}>Carga Horária:{data.cargaHoraria}</Text>
-            </View>
           </View>
-          <View>
-              <TouchableOpacity style={styles.typeCourse}>
-                <Text style={styles.txtType}>{data.tipoCurso}</Text>
-              </TouchableOpacity>
+          <View style={styles.contentText} >
+            <Text style={styles.txtName}>{data.nome}</Text>
+            <Text style={styles.txtCH}>Carga Horária: 0Hrs</Text>
           </View>
+        </View>
+        <View>
+          <TouchableOpacity style={styles.typeCourse}>
+            <Text style={styles.txtType}>{data.tipoCurso}</Text>
+          </TouchableOpacity>
+        </View>
       </TouchableOpacity>
     </View>
   );

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   View,
   Text,
@@ -25,12 +25,34 @@ import IconSearch from '../../assets/icon_search.png'
 
 
 import { styles } from './styles';
+import API from '../../services/api';
+
+export interface Curso{
+  id: string
+  nome: string
+  tipoCurso: string
+  ativo: string
+  unidadeCurricular: []
+}
 
 export function Courses() {
 
 
   const [showModal, setShowModal] = useState(false)
+  const [cursos, setCursos] = useState<Curso[]>([])
 
+  async function getCursosDidMount() {
+    const response = await API.get('/api/curso')
+
+    setCursos(response.data)
+    
+  }
+
+  useEffect(() => {
+    getCursosDidMount()
+  },[])
+
+  
   return (
     <Pressable
       onPress={Keyboard.dismiss}
@@ -45,7 +67,7 @@ export function Courses() {
           </TouchableOpacity>
         </View>
         <FlatList
-          data={CURSOS}
+          data={cursos}
           keyExtractor={item => item.id}
           renderItem={({ item }) => (
             <CursoCard

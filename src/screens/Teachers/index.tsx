@@ -39,14 +39,15 @@ export function Teachers() {
   const [showModal, setShowModal] = useState(false)
   const [professor, setProfessor] = useState<Professores[]>([])
 
-  async function getProfessorDidMout() {
+  async function getProfessorDidMount() {
     const response = await API.get('/api/professor')
     setProfessor(response.data)
   }
 
   useEffect(() =>{
-    getProfessorDidMout()
+    getProfessorDidMount()
   },[])
+
 
   return (
     <Pressable

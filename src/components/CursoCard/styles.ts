@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
     
   },
   informations:{
-    width:'70%',
+    width:'80%',
     flexDirection: 'row',
     paddingTop: 20,
     paddingBottom: 20,
@@ -27,8 +27,9 @@ export const styles = StyleSheet.create({
 
   },
   contentText:{
+    width: '60%',
     flexDirection: 'column',
-    justifyContent: 'space-around'
+    justifyContent: 'flex-start'
   },
   txtName:{
     fontSize: 16,
@@ -41,14 +42,15 @@ export const styles = StyleSheet.create({
   typeCourse:{
     width:50,
     alignItems: 'center',
-    marginRight:8,
-    marginTop:8,
+    marginRight:6,
+    marginTop:6,
     backgroundColor: THEME.COLORS.AZUL_300,
-    borderRadius:20,
-
+    borderRadius:16,
   },
   txtType:{
     fontFamily: THEME.FONT_FAMILY.SEMI_BOLD,
     color: THEME.COLORS.TEXT,
-  }
+    
+  },
+  
 });

@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
         borderRadius:15,
       },
       contentMain:{
-        width:'70%',
+        width:'65%',
         flexDirection: 'row',
         paddingTop: 20,
         paddingBottom: 20,
@@ -27,19 +27,19 @@ export const styles = StyleSheet.create({
       infoPerson:{
         flexDirection: 'column',
         justifyContent: 'space-around',
-        alignItems: 'center'
+        alignItems: 'flex-start'
       }, 
-      contentSkills:{
+      contentDisponobilidade:{
         flexDirection: 'column',
         justifyContent: 'space-around',
         alignItems: 'center'
       },
-      skill:{
+      disponobilidade:{
         width:120,
         position: 'relative',
         backgroundColor: THEME.COLORS.AZUL_300,
         padding:2,
-        marginRight: 2,
+        marginRight: 10,
         marginTop:8,
         borderRadius:2,
         alignItems: 'center',
