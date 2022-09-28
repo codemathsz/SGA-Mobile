@@ -42,6 +42,7 @@ export function Environments() {
   async function getAmbientesDidMount() {
     const response = await API.get("/api/ambiente");
     setAmbientes(response.data);
+    
   }
 
   useEffect(() =>{
