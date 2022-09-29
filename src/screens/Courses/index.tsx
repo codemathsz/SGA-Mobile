@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -9,101 +9,100 @@ import {
   TextInput,
   Image,
   Button,
-} from 'react-native';
+} from "react-native";
 
-import { Background } from '../../components/Background';
-import { CursoCard } from '../../components/CursoCard';
-import { Filter } from '../../components/Filter';
-import { Header } from '../../components/Header';
-import { Search } from '../../components/Search';
+import { Picker } from "@react-native-picker/picker";
 
+import { Background } from "../../components/Background";
+import { CursoCard } from "../../components/CursoCard";
+import { Filter } from "../../components/Filter";
+import { Header } from "../../components/Header";
+import { Search } from "../../components/Search";
 
-import { CURSOS } from '../../utils/cursos';
+import IconSearch from "../../assets/icon_search.png";
 
+import { styles } from "./styles";
+import API from "../../services/api";
 
-import IconSearch from '../../assets/icon_search.png'
-
-
-import { styles } from './styles';
-import API from '../../services/api';
-
-export interface Curso{
-  id: string
-  nome: string
-  tipoCurso: string
-  ativo: string
-  unidadeCurricular: []
+export interface Curso {
+  id: string;
+  nome: string;
+  tipoCurso: string;
+  ativo: string;
+  unidadeCurricular: [];
 }
 
 export function Courses() {
-
-
-  const [showModal, setShowModal] = useState(false)
-  const [cursos, setCursos] = useState<Curso[]>([])
+  const [showModal, setShowModal] = useState(false);
+  const [cursos, setCursos] = useState<Curso[]>([]);
+  // useStates para o Select
+  const [typeCursos, setTypeCursos] = useState(
+    ['FIC, Técnico, EAD']
+  )
+  // Seta o tipo de curso selecionado pelo Select
+  const [selectTypeCursos, setSelectTypeCursos] = useState([])
 
   async function getCursosDidMount() {
-    const response = await API.get('/api/curso')
+    const response = await API.get("/api/curso");
 
-    setCursos(response.data)
-    
+    setCursos(response.data);
   }
 
   useEffect(() => {
-    getCursosDidMount()
-  },[])
+    getCursosDidMount();
+  }, []);
 
-  
   return (
-    <Pressable
-      onPress={Keyboard.dismiss}
-      style={styles.container}
-    >
+    <Pressable onPress={Keyboard.dismiss} style={styles.container}>
       <Background>
-        <Header title='Cursos' subTitle='Consulte por cursos' />
+        <Header title="Cursos" subTitle="Consulte por cursos" />
         <View style={styles.containerSearch}>
-          <Search placeholder='Buscar Cursos' />
-          <TouchableOpacity style={styles.btnModal} onPress={() => setShowModal(true)}>
+          <Search placeholder="Buscar Cursos" />
+          <TouchableOpacity
+            style={styles.btnModal}
+            onPress={() => setShowModal(true)}
+          >
             <Filter />
           </TouchableOpacity>
         </View>
         <FlatList
           data={cursos}
-          keyExtractor={item => item.id}
-          renderItem={({ item }) => (
-            <CursoCard
-              data={item}
-            />
-          )}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => <CursoCard data={item} />}
           horizontal={false}
           showsVerticalScrollIndicator
           style={styles.list}
-        >
-
-        </FlatList>
-        {
-          showModal == true ?
-            <View style={styles.background}>
-              <View style={styles.modal}>
-                <View style={styles.vwTitle}>
-                  <Text style={styles.title} >Filtragem  Curso</Text>
-                </View>
-                <View style={styles.containerFilter}>
-                  <TextInput style={styles.input} placeholder='TIPO DE CURSO' />
-                  <TouchableOpacity style={styles.containerImg}>
-                    <Image
-                      source={IconSearch}
-                    />
-                  </TouchableOpacity>
-                </View>
-                <TouchableOpacity style={styles.button} onPress={() => setShowModal(false)}>
-                  <Text style={styles.txtButton}>Buscar</Text>
-                </TouchableOpacity>
+        ></FlatList>
+        {showModal == true ? (
+          <View style={styles.background}>
+            <View style={styles.modal}>
+              <View style={styles.vwTitle}>
+                <Text style={styles.title}>Filtragem Curso</Text>
               </View>
+              <View style={styles.containerFilter}>
+                <Picker
+                  selectedValue='Selecione um tipo de curso'
+                  style={{height: 50, width: 250}}
+                  onValueChange={(itemValue, itemIndex) => {
+                    
+                  }}
+                >
+                  <Picker.Item label="Java" value="java" />
+                  <Picker.Item label="JavaScript" value="js" />
+                </Picker>
+              </View>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => setShowModal(false)}
+              >
+                <Text style={styles.txtButton}>Buscar</Text>
+              </TouchableOpacity>
             </View>
-            : ''
-        }
+          </View>
+        ) : (
+          ""
+        )}
       </Background>
     </Pressable>
   );
 }
-
