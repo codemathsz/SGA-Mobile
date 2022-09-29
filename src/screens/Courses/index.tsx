@@ -50,11 +50,12 @@ export function Courses() {
   const [showModal, setShowModal] = useState(false);
   const [cursos, setCursos] = useState<Curso[]>([]);
   // useStates para o Select
-  const [typeCursos, setTypeCursos] = useState(
-    ['FIC, Técnico, EAD']
-  )
-  // Seta o tipo de curso selecionado pelo Select
-  const [selectTypeCursos, setSelectTypeCursos] = useState([])
+  const [typeCursos, setTypeCursos] = useState([
+    "Selecione um tipo de curso",
+    "FIC",
+    "Regular",
+  ]);
+  const [selectTypeCursos, setSelectTypeCursos] = useState([]);
 
   async function getCursosDidMount() {
     const response = await API.get("/api/curso");
@@ -95,14 +96,19 @@ export function Courses() {
               </View>
               <View style={styles.containerFilter}>
                 <Picker
-                  selectedValue='Selecione um tipo de curso'
-                  style={{height: 50, width: 250}}
-                  onValueChange={(itemValue, itemIndex) => {
-                    
-                  }}
+                  selectedValue={selectTypeCursos}
+                  style={styles.datePicker}
+                  onValueChange={(itemValue) => setSelectTypeCursos(itemValue)}
                 >
-                  <Picker.Item label="Java" value="java" />
-                  <Picker.Item label="JavaScript" value="js" />
+                  {typeCursos.map((cr) => {
+                    return (
+                      <Picker.Item
+                        label={cr}
+                        value={cr}
+                        style={styles.itemDatePicker}
+                      />
+                    );
+                  })}
                 </Picker>
               </View>
               <TouchableOpacity

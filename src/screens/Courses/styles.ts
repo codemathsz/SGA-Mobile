@@ -55,7 +55,8 @@ export const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     flexDirection: 'column',
-    padding:4
+    padding:4,
+    borderRadius: 20,
   },
   close:{
     position: 'absolute',
@@ -81,12 +82,30 @@ export const styles = StyleSheet.create({
     color: THEME.COLORS.AZUL_500,
   },
   containerFilter:{
-    width: '100%',
+    width: '90%',
+    borderColor: THEME.COLORS.SELECT,
+    borderWidth: 0.8,
+    borderRadius: 12,
+    elevation: 1,
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    marginTop: 60,
+    marginTop: 50,
+    
   },
+  datePicker:{
+    width: '90%',
+    borderColor: '#000',
+    borderWidth: 4,
+    color: THEME.COLORS.SELECT,
+  },
+
+  itemDatePicker:{
+    borderColor: '#000',
+    fontSize: THEME.FONT_SIZE.MD,
+    color: THEME.COLORS.TEXT
+ },
+
   input:{
     backgroundColor: THEME.COLORS.WHITE,
     width: '70%',
