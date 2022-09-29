@@ -17,6 +17,7 @@ export const styles = StyleSheet.create({
     width: '100%',
     marginTop:15,
     paddingTop:20,
+
   },
   btnModal:{
     width: 48,
@@ -66,7 +67,7 @@ export const styles = StyleSheet.create({
     fontFamily: THEME.FONT_FAMILY.EXTRA_BOLD
   },
   vwTitle:{
-    width: '80%',
+    width: '90%',
     justifyContent: 'flex-end',
     alignItems: 'center',
     padding:20,

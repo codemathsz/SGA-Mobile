@@ -40,16 +40,19 @@ export const styles = StyleSheet.create({
     fontSize:12,
   },
   typeCourse:{
-    width:50,
+    position: 'relative',
+    width:100,
     alignItems: 'center',
-    marginRight:6,
+    marginRight:20,
     marginTop:6,
     backgroundColor: THEME.COLORS.AZUL_300,
-    borderRadius:16,
+    borderRadius:14,
   },
   txtType:{
     fontFamily: THEME.FONT_FAMILY.SEMI_BOLD,
-    color: THEME.COLORS.TEXT,
+    color: THEME.COLORS.WHITE,
+    paddingHorizontal: 15,
+    paddingVertical: 5,
     
   },
   
