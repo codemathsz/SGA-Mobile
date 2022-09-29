@@ -9,7 +9,7 @@ import {
   Image,
   TextInput,
 } from "react-native";
-
+import {Picker} from '@react-native-picker/picker'
 import Icon from "../../assets/icon_curso.png";
 
 import { AmbienteCard } from "../../components/AmbienteCard";
@@ -35,16 +35,18 @@ export interface Ambientes {
 export function Environments() {
   const [showModal, setShowModal] = useState(false);
   const [ambientes, setAmbientes] = useState<Ambientes[]>([]);
+  // useStates para os selects
+  const [allAmbientes, setAllAmbientes] = useState(["selecione um Ambiente"]);
+  const [selectAllAmbientes, setSelectAllAmbient] = useState([]);
 
   async function getAmbientesDidMount() {
     const response = await API.get("/api/ambiente");
     setAmbientes(response.data);
-    
   }
 
-  useEffect(() =>{
-    getAmbientesDidMount()
-  },[])
+  useEffect(() => {
+    getAmbientesDidMount();
+  }, []);
 
   return (
     <Pressable onPress={Keyboard.dismiss} style={styles.container}>
@@ -75,13 +77,23 @@ export function Environments() {
               </View>
               <View style={styles.containerFilter}>
                 <View style={styles.contentFilter}>
-                  <TextInput
-                    style={styles.input}
-                    placeholder="Selecione um ambiente"
-                  />
-                  <TouchableOpacity style={styles.containerImg}>
-                    <Image source={Icon} />
-                  </TouchableOpacity>
+                  <Picker
+                    selectedValue={selectAllAmbientes}
+                    style={styles.datePicker}
+                    onValueChange={(itemValue) =>
+                      setSelectAllAmbient(itemValue)
+                    }
+                  >
+                    {allAmbientes.map((cr) => {
+                      return (
+                        <Picker.Item
+                          label={cr}
+                          value={cr}
+                          style={styles.itemDatePicker}
+                        />
+                      );
+                    })}
+                  </Picker>
                 </View>
                 <View style={styles.contentFilter}>
                   <TextInput

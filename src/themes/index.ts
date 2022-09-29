@@ -4,7 +4,8 @@ export const THEME = {
      
   
       TEXT: '#3F3C3C',
-  
+      SELECT: 'rgba(109, 109, 109, 0.5)',
+
       CAPTION_500: '#71717A',
       CAPTION_400: '#A1A1AA',
       CAPTION_300: '#D4D4D8',

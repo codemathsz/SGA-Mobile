@@ -80,11 +80,15 @@ export const styles = StyleSheet.create({
     color: THEME.COLORS.AZUL_500,
   },
   contentFilter:{
-    width: '100%',
+    width: '90%',
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
     marginTop: 20,
+    borderColor: THEME.COLORS.SELECT,
+    borderWidth: 0.8,
+    borderRadius: 12,
+    elevation: 1,
   },
   containerFilter:{
     width: '100%',
@@ -92,7 +96,20 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 30,
+    
   },
+  datePicker:{
+    width: '90%',
+    borderColor: '#000',
+    borderWidth: 4,
+    color: THEME.COLORS.SELECT,
+  },
+
+  itemDatePicker:{
+    borderColor: '#000',
+    fontSize: THEME.FONT_SIZE.MD,
+    color: THEME.COLORS.TEXT
+ },
   input:{
     backgroundColor: THEME.COLORS.WHITE,
     width: '70%',
