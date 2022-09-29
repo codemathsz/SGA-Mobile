@@ -17,20 +17,9 @@ import { AULAS } from '../../utils/aulas';
 import { styles } from './styles';
 
 
-export interface ProfessoresCardProps {
-  id: string,
-  name: string,
-  cargaHoraria: string
-  habilidade: string
-  status: string
 
-}
 
-interface Props {
-  data: ProfessoresCardProps
-}
-
-export function ProfileTeacher({ data, ...rest }: Props) {
+export function ProfileTeacher({route}: any) {
   return (
     <ScrollView>
       <Background>
@@ -47,7 +36,7 @@ export function ProfileTeacher({ data, ...rest }: Props) {
               />
             </View>
             <View style={styles.nameTeacher}>
-              <Text style={styles.name}>José Roberto Chile Silva</Text>
+              <Text style={styles.name}>{route.params?.data?.nome}</Text>
             </View>
           </View>
           <View style={styles.calendar}>
