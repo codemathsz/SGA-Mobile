@@ -18,7 +18,7 @@ export function CursoCard({ data }: Props) {
       <TouchableOpacity style={styles.content} >
         <View style={styles.informations}>
           <View>
-            <Image
+            <Image  
               source={IconCurso}
               style={{
                 width: 60,

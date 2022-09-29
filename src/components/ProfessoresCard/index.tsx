@@ -18,11 +18,16 @@ interface Props {
 export function ProfessoresCard({ data }: Props) {
 
     const navigation = useNavigation();
+
+    function goProfileTeacher(){
+        navigation.navigate("ProfileTeacher", {data} )
+    }
+
     return (
         <View style={styles.container} >
             <TouchableOpacity
                 style={styles.card}
-                onPress={() => navigation.navigate("Profile")}
+                onPress={goProfileTeacher}
             >
                 <View style={styles.contentMain}>
                     <View>

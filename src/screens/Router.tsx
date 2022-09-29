@@ -42,7 +42,7 @@ export function Router() {
    
     }} >
       <Stack.Screen options={{ headerShown: false }} name="Drawer" component={DrawerNavigator} />
-      <Stack.Screen   name="Profile" component={ProfileTeacher} />
+      <Stack.Screen   name="ProfileTeacher" component={ProfileTeacher} />
     </Stack.Navigator>
   );
 }

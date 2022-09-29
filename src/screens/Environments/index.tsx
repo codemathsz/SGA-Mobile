@@ -18,9 +18,6 @@ import { Filter } from "../../components/Filter";
 import { Header } from "../../components/Header";
 import { Search } from "../../components/Search";
 
-import { AMBIENTES } from "../../utils/ambientes";
-import { LISTA_AMBIENTES } from "../../utils/listAmbientes";
-
 import { styles } from "./styles";
 
 import API from "../../services/api";

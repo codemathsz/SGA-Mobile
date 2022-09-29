@@ -17,12 +17,7 @@ import { Filter } from '../../components/Filter';
 import { Header } from '../../components/Header';
 import { Search } from '../../components/Search';
 
-
-import { CURSOS } from '../../utils/cursos';
-
-
 import IconSearch from '../../assets/icon_search.png'
-
 
 import { styles } from './styles';
 import API from '../../services/api';
