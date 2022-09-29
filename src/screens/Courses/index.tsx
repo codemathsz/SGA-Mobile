@@ -13,19 +13,6 @@ import {
 
 import { Picker } from "@react-native-picker/picker";
 
-<<<<<<< HEAD
-import IconSearch from '../../assets/icon_search.png'
-
-import { styles } from './styles';
-import API from '../../services/api';
-
-export interface Curso{
-  id: string
-  nome: string
-  tipoCurso: string
-  ativo: string
-  unidadeCurricular: []
-=======
 import { Background } from "../../components/Background";
 import { CursoCard } from "../../components/CursoCard";
 import { Filter } from "../../components/Filter";
@@ -43,7 +30,6 @@ export interface Curso {
   tipoCurso: string;
   ativo: string;
   unidadeCurricular: [];
->>>>>>> 3c6451d00f5584c53dde3c27c6ca7c70e7e2f53d
 }
 
 export function Courses() {
@@ -62,6 +48,8 @@ export function Courses() {
 
     setCursos(response.data);
   }
+  // teste git
+  // apagar essa linha, e cuidado com o merge 
 
   useEffect(() => {
     getCursosDidMount();
@@ -110,6 +98,7 @@ export function Courses() {
                     );
                   })}
                 </Picker>
+                
               </View>
               <TouchableOpacity
                 style={styles.button}
