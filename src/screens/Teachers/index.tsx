@@ -17,6 +17,7 @@ import { Header } from '../../components/Header';
 import { ProfessoresCard } from '../../components/ProfessoresCard';
 import { Search } from '../../components/Search';
 
+import { Picker } from "@react-native-picker/picker";
 
 import Icon from '../../assets/icon_curso.png'
 
@@ -24,7 +25,7 @@ import { styles } from './styles';
 
 import API from '../../services/api'
 
-export interface Professores{
+export interface Teachers {
   id: string,
   nome: string,
   cargaSemanal: string
@@ -34,22 +35,54 @@ export interface Professores{
 
 }
 
+export interface Course {
+  id: string;
+  nome: string;
+  tipoCurso: string;
+  ativo: string;
+  unidadeCurricular: [];
+}
+
+export interface CurricularUnit {
+  nome: string
+  cargaHoraria: string
+}
+
 export function Teachers() {
 
+  // para modal
   const [showModal, setShowModal] = useState(false)
-  const [professor, setProfessor] = useState<Professores[]>([])
+  // receber o get de professor
+  const [professor, setProfessor] = useState<Teachers[]>([])
+  // curso para colocar no select
+  const [course, setCourses] = useState<Course[]>([]);
+  // para guardar o que foi selecionado no select curso
+  const [selectCourses, setSelectCourses] = useState([]);
+  // unidade curricular para colocar no select
+  const [curricularUnit, setCurricularUnit] = useState<CurricularUnit[]>([])
+  // para guardar o que foi selecionado no select unid. curricular
+  const [selectCurricularUnit, setSelectCurricularUnit] = useState([]);
 
-  
   async function getProfessorDidMount() {
     const response = await API.get('/api/professor')
     setProfessor(response.data)
   }
 
+  async function getCoursesDidMount() {
+    const response = await API.get('/api/curso')
+    setCourses(response.data)
+  }
 
+  async function getCurricularUnitDidMount() {
+    const response = await API.get('/api/unidade')
+    setCurricularUnit(response.data)
+  }
 
-  useEffect(() =>{
+  useEffect(() => {
     getProfessorDidMount()
-  },[])
+    getCoursesDidMount()
+    getCurricularUnitDidMount()
+  }, [])
 
 
   return (
@@ -85,40 +118,45 @@ export function Teachers() {
                   <Text style={styles.title} >Filtragem  Professores</Text>
                 </View>
                 <View style={styles.containerFilter}>
-                  <View style={styles.contentFilter}>
-                    <TextInput style={styles.input} placeholder='Selecione um professor' />
-                    <TouchableOpacity style={styles.containerImg}>
-                      <Image
-                        source={Icon}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                  <View style={styles.contentFilter}>
-                    <TextInput style={styles.input} placeholder='Selecione um periodo' />
-                    <TouchableOpacity style={styles.containerImg}>
-                      <Image
-                        source={Icon}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                  <View style={styles.contentFilter}>
-                    <TextInput style={styles.input} placeholder='Data inicio...' />
-                    <TouchableOpacity style={styles.containerImg}>
-                      <Image
-                        source={Icon}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                  <View style={styles.contentFilter}>
-                    <TextInput style={styles.input} placeholder='Data final...' />
-                    <TouchableOpacity style={styles.containerImg}>
-                      <Image
-                        source={Icon}
-                      />
-                    </TouchableOpacity>
-                  </View>
+                  <Picker
+                    selectedValue={selectCourses}
+                    style={styles.datePicker}
+                    onValueChange={(itemValue) => setSelectCourses(itemValue)}
+                    mode={"dropdown"}
+                  >
+                    {course?.map((cr) => {
+                      return (
+                        <Picker.Item
+                          label={cr.nome}
+                          value={cr.nome}
+                          style={styles.itemDatePicker}
+                        />
+                      );
+                    })}
+                  </Picker>
                 </View>
-                <TouchableOpacity style={styles.button} onPress={() => setShowModal(false)}>
+                <View style={styles.containerFilter}>
+                  <Picker
+                    selectedValue={selectCurricularUnit}
+                    style={styles.datePicker}
+                    onValueChange={(itemValue) => setSelectCourses(itemValue)}
+                    mode={"dropdown"}
+                  >
+                    {curricularUnit?.map((cru) => {
+                      return (
+                        <Picker.Item
+                          label={cru.nome}
+                          value={cru.nome}
+                          style={styles.itemDatePicker}
+                        />
+                      );
+                    })}
+                  </Picker>
+                </View>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={() => setShowModal(false)}
+                >
                   <Text style={styles.txtButton}>Buscar</Text>
                 </TouchableOpacity>
               </View>

@@ -33,26 +33,32 @@ export interface Curso {
 }
 
 export function Courses() {
+  // const para abrir a modal
   const [showModal, setShowModal] = useState(false);
-  const [cursos, setCursos] = useState<Curso[]>([]);
+  // const para receber os cursos
+  const [courses, setCourses] = useState<Curso[]>([]);
   // useStates para o Select
-  const [typeCursos, setTypeCursos] = useState([
-    "Selecione um tipo de curso",
-    "FIC",
-    "Regular",
-  ]);
-  const [selectTypeCursos, setSelectTypeCursos] = useState([]);
+  const [typeCourses, setTypeCourses] = useState([]);
+  // para guardar o que foi selecionado no select
+  const [selectTypeCourses, setSelectTypeCourses] = useState([]);
 
-  async function getCursosDidMount() {
+  // pegando todos os curso
+  async function getCoursesDidMount() {
     const response = await API.get("/api/curso");
-
-    setCursos(response.data);
+    setCourses(response.data);
   }
-  // teste git
-  // apagar essa linha, e cuidado com o merge 
 
+  // pegando as Enums do tipo curso
+  async function getTypesCoursesDidMount() {
+    const response = await API.get("/api/curso/tipocurso")
+    setTypeCourses(response.data)
+  }
+
+  // para fazer a requisição as APIs
   useEffect(() => {
-    getCursosDidMount();
+    getCoursesDidMount()
+    getTypesCoursesDidMount()
+
   }, []);
 
   return (
@@ -69,12 +75,14 @@ export function Courses() {
           </TouchableOpacity>
         </View>
         <FlatList
-          data={cursos}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => <CursoCard data={item} />}
+         /*  ListHeaderComponent={} */
+          data={courses}
+          keyExtractor={(item) => item?.id}
+          renderItem={({ item }) => <CursoCard data={item}  />}
           horizontal={false}
           showsVerticalScrollIndicator
           style={styles.list}
+
         ></FlatList>
         {showModal == true ? (
           <View style={styles.background}>
@@ -84,11 +92,12 @@ export function Courses() {
               </View>
               <View style={styles.containerFilter}>
                 <Picker
-                  selectedValue={selectTypeCursos}
+                  selectedValue={selectTypeCourses}
                   style={styles.datePicker}
-                  onValueChange={(itemValue) => setSelectTypeCursos(itemValue)}
+                  onValueChange={(itemValue) => setSelectTypeCourses(itemValue)}
+                  mode={"dropdown"}
                 >
-                  {typeCursos.map((cr) => {
+                  {typeCourses.map((cr) => {
                     return (
                       <Picker.Item
                         label={cr}
@@ -98,7 +107,7 @@ export function Courses() {
                     );
                   })}
                 </Picker>
-                
+
               </View>
               <TouchableOpacity
                 style={styles.button}
