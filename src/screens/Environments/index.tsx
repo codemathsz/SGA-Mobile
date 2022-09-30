@@ -9,7 +9,7 @@ import {
   Image,
   TextInput,
 } from "react-native";
-import {Picker} from '@react-native-picker/picker'
+import { Picker } from "@react-native-picker/picker";
 import Icon from "../../assets/icon_curso.png";
 
 import { AmbienteCard } from "../../components/AmbienteCard";
@@ -33,20 +33,38 @@ export interface Ambientes {
 }
 
 export function Environments() {
+  // useStates para modal
   const [showModal, setShowModal] = useState(false);
+  // useState para consumir dados de ambientes
   const [ambientes, setAmbientes] = useState<Ambientes[]>([]);
-  // useStates para os selects
-  const [allAmbientes, setAllAmbientes] = useState(["selecione um Ambiente"]);
-  const [selectAllAmbientes, setSelectAllAmbient] = useState([]);
+  // useStates para select ambiente
+  const [typeAmbiente, setTypeAmbiente] = useState([])
+  const [selectTypeAmbient, setSelectTypeAmbient] = useState();
+  const [capacidadeAmbient, setCapacidadeAmbient] = useState([
+    "Selecione a capacidade do ambiente",
+    "10-15",
+    "20-25",
+    "25-30",
+    "30+",
+  ]);
+  const [selectCapacidadeAmbient, setSelectCapacidadeAmbient] = useState([]);
 
   async function getAmbientesDidMount() {
     const response = await API.get("/api/ambiente");
     setAmbientes(response.data);
   }
 
+  async function getTypeAmbientesDidMount() {
+    const response = await API.get("/api/ambiente/tipoambiente");
+    setTypeAmbiente(response.data);
+  }
+
   useEffect(() => {
     getAmbientesDidMount();
+    getTypeAmbientesDidMount();
   }, []);
+
+  console.log(typeAmbiente)
 
   return (
     <Pressable onPress={Keyboard.dismiss} style={styles.container}>
@@ -78,13 +96,14 @@ export function Environments() {
               <View style={styles.containerFilter}>
                 <View style={styles.contentFilter}>
                   <Picker
-                    selectedValue={selectAllAmbientes}
+                    selectedValue={selectTypeAmbient}
                     style={styles.datePicker}
+                    mode={"dropdown"}
                     onValueChange={(itemValue) =>
-                      setSelectAllAmbient(itemValue)
+                      setSelectTypeAmbient(itemValue)
                     }
                   >
-                    {allAmbientes.map((cr) => {
+                    {typeAmbiente.map((cr) => {
                       return (
                         <Picker.Item
                           label={cr}
@@ -96,28 +115,24 @@ export function Environments() {
                   </Picker>
                 </View>
                 <View style={styles.contentFilter}>
-                  <TextInput
-                    style={styles.input}
-                    placeholder="Selecione um periodo"
-                  />
-                  <TouchableOpacity style={styles.containerImg}>
-                    <Image source={Icon} />
-                  </TouchableOpacity>
-                </View>
-                <View style={styles.contentFilter}>
-                  <TextInput
-                    style={styles.input}
-                    placeholder="Data inicio..."
-                  />
-                  <TouchableOpacity style={styles.containerImg}>
-                    <Image source={Icon} />
-                  </TouchableOpacity>
-                </View>
-                <View style={styles.contentFilter}>
-                  <TextInput style={styles.input} placeholder="Data final..." />
-                  <TouchableOpacity style={styles.containerImg}>
-                    <Image source={Icon} />
-                  </TouchableOpacity>
+                  <Picker
+                    selectedValue={selectCapacidadeAmbient}
+                    style={styles.datePicker}
+                    mode={"dropdown"}
+                    onValueChange={(itemValue) =>
+                      setSelectCapacidadeAmbient(itemValue)
+                    }
+                  >
+                    {capacidadeAmbient.map((cr) => {
+                      return (
+                        <Picker.Item
+                          label={cr}
+                          value={cr}
+                          style={styles.itemDatePicker}
+                        />
+                      );
+                    })}
+                  </Picker>
                 </View>
               </View>
               <TouchableOpacity
