@@ -27,13 +27,6 @@ interface HeaderProps{
 export function Header({title, subTitle}: HeaderProps) {
   return (
     <View style={styles.container}>
-        <View style={styles.containerLogo}>
-          <TouchableOpacity>
-            <Image
-              source={Soon}
-            />
-          </TouchableOpacity>
-        </View>
         <View style={styles.contenText}>
           <Text style={styles.titleInitial}>{title}</Text>
           <Text style={styles.subTitle}>{subTitle}</Text>

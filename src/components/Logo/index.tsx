@@ -8,10 +8,10 @@ import LogoM from '../../assets/Soon.png'
 
 export function Logo() {
   return (
-    <View style={styles.container}>
-      <Image
-        source={LogoM}
-      />
-    </View>
+    <Image
+      source={LogoM}
+      style={{width:100, height:50, position: 'relative', left: '70%', right:'50%'}}
+    />
+
   );
 }

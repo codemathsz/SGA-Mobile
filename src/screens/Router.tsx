@@ -9,6 +9,7 @@ import { Courses } from './Courses';
 import { Environments } from './Environments';
 import { Teachers } from './Teachers';
 import { ProfileTeacher } from './ProfileTeacher';
+import { Logo } from '../components/Logo';
 
 
 const Drawer = createDrawerNavigator()
@@ -22,9 +23,11 @@ function DrawerNavigator() {
   return (
     <Drawer.Navigator
       screenOptions={{
-        headerTitle:'', 
+        headerTitle:() => <Logo />, 
         drawerPosition:'right', 
-        
+        headerStyle:{
+          height: 100,
+        }
       }}
     >
       <Drawer.Screen  name="Inicio"  component={Home}/>
