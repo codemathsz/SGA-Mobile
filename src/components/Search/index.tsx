@@ -1,19 +1,29 @@
-import React from 'react';
-import { View, Text, Pressable, Keyboard } from 'react-native';
+import React, { useState } from "react";
+import { View, Text, Pressable, Keyboard } from "react-native";
 
+import { styles } from "./styles";
 
-import { styles } from './styles';
-
-import IconSearch from '../../assets/icon_search.png'
-import { TextInput } from 'react-native-paper';
-interface SearchProps{
-    placeholder: string
+import IconSearch from "../../assets/icon_search.png";
+import { TextInput } from "react-native-paper";
+interface SearchProps {
+  placeholder: string;
 }
 
-export  function  Search({placeholder}:SearchProps) {
+export function Search({ placeholder }: SearchProps) {
   return (
+    <View>
+      <TextInput
+        style={styles.main}
+        editable
+        placeholderTextColor={"#3F3C3C"}
+        placeholder={placeholder}
+        selectionColor={"#000"}
+        activeUnderlineColor={"transparent"}
+        mode={"flat"}
+        underlineColor={"transparent"}
 
-    <TextInput  style={styles.main} editable placeholderTextColor={'#3F3C3C'} placeholder={placeholder}   selectionColor={'#000'} activeUnderlineColor={'transparent'} mode={'flat'} underlineColor={'transparent'} /> 
-       
+        // onChange={}
+      />
+    </View>
   );
 }

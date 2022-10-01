@@ -39,13 +39,14 @@ export function Courses() {
   // const para receber os cursos
   const [courses, setCourses] = useState<Curso[]>([]);
   // const para receber a busca de Cursos
-  const [searchTypeCourses, setSearchTypeCourses] = useState<Curso[]>([])
+  const [searchTypeCourses, setSearchTypeCourses] = useState<Curso[]>([]);
   // useStates para o Select
   const [typeCourses, setTypeCourses] = useState([]);
   // para guardar o que foi selecionado no select
   const [selectTypeCourses, setSelectTypeCourses] = useState([]);
-  // useState para saber se está acontecendo uma busca personalizada
-  const [searchPersonalization, setSearchPersonalization] = useState(false);
+
+  const [textSearch, setTextSearch] = useState();
+
   // useState para identificar uma filtragem
   const [filter, setFilter] = useState(false);
   const [search, setSearch] = useState(false);
@@ -63,8 +64,12 @@ export function Courses() {
   }
 
   async function getSearchTypesCoursesDidMount() {
-    const response = await API.get("/api/curso/buscacurso/"+selectTypeCourses);
-    searchTypeCourses.splice(0)
+    const response = await API.get(
+      "/api/curso/buscacurso/" + selectTypeCourses
+    );
+
+    // deixando a array vazia
+    searchTypeCourses.splice(0);
     setSearchTypeCourses(response.data);
   }
 
@@ -76,21 +81,22 @@ export function Courses() {
   }, []);
 
   // função para aplicar o filtro
-
   function filterAplic() {
-    setSearchPersonalization(true)
-    setFilter(true)
+    setFilter(true);
+    setSearch(false);
   }
 
+  // função que tira o filtro quando o usuário aperta em remover filtro
   const filterNoAplic = () => {
-    setSearchPersonalization(false)
-  }
+    setFilter(false);
+  };
 
   return (
     <Pressable onPress={Keyboard.dismiss} style={styles.container}>
       <Background>
         <Header title="Cursos" subTitle="Consulte por cursos" />
         <View style={styles.containerSearch}>
+          <Text>{textSearch}</Text>
           <Search placeholder="Buscar Cursos" />
           <TouchableOpacity
             style={styles.btnModal}
@@ -101,7 +107,28 @@ export function Courses() {
         </View>
 
         {/* Operador ternário  para aplicar o filtro*/}
-        {searchPersonalization == false ? (
+        {filter == true ? (
+          <FlatList
+            // ListHeaderComponent={<ConfigApplicator text="Filtro Aplicado"/>}
+            ListHeaderComponent={
+              <ConfigApplicator
+                text="Filtro Aplicado"
+                functionFilter={filterNoAplic}
+              />
+            }
+            data={searchTypeCourses}
+            keyExtractor={(item) => item?.id}
+            renderItem={({ item }) => <CursoCard data={item} />}
+            horizontal={false}
+            showsVerticalScrollIndicator
+            style={styles.list}
+          ></FlatList>
+        ) : // fazendo uma logica para identificar se é uma busca ou um filtro
+
+        search == true ? (
+          ""
+        ) : (
+          // Flatlist que aparece quando não tem nenhuma busca personalizada feita
           <FlatList
             /*  ListHeaderComponent={} */
             data={courses}
@@ -111,22 +138,6 @@ export function Courses() {
             showsVerticalScrollIndicator
             style={styles.list}
           ></FlatList>
-        ) : (
-          <FlatList
-           // ListHeaderComponent={<ConfigApplicator text="Filtro Aplicado"/>}
-           ListHeaderComponent={<ConfigApplicator text="Filtro Aplicado" functionFilter={filterNoAplic}/>}
-            data={searchTypeCourses}
-            keyExtractor={(item) => item?.id}
-            renderItem={({ item }) => <CursoCard data={item} />}
-            horizontal={false}
-            showsVerticalScrollIndicator
-            style={styles.list}
-          ></FlatList>
-          // fazendo uma logica para identificar se é uma busca ou um filtro
-          
-          
-          
-
         )}
 
         {showModal == true ? (
