@@ -123,6 +123,7 @@ export function Teachers() {
                     style={styles.datePicker}
                     onValueChange={(itemValue) => setSelectCourses(itemValue)}
                     mode={"dropdown"}
+                    
                   >
                     {course?.map((cr) => {
                       return (
