@@ -21,6 +21,7 @@ import { Search } from "../../components/Search";
 import { styles } from "./styles";
 
 import API from "../../services/api";
+import { ConfigApplicator } from "../../components/ConfigApplicator";
 
 export interface Ambientes {
   id: string;
@@ -32,22 +33,31 @@ export interface Ambientes {
   ativo: boolean;
 }
 
-export function Environments() {
+export function Environments({id, ...rest}:Ambientes) {
   // useStates para modal
   const [showModal, setShowModal] = useState(false);
   // useState para consumir dados de ambientes
   const [ambientes, setAmbientes] = useState<Ambientes[]>([]);
+  //
+  const [typeSearchAmbiente, setTypeSearchAmbiente] = useState<Ambientes[]>([]);
   // useStates para select ambiente
   const [typeAmbiente, setTypeAmbiente] = useState([])
+  // tipo de ambiente selecionado no select
   const [selectTypeAmbient, setSelectTypeAmbient] = useState();
+  // valor para os picker.item
   const [capacidadeAmbient, setCapacidadeAmbient] = useState([
-    "Selecione a capacidade do ambiente",
+    "Selecione a capacidade do Ambiente",
     "10-15",
     "20-25",
     "25-30",
     "30+",
   ]);
+  // valor do select da capacidade do ambiente
   const [selectCapacidadeAmbient, setSelectCapacidadeAmbient] = useState([]);
+
+  // useState para identificar uma filtragem
+  const [filter, setFilter] = useState(false);
+  const [search, setSearch] = useState(false);
 
   async function getAmbientesDidMount() {
     const response = await API.get("/api/ambiente");
@@ -59,12 +69,31 @@ export function Environments() {
     setTypeAmbiente(response.data);
   }
 
+  async function getFilterTypeAmbientesDidMount() {
+    const response = await API.get("/api/ambiente/buscaambiente/"+selectTypeAmbient);
+
+    typeSearchAmbiente.splice(0)
+    setTypeSearchAmbiente(response.data);
+  }
+
+
   useEffect(() => {
     getAmbientesDidMount();
     getTypeAmbientesDidMount();
+    getFilterTypeAmbientesDidMount()
   }, []);
 
-  console.log(typeAmbiente)
+  // função para aplicar o filtro
+  function filterAplic() {
+    setFilter(true);
+    setSearch(false);
+  }
+
+  // função que tira o filtro quando o usuário aperta em remover filtro
+  const filterNoAplic = () => {
+    setFilter(false);
+    setSearch(true);
+  };
 
   return (
     <Pressable onPress={Keyboard.dismiss} style={styles.container}>
@@ -79,14 +108,38 @@ export function Environments() {
             <Filter />
           </TouchableOpacity>
         </View>
-        <FlatList
-          data={ambientes}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => <AmbienteCard data={item} />}
-          horizontal={false}
-          showsVerticalScrollIndicator
-          style={styles.list}
-        ></FlatList>
+        {
+          filter == true ?
+            (
+              <FlatList
+                // ListHeaderComponent={<ConfigApplicator text="Filtro Aplicado"/>}
+                ListHeaderComponent={
+                  <ConfigApplicator
+                    text="Filtro Aplicado"
+                    functionFilter={filterNoAplic}
+                  />
+                }
+
+                data={typeSearchAmbiente}
+                keyExtractor={(item) => item?.id}
+                renderItem={({ item }) => <AmbienteCard data={item} />}
+                horizontal={false}
+                showsVerticalScrollIndicator
+                style={styles.list}
+              ></FlatList>
+            )
+            :
+            (
+              <FlatList
+                data={ambientes}
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={({ item }) => <AmbienteCard data={item} />}
+                horizontal={false}
+                showsVerticalScrollIndicator
+                style={styles.list}
+              ></FlatList>
+            )
+        }
         {showModal == true ? (
           <View style={styles.background}>
             <View style={styles.modal}>
@@ -103,6 +156,7 @@ export function Environments() {
                       setSelectTypeAmbient(itemValue)
                     }
                   >
+                    <Picker.Item label="Selecione um tipo de Ambiente" value={'default'}  color="#00000090"/>
                     {typeAmbiente.map((cr) => {
                       return (
                         <Picker.Item
@@ -138,6 +192,8 @@ export function Environments() {
               <TouchableOpacity
                 style={styles.button}
                 onPress={() => setShowModal(false)}
+                onPressIn={() => getFilterTypeAmbientesDidMount()}
+                onPressOut={() => filterAplic()}
               >
                 <Text style={styles.txtButton}>Buscar</Text>
               </TouchableOpacity>
