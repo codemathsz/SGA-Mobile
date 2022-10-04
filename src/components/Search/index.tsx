@@ -7,11 +7,17 @@ import IconSearch from "../../assets/icon_search.png";
 import { TextInput } from "react-native-paper";
 interface SearchProps {
   placeholder: string;
+  aplicSearch: any;
+  receiveSearch: any;
+
 }
 
-export function Search({ placeholder }: SearchProps) {
+export function Search({ placeholder, aplicSearch, receiveSearch }: SearchProps) {
+
+  
   return (
     <View>
+      {/* <Text>{receiveText}</Text> */}
       <TextInput
         style={styles.main}
         editable
@@ -21,7 +27,8 @@ export function Search({ placeholder }: SearchProps) {
         activeUnderlineColor={"transparent"}
         mode={"flat"}
         underlineColor={"transparent"}
-
+        onChangeText={text => receiveSearch(text)}
+        onChange={aplicSearch}
         // onChange={}
       />
     </View>
