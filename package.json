@@ -24,6 +24,7 @@
     "expo-updates": "~0.14.6",
     "react": "18.0.0",
     "react-dom": "18.0.0",
+    "react-hook-form": "^7.36.1",
     "react-native": "0.69.6",
     "react-native-axios": "^0.17.1",
     "react-native-calendars": "^1.1289.0",
