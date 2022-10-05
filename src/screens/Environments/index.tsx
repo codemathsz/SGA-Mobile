@@ -33,13 +33,15 @@ export interface Ambientes {
   ativo: boolean;
 }
 
-export function Environments({id, ...rest}:Ambientes) {
+export function Environments({ id, ...rest }: Ambientes) {
   // useStates para modal
   const [showModal, setShowModal] = useState(false);
   // useState para consumir dados de ambientes
   const [ambientes, setAmbientes] = useState<Ambientes[]>([]);
   //
   const [typeSearchAmbiente, setTypeSearchAmbiente] = useState<Ambientes[]>([]);
+  //
+  const [capacitySearchAmbiente, setCapacitySearchAmbiente] = useState<Ambientes[]>([]);
   // useStates para select ambiente
   const [typeAmbiente, setTypeAmbiente] = useState([])
   // tipo de ambiente selecionado no select
@@ -54,10 +56,21 @@ export function Environments({id, ...rest}:Ambientes) {
   ]);
   // valor do select da capacidade do ambiente
   const [selectCapacidadeAmbient, setSelectCapacidadeAmbient] = useState([]);
+  // variavel para guardar o array da capacidade ambiente, separada
+  const [primaryValueCapacity, setPrimaryValueCapacity] = useState([])
+  // variavel para guardar o array da capacidade ambiente, separada
+  const [secondValueCapacity, setSecondValueCapacity] = useState([])
 
   // useState para identificar uma filtragem
   const [filter, setFilter] = useState(false);
   const [search, setSearch] = useState(false);
+
+  // para guarda o texto que o usuário está buscando
+  const [textSearch, setTextSearch] = useState('');
+
+  // text input
+  const [searchEnvironment, setSearchEnvironment] = useState<Ambientes[]>([]);
+
 
   async function getAmbientesDidMount() {
     const response = await API.get("/api/ambiente");
@@ -69,19 +82,39 @@ export function Environments({id, ...rest}:Ambientes) {
     setTypeAmbiente(response.data);
   }
 
-  async function getFilterTypeAmbientesDidMount() {
-    const response = await API.get("/api/ambiente/buscaambiente/"+selectTypeAmbient);
+  async function getFilterTypeEnvironmentsDidMount() {
+    const response = await API.get("/api/ambiente/buscaambiente/" + selectTypeAmbient);
 
     typeSearchAmbiente.splice(0)
     setTypeSearchAmbiente(response.data);
   }
 
 
+  async function getFilterCapacityDidMount() {
+    console.log("valor 1: "+primaryValueCapacity)
+    console.log("valor 2: "+secondValueCapacity)
+
+    const response = await API.get(`/api/ambiente/capacidade?capacidadeMin=${primaryValueCapacity}&capacidadeMax=${secondValueCapacity}`)
+
+    setCapacitySearchAmbiente(response.data)
+  }
+
+  async function getSearchEnvironmentsDidMount() {
+    const response = await API.get(
+      '/api/ambiente/buscapalavra/' + textSearch
+    )
+
+    searchEnvironment.splice(0)
+    setSearchEnvironment(response.data)
+  }
+
+
   useEffect(() => {
     getAmbientesDidMount();
     getTypeAmbientesDidMount();
-    getFilterTypeAmbientesDidMount()
+    getFilterTypeEnvironmentsDidMount()
   }, []);
+
 
   // função para aplicar o filtro
   function filterAplic() {
@@ -89,18 +122,46 @@ export function Environments({id, ...rest}:Ambientes) {
     setSearch(false);
   }
 
-  // função que tira o filtro quando o usuário aperta em remover filtro
-  const filterNoAplic = () => {
-    setFilter(false);
+  const searchAplic = () => {
     setSearch(true);
-  };
+    setFilter(false)
+  }
+
+  function onPressFilter() {
+    setShowModal(false)
+    getFilterTypeEnvironmentsDidMount()
+    filterAplic()
+    separateArray()
+  }
+
+  // função para aplicar o search
+  const searchReceive = (textValue) => {
+    setTextSearch(textValue);
+    getSearchEnvironmentsDidMount()
+  }
+
+  // valida se está sendo feita uma busca ou um filtro
+  const validateCloseSearch = () => {
+    if (search === true) {
+      setSearch(false);
+    } else {
+      setFilter(false)
+    }
+  }
+
+  function separateArray() {
+    setPrimaryValueCapacity(selectCapacidadeAmbient.slice(0, 2))
+    setSecondValueCapacity(selectCapacidadeAmbient.slice(3))
+    getFilterCapacityDidMount()
+  }
+
 
   return (
     <Pressable onPress={Keyboard.dismiss} style={styles.container}>
       <Background>
         <Header title="Ambientes" subTitle="Consulte os ambientes" />
         <View style={styles.containerSearch}>
-          <Search placeholder="Buscar ambientes" />
+          <Search placeholder="Buscar ambientes" aplicSearch={searchAplic} receiveSearch={searchReceive} />
           <TouchableOpacity
             style={styles.btnModal}
             onPress={() => setShowModal(true)}
@@ -111,22 +172,41 @@ export function Environments({id, ...rest}:Ambientes) {
         {
           filter == true ?
             (
-              <FlatList
-                // ListHeaderComponent={<ConfigApplicator text="Filtro Aplicado"/>}
-                ListHeaderComponent={
-                  <ConfigApplicator
-                    text="Filtro Aplicado"
-                    functionFilter={filterNoAplic}
-                  />
-                }
+              selectTypeAmbient != 'default' ?
+                <FlatList
 
-                data={typeSearchAmbiente}
-                keyExtractor={(item) => item?.id}
-                renderItem={({ item }) => <AmbienteCard data={item} />}
-                horizontal={false}
-                showsVerticalScrollIndicator
-                style={styles.list}
-              ></FlatList>
+                  ListHeaderComponent={
+                    <ConfigApplicator
+                      text="Filtro Aplicado"
+                      functionFilter={validateCloseSearch}
+                    />
+                  }
+
+                  data={typeSearchAmbiente}
+                  keyExtractor={(item) => item.id}
+                  renderItem={({ item }) => <AmbienteCard data={item} />}
+                  horizontal={false}
+                  showsVerticalScrollIndicator
+                  style={styles.list}
+                ></FlatList>
+                :
+                  <FlatList
+
+                    ListHeaderComponent={
+                      <ConfigApplicator
+                        text="Filtro Aplicado"
+                        functionFilter={validateCloseSearch}
+                      />
+                    }
+
+                    data={capacitySearchAmbiente}
+                    keyExtractor={(item) => item.id}
+                    renderItem={({ item }) => <AmbienteCard data={item} />}
+                    horizontal={false}
+                    showsVerticalScrollIndicator
+                    style={styles.list}
+                  ></FlatList>
+                 
             )
             :
             (
@@ -155,8 +235,9 @@ export function Environments({id, ...rest}:Ambientes) {
                     onValueChange={(itemValue) =>
                       setSelectTypeAmbient(itemValue)
                     }
+
                   >
-                    <Picker.Item label="Selecione um tipo de Ambiente" value={'default'}  color="#00000090"/>
+                    <Picker.Item label="Selecione um tipo de Ambiente" value={'default'} color="#00000090" />
                     {typeAmbiente.map((cr) => {
                       return (
                         <Picker.Item
@@ -176,6 +257,7 @@ export function Environments({id, ...rest}:Ambientes) {
                     onValueChange={(itemValue) =>
                       setSelectCapacidadeAmbient(itemValue)
                     }
+
                   >
                     {capacidadeAmbient.map((cr) => {
                       return (
@@ -191,9 +273,7 @@ export function Environments({id, ...rest}:Ambientes) {
               </View>
               <TouchableOpacity
                 style={styles.button}
-                onPress={() => setShowModal(false)}
-                onPressIn={() => getFilterTypeAmbientesDidMount()}
-                onPressOut={() => filterAplic()}
+                onPress={() => onPressFilter()}
               >
                 <Text style={styles.txtButton}>Buscar</Text>
               </TouchableOpacity>
@@ -201,8 +281,10 @@ export function Environments({id, ...rest}:Ambientes) {
           </View>
         ) : (
           ""
-        )}
+        )
+        }
       </Background>
     </Pressable>
   );
+
 }
