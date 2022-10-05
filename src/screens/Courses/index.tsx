@@ -47,7 +47,9 @@ export function Courses() {
   // para receber os cursos conforme a busca
   const [searchCourses, setSearchCourses] = useState<Curso[]>([]);
   // para guarda o texto que o usuário está buscando
-  const [textSearch, setTextSearch] = useState('');
+  const [textSearch, setTextSearch] = useState();
+  // value do Search para ser limpado
+  const [valueSearch, setValueSearch] = useState()
 
   // useState para identificar uma filtragem
   const [filter, setFilter] = useState(false);
@@ -77,13 +79,12 @@ export function Courses() {
   }
 
   async function getSearchCursesDidMount() {
-    const response = await API.get(
-      '/api/curso/buscapalavra/'+textSearch
-    )
+    const response = await API.get("/api/curso/buscapalavra/" + textSearch);
 
+   
     // deixando a array vazia
     searchCourses.splice(0);
-    setSearchCourses(response.data)
+    setSearchCourses(response.data);
   }
 
   // para fazer a requisição as APIs
@@ -91,47 +92,68 @@ export function Courses() {
     getCoursesDidMount();
     getTypesCoursesDidMount();
     getSearchTypesCoursesDidMount();
-
   }, []);
 
   // função para aplicar o filtro
   function filterAplic() {
     setFilter(true);
     setSearch(false);
+    setValueSearch(null)
   }
 
+  // Aplicando a busca e removendo o filtro
   const searchAplic = () => {
     setSearch(true);
-    setFilter(false)
-  }
+    setFilter(false);
+  };
 
+  // função que vai chamar todas as coisas que devem ser aplicadas ao clicar no botão
   function onPressFilter() {
-    setShowModal(false)
-    getSearchTypesCoursesDidMount()
-    filterAplic()
+    setShowModal(false);
+    getSearchTypesCoursesDidMount();
+    filterAplic();
   }
 
   // função para aplicar o search
   const searchReceive = (textValue) => {
+    // pega o valor para colocar na api
     setTextSearch(textValue);
-    getSearchCursesDidMount()
+    // pegar o valor e colocar no value, 
+    // para depois poder anular ele em qualquer momento
+    setValueSearch(textValue);
+    getSearchCursesDidMount();
+    
+  };
+
+  // deixando a texInput de buscar vazio
+  const clearSearch = () => {
+    setValueSearch(textSearch);
+    setValueSearch(null)
   }
 
-  // valida se está sendo feita uma busca ou um filtro
+  // valida se está sendo feita uma busca ou um filtro, para colocar no componente de remover
   const validateCloseSearch = () => {
-    if(search === true){
+    if (search === true) {
       setSearch(false);
-    }else{
-      setFilter(false)
+      clearSearch()
+    } else {
+      setFilter(false);
+      clearSearch()
     }
-  }
+  };
 
   return (
     <Pressable onPress={Keyboard.dismiss} style={styles.container}>
       <Background>
         <Header title="Cursos" subTitle="Consulte por cursos" />
         <View style={styles.containerSearch}>
-          <Search placeholder="Buscar Cursos" aplicSearch={searchAplic} receiveSearch={searchReceive}/>
+          <Search
+            placeholder="Buscar Cursos"
+            aplicSearch={searchAplic}
+            receiveSearch={searchReceive}
+            clenSearch={valueSearch}
+          />
+
           <TouchableOpacity
             style={styles.btnModal}
             onPress={() => setShowModal(true)}
@@ -157,24 +179,23 @@ export function Courses() {
             showsVerticalScrollIndicator
             style={styles.list}
           ></FlatList>
-        ) :
-        // Se buscar estiver sendo feita aparecera essa flatList
+        ) : // Se buscar estiver sendo feita aparecera essa flatList
         search == true ? (
           //
           <FlatList
-          ListHeaderComponent={
-            <ConfigApplicator
-              text="Busca Aplicado"
-              functionFilter={validateCloseSearch}
-            />
-          }
-          data={searchCourses}
-          keyExtractor={(item) => item?.id}
-          renderItem={({ item }) => <CursoCard data={item} />}
-          horizontal={false}
-          showsVerticalScrollIndicator
-          style={styles.list}
-        ></FlatList>
+            ListHeaderComponent={
+              <ConfigApplicator
+                text="Busca Aplicado"
+                functionFilter={validateCloseSearch}
+              />
+            }
+            data={searchCourses}
+            keyExtractor={(item) => item?.id}
+            renderItem={({ item }) => <CursoCard data={item} />}
+            horizontal={false}
+            showsVerticalScrollIndicator
+            style={styles.list}
+          ></FlatList>
         ) : (
           // Flatlist que aparece quando não tem nenhuma busca personalizada feita
           <FlatList
@@ -203,7 +224,6 @@ export function Courses() {
                 >
                   {typeCourses.map((cr) => {
                     return (
-                      
                       <Picker.Item
                         label={cr}
                         value={cr}

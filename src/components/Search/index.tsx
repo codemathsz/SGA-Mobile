@@ -1,23 +1,22 @@
 import React, { useState } from "react";
-import { View, Text, Pressable, Keyboard } from "react-native";
+import { View, Text, Pressable, Keyboard,TouchableOpacity } from "react-native";
 
 import { styles } from "./styles";
 
-import IconSearch from "../../assets/icon_search.png";
 import { TextInput } from "react-native-paper";
 interface SearchProps {
   placeholder: string;
   aplicSearch: any;
   receiveSearch: any;
+  clenSearch: any;
 
 }
 
-export function Search({ placeholder, aplicSearch, receiveSearch }: SearchProps) {
+export function Search({ placeholder, aplicSearch, receiveSearch, clenSearch }: SearchProps) {
 
-  
+
   return (
     <View>
-      {/* <Text>{receiveText}</Text> */}
       <TextInput
         style={styles.main}
         editable
@@ -29,7 +28,8 @@ export function Search({ placeholder, aplicSearch, receiveSearch }: SearchProps)
         underlineColor={"transparent"}
         onChangeText={text => receiveSearch(text)}
         onChange={aplicSearch}
-        // onChange={}
+        value={clenSearch}
+              
       />
     </View>
   );
