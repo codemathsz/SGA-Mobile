@@ -66,11 +66,13 @@ export function Environments({ id, ...rest }: Ambientes) {
   const [search, setSearch] = useState(false);
 
   // para guarda o texto que o usuário está buscando
-  const [textSearch, setTextSearch] = useState('');
+  const [textSearch, setTextSearch] = useState();
 
   // text input
   const [searchEnvironment, setSearchEnvironment] = useState<Ambientes[]>([]);
 
+    // value do Search para ser limpado
+    const [valueSearch, setValueSearch] = useState()
 
   async function getAmbientesDidMount() {
     const response = await API.get("/api/ambiente");
@@ -120,6 +122,7 @@ export function Environments({ id, ...rest }: Ambientes) {
   function filterAplic() {
     setFilter(true);
     setSearch(false);
+    setValueSearch(null)
   }
 
   const searchAplic = () => {
@@ -137,8 +140,20 @@ export function Environments({ id, ...rest }: Ambientes) {
   // função para aplicar o search
   const searchReceive = (textValue) => {
     setTextSearch(textValue);
+
+    // pegar o valor e colocar no value, 
+    // para depois poder anular ele em qualquer momento
+    setValueSearch(textValue);
+
     getSearchEnvironmentsDidMount()
   }
+
+    // deixando a texInput de buscar vazio
+    const clearSearch = () => {
+      setValueSearch(textSearch);
+      setValueSearch(null)
+    }
+  
 
   // valida se está sendo feita uma busca ou um filtro
   const validateCloseSearch = () => {
@@ -161,7 +176,7 @@ export function Environments({ id, ...rest }: Ambientes) {
       <Background>
         <Header title="Ambientes" subTitle="Consulte os ambientes" />
         <View style={styles.containerSearch}>
-          <Search placeholder="Buscar ambientes" aplicSearch={searchAplic} receiveSearch={searchReceive} />
+          <Search placeholder="Buscar ambientes" aplicSearch={searchAplic} receiveSearch={searchReceive} clenSearch={valueSearch} />
           <TouchableOpacity
             style={styles.btnModal}
             onPress={() => setShowModal(true)}

@@ -38,7 +38,7 @@
       "dotenv" : "tune"
     },
     "typescript.updateImportsOnFileMove.enabled" : "never",
-    "workbench.colorTheme" : "Bearded Theme Stained Purple",
+    "workbench.colorTheme" : "Bearded Theme Monokai Reversed",
     "material-icon-theme.files.associations" : {
       "tsconfig.json" : "tune",
       "*.webpack.js" : "webpack",
