@@ -46,10 +46,8 @@ export function Courses() {
   const [selectTypeCourses, setSelectTypeCourses] = useState([]);
   // para receber os cursos conforme a busca
   const [searchCourses, setSearchCourses] = useState<Curso[]>([]);
-  // para guarda o texto que o usuário está buscando
-  const [textSearch, setTextSearch] = useState();
   // value do Search para ser limpado
-  const [valueSearch, setValueSearch] = useState()
+  const [valueSearch, setValueSearch] = useState();
 
   // useState para identificar uma filtragem
   const [filter, setFilter] = useState(false);
@@ -57,34 +55,52 @@ export function Courses() {
 
   // pegando todos os curso
   async function getCoursesDidMount() {
-    const response = await API.get("/api/curso");
-    setCourses(response.data);
+    try {
+      const response = await API.get("/api/curso");
+      setCourses(response.data);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   // pegando as Enums do tipo curso
   async function getTypesCoursesDidMount() {
-    const response = await API.get("/api/curso/tipocurso");
-    setTypeCourses(response.data);
+    try {
+      const response = await API.get("/api/curso/tipocurso");
+      setTypeCourses(response.data);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   // buscando cursos pelo filtro tipo de curso
   async function getSearchTypesCoursesDidMount() {
-    const response = await API.get(
-      "/api/curso/buscacurso/" + selectTypeCourses
-    );
+    try {
+      const response = await API.get(
+        "/api/curso/buscacurso/" + selectTypeCourses
+      );
 
-    // deixando a array vazia
-    searchTypeCourses.splice(0);
-    setSearchTypeCourses(response.data);
+      // deixando a array vazia
+      searchTypeCourses.splice(0);
+      setSearchTypeCourses(response.data);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  async function getSearchCursesDidMount() {
-    const response = await API.get("/api/curso/buscapalavra/" + textSearch);
+  async function getSearchCursesDidMount(textValue) {
+    try {
+      // para que o value nunca seja vazio
+      setValueSearch(textValue);
 
-   
-    // deixando a array vazia
-    searchCourses.splice(0);
-    setSearchCourses(response.data);
+      const response = await API.get("/api/curso/buscapalavra/" + textValue);
+
+      // deixando a array vazia
+      searchCourses.splice(0);
+      setSearchCourses(response.data);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   // para fazer a requisição as APIs
@@ -98,7 +114,7 @@ export function Courses() {
   function filterAplic() {
     setFilter(true);
     setSearch(false);
-    setValueSearch(null)
+    clearSearch();
   }
 
   // Aplicando a busca e removendo o filtro
@@ -116,29 +132,25 @@ export function Courses() {
 
   // função para aplicar o search
   const searchReceive = (textValue) => {
-    // pega o valor para colocar na api
-    setTextSearch(textValue);
-    // pegar o valor e colocar no value, 
+    // pegar o valor e colocar no value,
     // para depois poder anular ele em qualquer momento
     setValueSearch(textValue);
-    getSearchCursesDidMount();
-    
+    getSearchCursesDidMount(textValue);
   };
 
   // deixando a texInput de buscar vazio
   const clearSearch = () => {
-    setValueSearch(textSearch);
-    setValueSearch(null)
-  }
+    setValueSearch(null);
+  };
 
   // valida se está sendo feita uma busca ou um filtro, para colocar no componente de remover
   const validateCloseSearch = () => {
     if (search === true) {
       setSearch(false);
-      clearSearch()
+      clearSearch();
     } else {
       setFilter(false);
-      clearSearch()
+      clearSearch();
     }
   };
 
@@ -162,7 +174,7 @@ export function Courses() {
           </TouchableOpacity>
         </View>
 
-        {/* Operador ternário  para aplicar as buscas*/}
+        {/* // Operador ternário  para aplicar as buscas* */}
         {filter == true ? (
           // se filtro for aplicado aparecera essa flatList
           <FlatList
@@ -181,7 +193,6 @@ export function Courses() {
           ></FlatList>
         ) : // Se buscar estiver sendo feita aparecera essa flatList
         search == true ? (
-          //
           <FlatList
             ListHeaderComponent={
               <ConfigApplicator

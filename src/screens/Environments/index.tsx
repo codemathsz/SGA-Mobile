@@ -38,14 +38,18 @@ export function Environments({ id, ...rest }: Ambientes) {
   const [showModal, setShowModal] = useState(false);
   // useState para consumir dados de ambientes
   const [ambientes, setAmbientes] = useState<Ambientes[]>([]);
-  // para guardar a busca do ambiente pelo tipo 
+  // para guardar a busca do ambiente pelo tipo
   const [typeSearchAmbiente, setTypeSearchAmbiente] = useState<Ambientes[]>([]);
   // para guardar a busca do ambiente pela capacidade
-  const [capacitySearchAmbiente, setCapacitySearchAmbiente] = useState<Ambientes[]>([]);
+  const [capacitySearchAmbiente, setCapacitySearchAmbiente] = useState<
+    Ambientes[]
+  >([]);
   // para guardar a busca do filtro combinando tipo e capacidade
-  const [environmentTypeAndCapacity, setEnvironmentTypeAndCapacity] = useState<Ambientes[]>([]);
+  const [environmentTypeAndCapacity, setEnvironmentTypeAndCapacity] = useState<
+    Ambientes[]
+  >([]);
   // useStates para select ambiente
-  const [typeAmbiente, setTypeAmbiente] = useState([])
+  const [typeAmbiente, setTypeAmbiente] = useState([]);
   // tipo de ambiente selecionado no select
   const [selectTypeAmbient, setSelectTypeAmbient] = useState();
   // valor para os picker.item
@@ -58,35 +62,24 @@ export function Environments({ id, ...rest }: Ambientes) {
   ]);
   // valor do select da capacidade do ambiente
   const [selectCapacidadeAmbient, setSelectCapacidadeAmbient] = useState([]);
-  // variavel para guardar o array da capacidade ambiente, separada
-  const [primaryValueCapacity, setPrimaryValueCapacity] = useState([])
-  // variavel para guardar o array da capacidade ambiente, separada
-  const [secondValueCapacity, setSecondValueCapacity] = useState([])
-  // useState para identificar uma filtragem
   const [filter, setFilter] = useState(false);
   const [search, setSearch] = useState(false);
 
-  // para guarda o texto que o usuário está buscando
-  const [textSearch, setTextSearch] = useState();
   // text input
   const [searchEnvironment, setSearchEnvironment] = useState<Ambientes[]>([]);
   // value do Search para ser limpado
-  const [valueSearch, setValueSearch] = useState()
-
-
+  const [valueSearch, setValueSearch] = useState();
 
   // APIs
 
   // buscar todos os ambiente
   async function getAmbientesDidMount() {
-
     try {
       const response = await API.get("/api/ambiente");
       setAmbientes(response.data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-
   }
 
   // trazer todos os tipos de ambiente para alimentar o picker
@@ -95,141 +88,161 @@ export function Environments({ id, ...rest }: Ambientes) {
       const response = await API.get("/api/ambiente/tipoambiente");
       setTypeAmbiente(response.data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }
 
   // filtro para buscar ambientes pela a tipo de ambiente selecionada no picker
   async function getFilterTypeEnvironmentsDidMount() {
-
     try {
-      const response = await API.get("/api/ambiente/buscaambiente/" + selectTypeAmbient);
+      const response = await API.get(
+        "/api/ambiente/buscaambiente/" + selectTypeAmbient
+      );
 
-      typeSearchAmbiente.splice(0)
+      typeSearchAmbiente.splice(0);
       setTypeSearchAmbiente(response.data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }
 
   // filtro para buscar ambientes pela a capacidade selecionada no picker
   const getFilterCapacityDidMount = async () => {
-    let capacityPositionInitial = [capacidadeAmbient[0]]
-    let capacityPositionFinal = [capacidadeAmbient[4]]
+    let capacityPositionInitial = [capacidadeAmbient[0]];
+    let capacityPositionFinal = [capacidadeAmbient[4]];
 
     if (selectCapacidadeAmbient == capacityPositionInitial) {
-      console.log('filtro não selecionado ')
-
+      console.log("filtro não selecionado ");
     } else if (selectCapacidadeAmbient == capacityPositionFinal) {
-
-      console.log('filtro +30 ' + ' posição 1 :' + selectCapacidadeAmbient.slice(0, 2))
-      const response = await API.get(`/api/ambiente/capacidade?capacidadeMin=${selectCapacidadeAmbient.slice(0, 2)}&capacidadeMax=${100}`)
-      setCapacitySearchAmbiente(response.data)
+      console.log(
+        "filtro +30 " + " posição 1 :" + selectCapacidadeAmbient.slice(0, 2)
+      );
+      const response = await API.get(
+        `/api/ambiente/capacidade?capacidadeMin=${selectCapacidadeAmbient.slice(
+          0,
+          2
+        )}&capacidadeMax=${100}`
+      );
+      setCapacitySearchAmbiente(response.data);
     } else {
-      const response = await API.get(`/api/ambiente/capacidade?capacidadeMin=${selectCapacidadeAmbient.slice(0, 2)}&capacidadeMax=${selectCapacidadeAmbient.slice(3)}`)
-      setCapacitySearchAmbiente(response.data)
+      const response = await API.get(
+        `/api/ambiente/capacidade?capacidadeMin=${selectCapacidadeAmbient.slice(
+          0,
+          2
+        )}&capacidadeMax=${selectCapacidadeAmbient.slice(3)}`
+      );
+      setCapacitySearchAmbiente(response.data);
     }
-
-  }
+  };
 
   // busca por palavra chave, TextInput
-  async function getSearchEnvironmentsDidMount() {
+  async function getSearchEnvironmentsDidMount(textValue) {
     try {
-      const response = await API.get('/api/ambiente/buscapalavra/' + textSearch)
+      // para que o value nunca seja vazio
+      setValueSearch(textValue);
 
-      searchEnvironment.splice(0)
-      setSearchEnvironment(response.data)
+      const response = await API.get("/api/ambiente/buscapalavra/" + textValue);
+
+      searchEnvironment.splice(0);
+      setSearchEnvironment(response.data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }
 
   // para o picker, busca ambiente pela tipo e capacidade
   async function getTypeAndCapacityDidMount() {
     try {
-      const response = await API.get(`/api/ambiente/tipoecapacidade?tipoAmbiente=${selectTypeAmbient}&capacidadeMin=${selectCapacidadeAmbient.slice(0, 2)}&capacidadeMax=${selectCapacidadeAmbient.slice(3)}`)
-      setEnvironmentTypeAndCapacity(response.data)
+      const response = await API.get(
+        `/api/ambiente/tipoecapacidade?tipoAmbiente=${selectTypeAmbient}&capacidadeMin=${selectCapacidadeAmbient.slice(
+          0,
+          2
+        )}&capacidadeMax=${selectCapacidadeAmbient.slice(3)}`
+      );
+      setEnvironmentTypeAndCapacity(response.data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }
-
 
   // fazer requisição das APIs
   useEffect(() => {
     getAmbientesDidMount();
     getTypeAmbientesDidMount();
-    getFilterTypeEnvironmentsDidMount()
+    getFilterTypeEnvironmentsDidMount();
   }, []);
-
 
   // função para aplicar o filtro
   function filterAplic() {
     setFilter(true);
     setSearch(false);
-    setValueSearch(null)
+    clearSearch();
   }
 
   const searchAplic = () => {
     setSearch(true);
-    setFilter(false)
-  }
+    setFilter(false);
+  };
 
   function onPressFilter() {
-    setShowModal(false)
-    filterAplic()
-    getFilterTypeEnvironmentsDidMount()
-    getFilterCapacityDidMount()
-    getTypeAndCapacityDidMount()
+    setShowModal(false);
+    filterAplic();
+    getFilterTypeEnvironmentsDidMount();
+    getFilterCapacityDidMount();
+    getTypeAndCapacityDidMount();
   }
 
   // função para aplicar o search
   const searchReceive = (textValue) => {
-    setTextSearch(textValue);
-
-    // pegar o valor e colocar no value, 
+    // pegar o valor e colocar no value,
     // para depois poder anular ele em qualquer momento
     setValueSearch(textValue);
-
-    getSearchEnvironmentsDidMount()
-  }
+    getSearchEnvironmentsDidMount(textValue);
+  };
 
   // deixando a texInput de buscar vazio
   const clearSearch = () => {
-    setValueSearch(textSearch);
-    setValueSearch(null)
-  }
-
+    setValueSearch(null);
+  };
 
   // valida se está sendo feita uma busca ou um filtro
   const validateCloseSearch = () => {
     if (search === true) {
       setSearch(false);
+      clearSearch();
     } else {
-      setFilter(false)
+      setFilter(false);
+      clearSearch();
     }
-  }
+  };
 
   const getFilters = () => {
+    let capacityPositionInitial = [capacidadeAmbient[0]];
 
-    let capacityPositionInitial = [capacidadeAmbient[0]]
-
-    if (selectTypeAmbient != 'default' && selectCapacidadeAmbient != capacityPositionInitial) {
-      return environmentTypeAndCapacity
-    } else if (selectTypeAmbient != 'default') {
-      return typeSearchAmbiente
+    if (
+      selectTypeAmbient != "default" &&
+      selectCapacidadeAmbient != capacityPositionInitial
+    ) {
+      return environmentTypeAndCapacity;
+    } else if (selectTypeAmbient != "default") {
+      return typeSearchAmbiente;
     } else if (selectCapacidadeAmbient != capacityPositionInitial) {
-      return capacitySearchAmbiente
+      return capacitySearchAmbiente;
     }
-  }
+  };
 
-  console.log(selectCapacidadeAmbient[0])
+  console.log(selectCapacidadeAmbient[0]);
   return (
     <Pressable onPress={Keyboard.dismiss} style={styles.container}>
       <Background>
         <Header title="Ambientes" subTitle="Consulte os ambientes" />
         <View style={styles.containerSearch}>
-          <Search placeholder="Buscar ambientes" aplicSearch={searchAplic} receiveSearch={searchReceive} clenSearch={valueSearch} />
+          <Search
+            placeholder="Buscar ambientes"
+            aplicSearch={searchAplic}
+            receiveSearch={searchReceive}
+            clenSearch={valueSearch}
+          />
           <TouchableOpacity
             style={styles.btnModal}
             onPress={() => setShowModal(true)}
@@ -237,40 +250,46 @@ export function Environments({ id, ...rest }: Ambientes) {
             <Filter />
           </TouchableOpacity>
         </View>
-        {
-          filter == true ?
-
-            <FlatList
-
-              ListHeaderComponent={
-                <ConfigApplicator
-                  text="Filtro Aplicado 1"
-                  functionFilter={validateCloseSearch}
-                />
-              }
-
-              data={getFilters()}
-              keyExtractor={(item) => item.id}
-              renderItem={({ item }) => <AmbienteCard data={item} />}
-              horizontal={false}
-              showsVerticalScrollIndicator
-              style={styles.list}
-            ></FlatList>
-
-
-
-            :
-            (
-              <FlatList
-                data={ambientes}
-                keyExtractor={(item) => item.id.toString()}
-                renderItem={({ item }) => <AmbienteCard data={item} />}
-                horizontal={false}
-                showsVerticalScrollIndicator
-                style={styles.list}
-              ></FlatList>
-            )
-        }
+        {filter == true ? (
+          <FlatList
+            ListHeaderComponent={
+              <ConfigApplicator
+                text="Filtro Aplicado 1"
+                functionFilter={validateCloseSearch}
+              />
+            }
+            data={getFilters()}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => <AmbienteCard data={item} />}
+            horizontal={false}
+            showsVerticalScrollIndicator
+            style={styles.list}
+          ></FlatList>
+        ) : search == true ? (
+          <FlatList
+          ListHeaderComponent={
+            <ConfigApplicator
+              text="Busca Aplicada"
+              functionFilter={validateCloseSearch}
+            />
+          }
+            data={searchEnvironment}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => <AmbienteCard data={item} />}
+            horizontal={false}
+            showsVerticalScrollIndicator
+            style={styles.list}
+          ></FlatList>
+        ) : (
+          <FlatList
+            data={ambientes}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => <AmbienteCard data={item} />}
+            horizontal={false}
+            showsVerticalScrollIndicator
+            style={styles.list}
+          ></FlatList>
+        )}
         {showModal == true ? (
           <View style={styles.background}>
             <View style={styles.modal}>
@@ -286,9 +305,12 @@ export function Environments({ id, ...rest }: Ambientes) {
                     onValueChange={(itemValue) =>
                       setSelectTypeAmbient(itemValue)
                     }
-
                   >
-                    <Picker.Item label="Selecione um tipo de Ambiente" value={'default'} color="#00000090" />
+                    <Picker.Item
+                      label="Selecione um tipo de Ambiente"
+                      value={"default"}
+                      color="#00000090"
+                    />
                     {typeAmbiente.map((cr) => {
                       return (
                         <Picker.Item
@@ -308,8 +330,6 @@ export function Environments({ id, ...rest }: Ambientes) {
                     onValueChange={(itemValue) =>
                       setSelectCapacidadeAmbient(itemValue)
                     }
-
-
                   >
                     {capacidadeAmbient.map((cr) => {
                       return (
@@ -333,10 +353,8 @@ export function Environments({ id, ...rest }: Ambientes) {
           </View>
         ) : (
           ""
-        )
-        }
+        )}
       </Background>
     </Pressable>
   );
-
 }
