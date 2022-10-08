@@ -12,7 +12,6 @@ import {
 import { Calendar, LocaleConfig } from "react-native-calendars";
 import { RadioButton } from "react-native-paper";
 
-
 // definindo a linguagem da biblioteca do calendário em português
 LocaleConfig.locales["pt-br"] = {
   monthNames: [
@@ -73,9 +72,8 @@ import { Filter } from "../../components/Filter";
 import { THEME } from "../../themes";
 import { MAIN } from "../../utils/listMain";
 
-
-import {InicioCard} from '../../components/InicioCard'
-
+import { InicioCard } from "../../components/InicioCard";
+import { Loading } from "../../components/Loading";
 
 interface HomeProps {}
 
@@ -83,6 +81,12 @@ export function Home() {
   const [showModal, setShowModal] = useState(false);
   const [daySelected, setDaySelected] = useState(0);
   const [periodSelected, setPeriodSelected] = useState("all");
+  // para o valor do input search
+  const [valueSearch, setValueSearch] = useState();
+  // para saber se o filtro foi aplicado
+  const [filter, setFilter] = useState(false);
+  // para saber se a busca foi aplicada
+  const [search, setSearch] = useState(false);
 
   // função para retornar as fonts depois do loading do app
 
@@ -99,7 +103,7 @@ export function Home() {
   });
 
   if (!fontsLoaded) {
-    return <AppLoading />;
+    return <Loading />;
   }
 
   // funções para o calendário
@@ -118,15 +122,45 @@ export function Home() {
     setDaySelected(passDay);
   }
 
+  // Aplicando a busca e removendo o filtro
+  const searchAplic = () => {
+    setSearch(true);
+    setFilter(false);
+  };
+
+  // função para aplicar o search
+  const searchReceive = (textValue) => {
+    // pegar o valor e colocar no value,
+    // para depois poder anular ele em qualquer momento
+    setValueSearch(textValue);
+    // Colocar o método aqui quando aplicar a busca
+    //               AQUI
+  };
+
+  // deixando a texInput de buscar vazio
+  const clearSearch = () => {
+    setValueSearch(null);
+  };
+
+  // valida se está sendo feita uma busca ou um filtro, para colocar no componente de remover
+  const validateCloseSearch = () => {
+    if (search === true) {
+      setSearch(false);
+      clearSearch();
+    } else {
+      setFilter(false);
+      clearSearch();
+    }
+  };
+
   return (
     <ScrollView>
-    <Background>
-      <Header
-        title="Bem Vindo"
-        subTitle="Selecione um dia e veja as ocupações dos ambientes"
-      />
+      <Background>
+        <Header
+          title="Bem Vindo"
+          subTitle="Selecione um dia e veja as ocupações dos ambientes"
+        />
 
-      
         <View style={styles.sectionCalendar}>
           <Calendar
             // Para estilização do calendário
@@ -179,7 +213,12 @@ export function Home() {
         </View>
 
         <View style={styles.containerSearch}>
-          <Search placeholder="Pesquisar..." />
+          <Search
+            placeholder="Pesquisar..."
+            aplicSearch={searchAplic}
+            receiveSearch={searchReceive}
+            clenSearch={valueSearch}
+          />
           <TouchableOpacity
             style={styles.btnModal}
             onPress={() => setShowModal(true)}
@@ -192,7 +231,7 @@ export function Home() {
           <View style={styles.containerRadio}>
             <RadioButton
               value="all"
-              color='black'
+              color="black"
               status={periodSelected === "all" ? "checked" : "unchecked"}
               onPress={() => setPeriodSelected("all")}
             />
@@ -201,10 +240,8 @@ export function Home() {
           <View style={styles.containerRadio}>
             <RadioButton
               value="morning"
-              color='black'
-              status={
-                periodSelected === "morning" ? "checked" : "unchecked"
-              }
+              color="black"
+              status={periodSelected === "morning" ? "checked" : "unchecked"}
               onPress={() => setPeriodSelected("morning")}
             />
             <Text style={styles.textRadioTwo}>Manhã</Text>
@@ -212,10 +249,8 @@ export function Home() {
           <View style={styles.containerRadio}>
             <RadioButton
               value="afternoon"
-              color='black'
-              status={
-                periodSelected === "afternoon" ? "checked" : "unchecked"
-              }
+              color="black"
+              status={periodSelected === "afternoon" ? "checked" : "unchecked"}
               onPress={() => setPeriodSelected("afternoon")}
             />
             <Text style={styles.textRadioThree}>Tarde</Text>
@@ -223,10 +258,8 @@ export function Home() {
           <View style={styles.containerRadio}>
             <RadioButton
               value="night"
-              color='black'
-              status={
-                periodSelected === "night" ? "checked" : "unchecked"
-              }
+              color="black"
+              status={periodSelected === "night" ? "checked" : "unchecked"}
               onPress={() => setPeriodSelected("night")}
             />
             <Text style={styles.textRadioFour}>Noite</Text>
@@ -235,18 +268,11 @@ export function Home() {
         <View>
           <FlatList
             data={MAIN}
-            keyExtractor={item  => item.id}
-            renderItem={({item}) =>(
-              <InicioCard
-                data={item}
-              />
-            )}
-          >
-
-          </FlatList>
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => <InicioCard data={item} />}
+          ></FlatList>
         </View>
-     
-    </Background>
+      </Background>
     </ScrollView>
   );
 }
