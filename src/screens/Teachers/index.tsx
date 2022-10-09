@@ -228,10 +228,20 @@ export function Teachers() {
         )}
 
         {showModal == true ? (
-          <View style={styles.background}>
+          <Pressable 
+            style={styles.background}
+            onPress={() => setShowModal(false)}
+          >
             <View style={styles.modal}>
-              <View style={styles.vwTitle}>
-                <Text style={styles.title}>Filtragem Professores</Text>
+            <View style={styles.modalHeader}>
+                <TouchableOpacity
+                  style={styles.close}
+                  onPress={() => setShowModal(false)}>
+                  <Text style={styles.txtClose}>X</Text>
+                </TouchableOpacity>
+                <View style={styles.vwTitle}>
+                  <Text style={styles.title}>Filtragem Professores</Text>
+                </View>
               </View>
               <View style={styles.containerFilter}>
                 <Picker
@@ -276,7 +286,7 @@ export function Teachers() {
                 <Text style={styles.txtButton}>Buscar</Text>
               </TouchableOpacity>
             </View>
-          </View>
+          </Pressable>
         ) : (
           ""
         )}

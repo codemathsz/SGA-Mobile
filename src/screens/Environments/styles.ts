@@ -56,14 +56,18 @@ export const styles = StyleSheet.create({
     padding:4,
     overflow: 'scroll'
   },
+  modalHeader:{
+    width:'100%',
+    justifyContent: 'space-around',
+    flexDirection: 'row-reverse'
+  },
   close:{
     position: 'absolute',
-    right:4,
-    top: 2
   },
   txtClose:{
     fontSize: 24,
-    fontFamily: THEME.FONT_FAMILY.EXTRA_BOLD
+    fontFamily: THEME.FONT_FAMILY.EXTRA_BOLD,
+    color: THEME.COLORS.SELECT
   },
   vwTitle:{
     width: '90%',

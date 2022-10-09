@@ -192,39 +192,49 @@ export function Courses() {
             style={styles.list}
           ></FlatList>
         ) : // Se buscar estiver sendo feita aparecera essa flatList
-        search == true ? (
-          <FlatList
-            ListHeaderComponent={
-              <ConfigApplicator
-                text="Busca Aplicado"
-                functionFilter={validateCloseSearch}
-              />
-            }
-            data={searchCourses}
-            keyExtractor={(item) => item?.id}
-            renderItem={({ item }) => <CursoCard data={item} />}
-            horizontal={false}
-            showsVerticalScrollIndicator
-            style={styles.list}
-          ></FlatList>
-        ) : (
-          // Flatlist que aparece quando não tem nenhuma busca personalizada feita
-          <FlatList
-            /*  ListHeaderComponent={} */
-            data={courses}
-            keyExtractor={(item) => item?.id}
-            renderItem={({ item }) => <CursoCard data={item} />}
-            horizontal={false}
-            showsVerticalScrollIndicator
-            style={styles.list}
-          ></FlatList>
-        )}
+          search == true ? (
+            <FlatList
+              ListHeaderComponent={
+                <ConfigApplicator
+                  text="Busca Aplicado"
+                  functionFilter={validateCloseSearch}
+                />
+              }
+              data={searchCourses}
+              keyExtractor={(item) => item?.id}
+              renderItem={({ item }) => <CursoCard data={item} />}
+              horizontal={false}
+              showsVerticalScrollIndicator
+              style={styles.list}
+            ></FlatList>
+          ) : (
+            // Flatlist que aparece quando não tem nenhuma busca personalizada feita
+            <FlatList
+              /*  ListHeaderComponent={} */
+              data={courses}
+              keyExtractor={(item) => item?.id}
+              renderItem={({ item }) => <CursoCard data={item} />}
+              horizontal={false}
+              showsVerticalScrollIndicator
+              style={styles.list}
+            ></FlatList>
+          )}
 
         {showModal == true ? (
-          <View style={styles.background}>
+          <Pressable
+            style={styles.background}
+            onPress={() => setShowModal(false)}
+          >
             <View style={styles.modal}>
-              <View style={styles.vwTitle}>
-                <Text style={styles.title}>Filtragem Curso</Text>
+              <View style={styles.modalHeader}>
+                <TouchableOpacity
+                  style={styles.close}
+                  onPress={() => setShowModal(false)}>
+                  <Text style={styles.txtClose}>X</Text>
+                </TouchableOpacity>
+                <View style={styles.vwTitle}>
+                  <Text style={styles.title}>Filtragem Curso</Text>
+                </View>
               </View>
               <View style={styles.containerFilter}>
                 <Picker
@@ -251,7 +261,7 @@ export function Courses() {
                 <Text style={styles.txtButton}>Buscar</Text>
               </TouchableOpacity>
             </View>
-          </View>
+          </Pressable>
         ) : (
           ""
         )}

@@ -267,12 +267,12 @@ export function Environments({ id, ...rest }: Ambientes) {
           ></FlatList>
         ) : search == true ? (
           <FlatList
-          ListHeaderComponent={
-            <ConfigApplicator
-              text="Busca Aplicada"
-              functionFilter={validateCloseSearch}
-            />
-          }
+            ListHeaderComponent={
+              <ConfigApplicator
+                text="Busca Aplicada"
+                functionFilter={validateCloseSearch}
+              />
+            }
             data={searchEnvironment}
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => <AmbienteCard data={item} />}
@@ -291,10 +291,20 @@ export function Environments({ id, ...rest }: Ambientes) {
           ></FlatList>
         )}
         {showModal == true ? (
-          <View style={styles.background}>
+          <Pressable 
+            style={styles.background}
+            onPress={() => setShowModal(false)}
+          >
             <View style={styles.modal}>
-              <View style={styles.vwTitle}>
-                <Text style={styles.title}>Filtragem Ambiente</Text>
+              <View style={styles.modalHeader}>
+                <TouchableOpacity
+                  style={styles.close}
+                  onPress={() => setShowModal(false)}>
+                  <Text style={styles.txtClose}>X</Text>
+                </TouchableOpacity>
+                <View style={styles.vwTitle}>
+                  <Text style={styles.title}>Filtragem Ambientes</Text>
+                </View>
               </View>
               <View style={styles.containerFilter}>
                 <View style={styles.contentFilter}>
@@ -350,7 +360,7 @@ export function Environments({ id, ...rest }: Ambientes) {
                 <Text style={styles.txtButton}>Buscar</Text>
               </TouchableOpacity>
             </View>
-          </View>
+          </Pressable>
         ) : (
           ""
         )}

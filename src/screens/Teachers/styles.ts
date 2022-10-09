@@ -46,7 +46,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center'
   },
   modal:{
-    width:'80%',
+    width:'90%',
     height: 450,
     position: 'absolute',
     zIndex: 1001,
@@ -56,14 +56,18 @@ export const styles = StyleSheet.create({
     padding:4,
     borderRadius: 8,
   },
+  modalHeader:{
+    width:'100%',
+    justifyContent: 'space-around',
+    flexDirection: 'row-reverse'
+  },
   close:{
     position: 'absolute',
-    right:4,
-    top: 2
   },
   txtClose:{
     fontSize: 24,
-    fontFamily: THEME.FONT_FAMILY.EXTRA_BOLD
+    fontFamily: THEME.FONT_FAMILY.EXTRA_BOLD,
+    color: THEME.COLORS.SELECT
   },
   vwTitle:{
     width: '90%',
