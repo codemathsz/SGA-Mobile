@@ -79,7 +79,10 @@ interface HomeProps {}
 
 export function Home() {
   const [showModal, setShowModal] = useState(false);
+  // const para passar o dia para o indicador maior
   const [daySelected, setDaySelected] = useState(0);
+  // passando o dia selecionado para o calendário
+  const [dayIndicator, setDayIndicator] = useState('');
   const [periodSelected, setPeriodSelected] = useState("all");
   // para o valor do input search
   const [valueSearch, setValueSearch] = useState();
@@ -116,10 +119,13 @@ export function Home() {
   const dateCurrent = yearCurrent + "-" + monthCurrent + "-" + dayCurrent;
 
   // função para o componente "ViewDay",
-  // por Padrão de inicio ele recebe o dia atual
+  // por Padrão de inicio ele recebe o dia atual para os indicadores
   if (daySelected === 0) {
     var passDay = Number(dayCurrent);
+    // passando para o indicador maior 
     setDaySelected(passDay);
+    // passando para o indicador menor 
+    setDayIndicator(dateCurrent);
   }
 
   // Aplicando a busca e removendo o filtro
@@ -202,9 +208,14 @@ export function Home() {
 
             // Props para o dia selecionado
             onDayPress={(day) => {
-              console.log("selected day", day);
               var passDate = day.day;
+              var indicatorDay = day.dateString;
               setDaySelected(passDate);
+              setDayIndicator(indicatorDay)
+            }}
+
+            markedDates={{
+              [dayIndicator]: {selected: true, marked: true},
             }}
           />
           <View style={styles.sectionCentralization}>
