@@ -9,6 +9,7 @@ import {
   TextInput,
   Image,
   Button,
+  Platform,
 } from "react-native";
 
 import { Picker } from "@react-native-picker/picker";
@@ -167,7 +168,7 @@ export function Courses() {
           />
 
           <TouchableOpacity
-            style={styles.btnModal}
+            style={Platform.OS === 'ios' ? styles.btnModalIOS : styles.btnModalANDROID}
             onPress={() => setShowModal(true)}
           >
             <Filter />
@@ -225,7 +226,9 @@ export function Courses() {
             style={styles.background}
             onPress={() => setShowModal(false)}
           >
-            <View style={styles.modal}>
+            <Pressable style={styles.modal}
+             onPress={() => setShowModal(true)}
+            >
               <View style={styles.modalHeader}>
                 <TouchableOpacity
                   style={styles.close}
@@ -239,9 +242,9 @@ export function Courses() {
               <View style={styles.containerFilter}>
                 <Picker
                   selectedValue={selectTypeCourses}
-                  style={styles.datePicker}
+                  style={Platform.OS === 'ios' ? styles.datePickerIOS :styles.datePickerANDROID}
                   onValueChange={(itemValue) => setSelectTypeCourses(itemValue)}
-                  mode={"dropdown"}
+                  mode={'dropdown'}
                 >
                   {typeCourses.map((cr) => {
                     return (
@@ -260,7 +263,7 @@ export function Courses() {
               >
                 <Text style={styles.txtButton}>Buscar</Text>
               </TouchableOpacity>
-            </View>
+            </Pressable>
           </Pressable>
         ) : (
           ""

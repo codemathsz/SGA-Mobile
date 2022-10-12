@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import { THEME } from '../../themes';
 
 export const styles = StyleSheet.create({
@@ -7,19 +7,19 @@ export const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     flex: 1,
-  },  
-  containerSearch:{
+  },
+  containerSearch: {
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-around'
   },
-  list:{
+  list: {
     width: '100%',
-    marginTop:15,
-    paddingTop:20,
+    marginTop: 15,
+    paddingTop: 20,
 
   },
-  btnModal:{
+  btnModalANDROID: {
     width: 48,
     height: 48,
     borderTopLeftRadius: 10,
@@ -32,13 +32,31 @@ export const styles = StyleSheet.create({
     borderColor: '#fff',
     borderWidth: 1,
     borderStyle: 'solid',
-    shadowOffset: {width: 2, height: -8},  
-    shadowColor: '#000',  
-    shadowOpacity: 0.7,  
-    shadowRadius: 3,  
+    shadowOffset: { width: 2, height: -8 },
+    shadowColor: '#000',
+    shadowOpacity: 0.7,
+    shadowRadius: 3,
     elevation: 10,
   },
-  background:{
+  btnModalIOS: {
+    width: 48,
+    height: 48,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+    backgroundColor: THEME.COLORS.WHITE,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderColor: '#fff',
+    borderWidth: 1,
+    borderStyle: 'solid',
+    shadowOffset: { width: 2, height: 2 },
+    shadowColor: '#000',
+    shadowOpacity: 0.7,
+    shadowRadius: 3,
+  },
+  background: {
     backgroundColor: 'rgba(190,190,190,0.6)',
     position: 'absolute',
     zIndex: 1000,
@@ -47,113 +65,115 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  modal:{
-    width:'80%',
+  modal: {
+    width: '80%',
     height: 300,
     position: 'absolute',
-    zIndex: 1001,
+    zIndex: 1002,
     backgroundColor: '#fff',
     alignItems: 'center',
     flexDirection: 'column',
-    padding:4,
-    borderRadius: 20,
+    borderRadius: 8,
   },
-  modalHeader:{
-    width:'100%',
-    justifyContent: 'space-around',
-    flexDirection: 'row-reverse'
-  },
-  close:{
-    position: 'absolute',
-  },
-  txtClose:{
-    fontSize: 24,
-    fontFamily: THEME.FONT_FAMILY.EXTRA_BOLD,
-    color: THEME.COLORS.SELECT
-  },
-  vwTitle:{
-    width: '90%',
-    justifyContent: 'flex-end',
+  modalHeader: {
+    width: '100%',
     alignItems: 'center',
-    padding:20,
-    paddingBottom:10,
-    borderBottomColor: THEME.COLORS.AZUL_500,
-    borderBottomWidth: 2,
+    justifyContent: 'space-between',
+    flexDirection: 'row-reverse',
+    backgroundColor: THEME.COLORS.AZUL_500,
+    borderRadius: 8,
+    borderBottomLeftRadius:0,
+    borderBottomRightRadius:0,
   },
-  title:{
+  close: {
+    marginRight: 10
+  },
+  txtClose: {
+    fontSize: 20,
+    fontFamily: THEME.FONT_FAMILY.BOLD,
+    color: THEME.COLORS.WHITE
+  },
+  vwTitle: {
+
+    alignItems: 'flex-start',
+    padding: 10,
+  },
+  title: {
     fontSize: THEME.FONT_SIZE.LG,
     fontFamily: THEME.FONT_FAMILY.EXTRA_BOLD,
-    color: THEME.COLORS.AZUL_500,
+    color: THEME.COLORS.WHITE,
   },
-  containerFilter:{
+  containerFilter: {
     width: '90%',
     borderColor: THEME.COLORS.SELECT,
-    borderWidth: 0.8,
-    borderRadius: 12,
-    elevation: 1,
+    borderWidth: Platform.OS === 'ios' ? 0 : 2,
+    borderRadius: Platform.OS === 'ios' ? 0 : 8,
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    marginTop: 50,
+    marginTop: Platform.OS === 'ios' ? 80 : 60,
     
   },
-  datePicker:{
+  datePickerANDROID: {
     width: '90%',
     borderColor: '#000',
     borderWidth: 4,
     color: THEME.COLORS.SELECT,
   },
-
-  itemDatePicker:{
+  datePickerIOS: {
+    width: '100%',
+    height: 50,
+    justifyContent: 'center',
+  },
+  itemDatePicker: {
     borderColor: '#000',
     fontSize: THEME.FONT_SIZE.MD,
     color: THEME.COLORS.TEXT
- },
-
-  input:{
+  },
+  input: {
     backgroundColor: THEME.COLORS.WHITE,
     width: '70%',
     height: 40,
     borderColor: '#fff',
     borderWidth: 1,
     borderStyle: 'solid',
-    shadowOffset: {width: 2, height: -2},  
-    shadowColor: '#000',  
-    shadowOpacity: 0.7,  
-    shadowRadius: 3,  
+    shadowOffset: { width: 2, height: -2 },
+    shadowColor: '#000',
+    shadowOpacity: 0.7,
+    shadowRadius: 3,
     elevation: 4,
-    padding:2,
-    borderRadius:8,
+    padding: 2,
+    borderRadius: 8,
     textAlign: 'center'
   },
-  containerImg:{
+  containerImg: {
     width: 40,
-    height:40,
+    height: 40,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: THEME.COLORS.WHITE,
     borderColor: '#fff',
     borderWidth: 1,
     borderStyle: 'solid',
-    shadowOffset: {width: 2, height: 2},  
-    shadowColor: '#000',  
-    shadowOpacity: 0.7,  
-    shadowRadius: 3,  
+    shadowOffset: { width: 2, height: 2 },
+    shadowColor: '#000',
+    shadowOpacity: 0.7,
+    shadowRadius: 3,
     elevation: 5,
-    borderRadius:8,
+    borderRadius: 8,
   },
-  button:{
+  button: {
     width: '50%',
-    height:40,
+    height: 40,
     backgroundColor: THEME.COLORS.AZUL_500,
     position: 'absolute',
     bottom: '10%',
-    borderRadius:8,
+    borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 2,
   },
-  txtButton:{
+  txtButton: {
     fontSize: THEME.FONT_SIZE.LG,
     fontFamily: THEME.FONT_FAMILY.SEMI_BOLD,
     color: THEME.COLORS.WHITE,

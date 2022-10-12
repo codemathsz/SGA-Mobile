@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   FlatList,
+  Platform,
 } from "react-native";
 
 import { Calendar, LocaleConfig } from "react-native-calendars";
@@ -75,7 +76,7 @@ import { MAIN } from "../../utils/listMain";
 import { InicioCard } from "../../components/InicioCard";
 import { Loading } from "../../components/Loading";
 
-interface HomeProps {}
+interface HomeProps { }
 
 export function Home() {
   const [showModal, setShowModal] = useState(false);
@@ -215,7 +216,7 @@ export function Home() {
             }}
 
             markedDates={{
-              [dayIndicator]: {selected: true, marked: true},
+              [dayIndicator]: { selected: true, marked: true },
             }}
           />
           <View style={styles.sectionCentralization}>
@@ -231,7 +232,7 @@ export function Home() {
             clenSearch={valueSearch}
           />
           <TouchableOpacity
-            style={styles.btnModal}
+            style={Platform.OS === 'ios' ? styles.btnModalIOS : styles.btnModalANDROID}
             onPress={() => setShowModal(true)}
           >
             <Filter />

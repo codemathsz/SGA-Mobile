@@ -32,7 +32,7 @@ export function CursoCard({ data }: Props) {
             <Text style={styles.txtCH}>Carga Horária: 0Hrs</Text>
           </View>
         </View>
-        <View>
+        <View style={{width:'25%'}}>
           <TouchableOpacity style={styles.typeCourse}>
             <Text style={styles.txtType}>{data.tipoCurso}</Text>
           </TouchableOpacity>

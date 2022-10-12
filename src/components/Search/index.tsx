@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, Pressable, Keyboard,TouchableOpacity } from "react-native";
+import { View, Text, Pressable, Keyboard,TouchableOpacity,Platform } from "react-native";
 
 import { styles } from "./styles";
 
@@ -18,7 +18,7 @@ export function Search({ placeholder, aplicSearch, receiveSearch, clenSearch }: 
   return (
     <View>
       <TextInput
-        style={styles.main}
+        style={Platform.OS === 'ios' ? styles.mainIOS : styles.mainANDROID}
         editable
         placeholderTextColor={"#3F3C3C"}
         placeholder={placeholder}

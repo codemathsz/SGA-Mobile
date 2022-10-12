@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 import { THEME } from "../../themes";
 
 export const styles = StyleSheet.create({
@@ -6,49 +6,53 @@ export const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 20,
+    marginTop: Platform.OS === 'ios' ? 14 : 20,
   },
   content: {
-    width: "94%",
-    flexDirection: "row",
-    justifyContent: "space-between",
+    width: '95%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     backgroundColor: THEME.COLORS.WHITE,
     marginTop: 10,
     marginBottom: 20,
     borderRadius: 15,
-    paddingVertical: 14,
-    paddingHorizontal: 18,
+    padding: 20,
   },
   informations: {
-    width: "70%",
-    flexDirection: "row",
+    width: '70%',
+    flexDirection: 'row',
     paddingTop: 20,
     paddingBottom: 20,
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  contentTexts: {
-    flexDirection: "column",
-  },
+    justifyContent: 'space-around',
 
+  },
+  contentText: {
+    width: '60%',
+    flexDirection: 'column',
+    justifyContent: 'flex-start'
+  },
   txtName: {
-    fontSize: 16,
+    fontSize: Platform.OS === 'ios' ? 22 : 18,
     fontFamily: THEME.FONT_FAMILY.SEMI_BOLD,
     textTransform: "uppercase",
   },
-  txtCH: {
-    fontSize: 12,
+  texts:{
+    fontSize: Platform.OS === 'ios' ? 18 : 16
   },
   status: {
-    width: 80,
+    position: 'absolute',
+    top:0,
+    right: 0,
+    width: Platform.OS === 'ios' ? 100 : 80,
+    height:20,
     alignItems: "center",
-    marginRight: 8,
-    marginTop: 8,
+    justifyContent: 'center',
     backgroundColor: THEME.COLORS.AZUL_300,
     borderRadius: 20,
   },
   txtType: {
     fontFamily: THEME.FONT_FAMILY.SEMI_BOLD,
     color: THEME.COLORS.WHITE,
+    fontSize: Platform.OS === 'ios' ? 20 : 14,
   },
 });

@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Image,
   TextInput,
+  Platform,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import Icon from "../../assets/icon_curso.png";
@@ -244,7 +245,7 @@ export function Environments({ id, ...rest }: Ambientes) {
             clenSearch={valueSearch}
           />
           <TouchableOpacity
-            style={styles.btnModal}
+            style={Platform.OS === 'ios' ? styles.btnModalIOS : styles.btnModalANDROID}
             onPress={() => setShowModal(true)}
           >
             <Filter />
@@ -291,7 +292,7 @@ export function Environments({ id, ...rest }: Ambientes) {
           ></FlatList>
         )}
         {showModal == true ? (
-          <Pressable 
+          <Pressable
             style={styles.background}
             onPress={() => setShowModal(false)}
           >
@@ -310,7 +311,7 @@ export function Environments({ id, ...rest }: Ambientes) {
                 <View style={styles.contentFilter}>
                   <Picker
                     selectedValue={selectTypeAmbient}
-                    style={styles.datePicker}
+                    style={Platform.OS === 'ios' ? styles.datePickerIOS :styles.datePickerANDROID}
                     mode={"dropdown"}
                     onValueChange={(itemValue) =>
                       setSelectTypeAmbient(itemValue)
@@ -335,7 +336,7 @@ export function Environments({ id, ...rest }: Ambientes) {
                 <View style={styles.contentFilter}>
                   <Picker
                     selectedValue={selectCapacidadeAmbient}
-                    style={styles.datePicker}
+                    style={Platform.OS === 'ios' ? styles.datePickerIOS :styles.datePickerANDROID}
                     mode={"dropdown"}
                     onValueChange={(itemValue) =>
                       setSelectCapacidadeAmbient(itemValue)

@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
     marginTop:20,
   },
   content:{
-    width: '94%',
+    width: '95%',
     flexDirection: 'row',
     justifyContent: 'space-between',
     backgroundColor: THEME.COLORS.WHITE,
@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
     
   },
   informations:{
-    width:'80%',
+    width:'70%',
     flexDirection: 'row',
     paddingTop: 20,
     paddingBottom: 20,
@@ -40,10 +40,9 @@ export const styles = StyleSheet.create({
     fontSize:12,
   },
   typeCourse:{
-    position: 'relative',
     width:100,
     alignItems: 'center',
-    marginRight:20,
+    marginRight:8,
     marginTop:6,
     backgroundColor: THEME.COLORS.AZUL_300,
     borderRadius:14,

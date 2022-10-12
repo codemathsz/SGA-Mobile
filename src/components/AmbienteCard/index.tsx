@@ -20,16 +20,16 @@ export function AmbienteCard({ data, ...rest }: Props) {
   return (
     <View style={styles.container} {...rest}>
       <TouchableOpacity style={styles.content}>
-        <View style={styles.contentTexts}>
+        <View style={styles.contentText}>
           <Text style={styles.txtName}>{data.nome}</Text>
           <View>
-            <Text>Capacidade: {data.capacidade}</Text>
-            <Text>Complemento: {data.complemento}</Text>
-            <Text>Tipo de Ambiente: {data.tipoAmbiente}</Text>
+            <Text style={styles.texts}>Capacidade: {data.capacidade}</Text>
+            <Text style={styles.texts}>Complemento: {data.complemento}</Text>
+            <Text style={styles.texts}>Tipo de Ambiente: {data.tipoAmbiente}</Text>
           </View>
         </View>
 
-        <View>
+        <View style={{width:'25%', position: 'absolute', top: 10, right: 8}}>
           <TouchableOpacity style={styles.status}>
             <Text style={styles.txtType}>Livre</Text>
           </TouchableOpacity>

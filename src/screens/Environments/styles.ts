@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import { THEME } from '../../themes';
 
 export const styles = StyleSheet.create({
@@ -17,7 +17,7 @@ export const styles = StyleSheet.create({
     marginTop:15,
     paddingTop:20,
   },
-  btnModal:{
+  btnModalANDROID: {
     width: 48,
     height: 48,
     borderTopLeftRadius: 10,
@@ -30,11 +30,29 @@ export const styles = StyleSheet.create({
     borderColor: '#fff',
     borderWidth: 1,
     borderStyle: 'solid',
-    shadowOffset: {width: 2, height: -8},  
-    shadowColor: '#000',  
-    shadowOpacity: 0.7,  
-    shadowRadius: 3,  
+    shadowOffset: { width: 2, height: -8 },
+    shadowColor: '#000',
+    shadowOpacity: 0.7,
+    shadowRadius: 3,
     elevation: 10,
+  },
+  btnModalIOS: {
+    width: 48,
+    height: 48,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+    backgroundColor: THEME.COLORS.WHITE,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderColor: '#fff',
+    borderWidth: 1,
+    borderStyle: 'solid',
+    shadowOffset: { width: 2, height: 2 },
+    shadowColor: '#000',
+    shadowOpacity: 0.7,
+    shadowRadius: 3,
   },
   background:{
     backgroundColor: 'rgba(190,190,190,0.6)',
@@ -47,7 +65,7 @@ export const styles = StyleSheet.create({
   },
   modal:{
     width:'90%',
-    height: 380,
+    height: Platform.OS === 'ios' ? 480 : 350,
     position: 'relative',
     zIndex: 1001,
     backgroundColor: '#fff',
@@ -85,30 +103,38 @@ export const styles = StyleSheet.create({
   },
   contentFilter:{
     width: '90%',
+    height:Platform.OS === 'ios' ? 90 : 50,
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
     marginTop: 20,
+    marginBottom: Platform.OS === 'ios' ? 80 : 0,
     borderColor: THEME.COLORS.SELECT,
     borderWidth: 0.8,
     borderRadius: 12,
     elevation: 1,
+    overflow: 'hidden',
+    
   },
   containerFilter:{
     width: '100%',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 30,
-    
+    marginTop: 40,
+    backgroundColor: '#fff'
   },
-  datePicker:{
+  datePickerANDROID: {
     width: '90%',
     borderColor: '#000',
     borderWidth: 4,
     color: THEME.COLORS.SELECT,
   },
-
+  datePickerIOS: {
+    width: '100%',
+    justifyContent: 'center',
+    height: 20,
+  },
   itemDatePicker:{
     borderColor: '#000',
     fontSize: THEME.FONT_SIZE.MD,
