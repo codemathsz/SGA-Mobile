@@ -10,6 +10,10 @@ import {
   Platform,
 } from "react-native";
 
+
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+const Tab = createBottomTabNavigator()
+
 import { Calendar, LocaleConfig } from "react-native-calendars";
 import { RadioButton } from "react-native-paper";
 
@@ -75,6 +79,7 @@ import { MAIN } from "../../utils/listMain";
 
 import { InicioCard } from "../../components/InicioCard";
 import { Loading } from "../../components/Loading";
+import { NavigationContainer } from "@react-navigation/native";
 
 interface HomeProps { }
 
@@ -161,7 +166,9 @@ export function Home() {
   };
 
   return (
+
     <ScrollView>
+
       <Background>
         <Header
           title="Bem Vindo"
@@ -286,5 +293,6 @@ export function Home() {
         </View>
       </Background>
     </ScrollView>
+
   );
 }

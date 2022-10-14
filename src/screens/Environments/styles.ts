@@ -65,64 +65,61 @@ export const styles = StyleSheet.create({
   },
   modal:{
     width:'90%',
-    height: Platform.OS === 'ios' ? 480 : 350,
-    position: 'relative',
-    zIndex: 1001,
+    height: Platform.OS === 'ios' ? 450 : 350,
+    position: 'absolute',
+    zIndex: 1002,
     backgroundColor: '#fff',
     alignItems: 'center',
     flexDirection: 'column',
-    padding:4,
-    overflow: 'scroll'
+    borderRadius: 8,
   },
-  modalHeader:{
-    width:'100%',
-    justifyContent: 'space-around',
-    flexDirection: 'row-reverse'
-  },
-  close:{
-    position: 'absolute',
-  },
-  txtClose:{
-    fontSize: 24,
-    fontFamily: THEME.FONT_FAMILY.EXTRA_BOLD,
-    color: THEME.COLORS.SELECT
-  },
-  vwTitle:{
-    width: '90%',
-    justifyContent: 'flex-end',
+  modalHeader: {
+    width: '100%',
     alignItems: 'center',
-    padding:20,
-    paddingBottom:10,
-    borderBottomColor: THEME.COLORS.AZUL_500,
-    borderBottomWidth: 2,
+    justifyContent: 'space-between',
+    flexDirection: 'row-reverse',
+    backgroundColor: THEME.COLORS.AZUL_500,
+    borderRadius: 8,
+    borderBottomLeftRadius:0,
+    borderBottomRightRadius:0,
   },
-  title:{
+  close: {
+    marginRight: 10
+  },
+  txtClose: {
+    fontSize: 20,
+    fontFamily: THEME.FONT_FAMILY.BOLD,
+    color: THEME.COLORS.WHITE
+  },
+  vwTitle: {
+
+    alignItems: 'flex-start',
+    padding: 10,
+  },
+  title: {
     fontSize: THEME.FONT_SIZE.LG,
     fontFamily: THEME.FONT_FAMILY.EXTRA_BOLD,
-    color: THEME.COLORS.AZUL_500,
+    color: THEME.COLORS.WHITE,
   },
   contentFilter:{
     width: '90%',
-    height:Platform.OS === 'ios' ? 90 : 50,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
+    height:Platform.OS === 'ios' ? 100 : 50,
     marginTop: 20,
-    marginBottom: Platform.OS === 'ios' ? 80 : 0,
+    marginBottom: Platform.OS === 'ios' ? 10 : 0,
     borderColor: THEME.COLORS.SELECT,
-    borderWidth: 0.8,
-    borderRadius: 12,
-    elevation: 1,
+    borderWidth: Platform.OS === 'ios' ? 0 : 2,
+    borderRadius: Platform.OS === 'ios' ? 0 : 8,
     overflow: 'hidden',
-    
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   containerFilter:{
     width: '100%',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 40,
-    backgroundColor: '#fff'
+    marginTop: 20,
+    
   },
   datePickerANDROID: {
     width: '90%',
@@ -133,7 +130,8 @@ export const styles = StyleSheet.create({
   datePickerIOS: {
     width: '100%',
     justifyContent: 'center',
-    height: 20,
+    height: '100%',
+    backgroundColor: '#fff'
   },
   itemDatePicker:{
     borderColor: '#000',

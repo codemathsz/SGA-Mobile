@@ -232,7 +232,7 @@ export function Environments({ id, ...rest }: Ambientes) {
     }
   };
 
-  console.log(selectCapacidadeAmbient[0]);
+  console.log(selectTypeAmbient);
   return (
     <Pressable onPress={Keyboard.dismiss} style={styles.container}>
       <Background>
@@ -255,7 +255,7 @@ export function Environments({ id, ...rest }: Ambientes) {
           <FlatList
             ListHeaderComponent={
               <ConfigApplicator
-                text="Filtro Aplicado 1"
+                text="Filtro Aplicado"
                 functionFilter={validateCloseSearch}
               />
             }
@@ -296,7 +296,9 @@ export function Environments({ id, ...rest }: Ambientes) {
             style={styles.background}
             onPress={() => setShowModal(false)}
           >
-            <View style={styles.modal}>
+            <Pressable style={styles.modal}
+              onPress={() => setShowModal(true)}
+            >
               <View style={styles.modalHeader}>
                 <TouchableOpacity
                   style={styles.close}
@@ -304,14 +306,14 @@ export function Environments({ id, ...rest }: Ambientes) {
                   <Text style={styles.txtClose}>X</Text>
                 </TouchableOpacity>
                 <View style={styles.vwTitle}>
-                  <Text style={styles.title}>Filtragem Ambientes</Text>
+                  <Text style={styles.title}>Filtragem Ambiente</Text>
                 </View>
               </View>
               <View style={styles.containerFilter}>
                 <View style={styles.contentFilter}>
                   <Picker
                     selectedValue={selectTypeAmbient}
-                    style={Platform.OS === 'ios' ? styles.datePickerIOS :styles.datePickerANDROID}
+                    style={Platform.OS === 'ios' ? styles.datePickerIOS : styles.datePickerANDROID}
                     mode={"dropdown"}
                     onValueChange={(itemValue) =>
                       setSelectTypeAmbient(itemValue)
@@ -336,7 +338,7 @@ export function Environments({ id, ...rest }: Ambientes) {
                 <View style={styles.contentFilter}>
                   <Picker
                     selectedValue={selectCapacidadeAmbient}
-                    style={Platform.OS === 'ios' ? styles.datePickerIOS :styles.datePickerANDROID}
+                    style={Platform.OS === 'ios' ? styles.datePickerIOS : styles.datePickerANDROID}
                     mode={"dropdown"}
                     onValueChange={(itemValue) =>
                       setSelectCapacidadeAmbient(itemValue)
@@ -360,7 +362,7 @@ export function Environments({ id, ...rest }: Ambientes) {
               >
                 <Text style={styles.txtButton}>Buscar</Text>
               </TouchableOpacity>
-            </View>
+            </Pressable>
           </Pressable>
         ) : (
           ""

@@ -5,7 +5,8 @@ import {
   Text,
   Image,
   ScrollView,
-  FlatList
+  FlatList,
+  Platform
 } from 'react-native';
 import { color } from 'react-native-reanimated';
 
@@ -39,7 +40,7 @@ export function ProfileTeacher({route}: any) {
               <Text style={styles.name}>{route.params?.data?.nome}</Text>
             </View>
           </View>
-          <View style={styles.calendar}>
+          <View style={Platform.OS === 'ios' ? styles.calendarIOS : styles.calendarANDROID}>
             <Text> CALENDARIO!!</Text>
           </View>
           <View style={{ width: '100%', marginTop: 20, alignItems: 'center', justifyContent: 'center' }}>
@@ -52,7 +53,7 @@ export function ProfileTeacher({route}: any) {
             keyExtractor={item => item.id}
             renderItem={({ item }) => (
               <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-                <View style={styles.containerList}>
+                <View style={Platform.OS === 'ios' ? styles.containerListIOS : styles.containerListANDROID}>
                   <View style={styles.item}>
                     <Text>{item.dia}</Text>
                     <Text>{item.curso}</Text>

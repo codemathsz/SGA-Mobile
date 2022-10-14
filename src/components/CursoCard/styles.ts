@@ -41,9 +41,10 @@ export const styles = StyleSheet.create({
   },
   typeCourse:{
     width:100,
+    
     alignItems: 'center',
     marginRight:8,
-    marginTop:6,
+    marginTop:8,
     backgroundColor: THEME.COLORS.AZUL_300,
     borderRadius:14,
   },

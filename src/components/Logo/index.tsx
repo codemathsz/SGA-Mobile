@@ -10,7 +10,7 @@ export function Logo() {
   return (
     <Image
       source={LogoM}
-      style={{width:100, height:50, position: 'relative', left: '70%', right:'50%'}}
+      style={{width:60, height:30}}
     />
 
   );

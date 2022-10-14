@@ -26,7 +26,10 @@ function DrawerNavigator() {
         headerTitle:() => <Logo />, 
         drawerPosition:'right', 
         headerStyle:{
-          height: 100,
+          height: 65,
+          alignItems: 'center',
+          justifyContent: 'center',
+          
         }
       }}
     >

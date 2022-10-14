@@ -44,7 +44,7 @@ export const styles = StyleSheet.create({
     top:0,
     right: 0,
     width: Platform.OS === 'ios' ? 100 : 80,
-    height:20,
+    height:25,
     alignItems: "center",
     justifyContent: 'center',
     backgroundColor: THEME.COLORS.AZUL_300,

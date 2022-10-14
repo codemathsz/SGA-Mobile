@@ -14,6 +14,10 @@ import { Router } from "./src/screens/Router";
 import { StatusBar } from "react-native";
 import { Loading } from "./src/components/Loading";
 
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { Home } from "./src/screens/Home";
+const Tab = createBottomTabNavigator()
+
 function App() {
   const [fontsLoaded] = useFonts({
     Inter_400Regular,
@@ -26,10 +30,10 @@ function App() {
   return (
     <NavigationContainer>
       {fontsLoaded ? <Router /> : <Loading />}
-
+     
       <StatusBar
         barStyle={"light-content"}
-        backgroundColor="transparent"
+        backgroundColor="#000"
         translucent
       />
     </NavigationContainer>

@@ -8,6 +8,7 @@ import {
   FlatList,
   TouchableOpacity,
   Image,
+  Platform,
 } from "react-native";
 import { TextInput } from "react-native-paper";
 
@@ -177,7 +178,7 @@ export function Teachers() {
             clenSearch={valueSearch}
           />
           <TouchableOpacity
-            style={styles.btnModal}
+            style={Platform.OS === 'ios' ? styles.btnModalIOS : styles.btnModalANDROID}
             onPress={() => setShowModal(true)}
           >
             <Filter />
@@ -228,12 +229,14 @@ export function Teachers() {
         )}
 
         {showModal == true ? (
-          <Pressable 
+          <Pressable
             style={styles.background}
             onPress={() => setShowModal(false)}
           >
-            <View style={styles.modal}>
-            <View style={styles.modalHeader}>
+            <Pressable style={styles.modal}
+              onPress={() => setShowModal(true)}
+            >
+              <View style={styles.modalHeader}>
                 <TouchableOpacity
                   style={styles.close}
                   onPress={() => setShowModal(false)}>
@@ -244,40 +247,43 @@ export function Teachers() {
                 </View>
               </View>
               <View style={styles.containerFilter}>
-                <Picker
-                  selectedValue={selectCourses}
-                  style={styles.datePicker}
-                  onValueChange={(itemValue) => setSelectCourses(itemValue)}
-                  mode={"dropdown"}
-                >
-                  {course?.map((cr) => {
-                    return (
-                      <Picker.Item
-                        label={cr.nome}
-                        value={cr.nome}
-                        style={styles.itemDatePicker}
-                      />
-                    );
-                  })}
-                </Picker>
-              </View>
-              <View style={styles.containerFilter}>
-                <Picker
-                  selectedValue={selectCurricularUnit}
-                  style={styles.datePicker}
-                  onValueChange={(itemValue) => setSelectCourses(itemValue)}
-                  mode={"dropdown"}
-                >
-                  {curricularUnit?.map((cru) => {
-                    return (
-                      <Picker.Item
-                        label={cru.nome}
-                        value={cru.nome}
-                        style={styles.itemDatePicker}
-                      />
-                    );
-                  })}
-                </Picker>
+                <View style={styles.contentFilter}>
+                  <Picker
+                    selectedValue={selectCourses}
+                    style={Platform.OS === 'ios' ? styles.datePickerIOS : styles.datePickerANDROID}
+                    onValueChange={(itemValue) => setSelectCourses(itemValue)}
+                    mode={"dropdown"}
+                  >
+                    {course?.map((cr) => {
+                      return (
+                        <Picker.Item
+                          label={cr.nome}
+                          value={cr.nome}
+                          style={styles.itemDatePicker}
+                        />
+                      );
+                    })}
+                  </Picker>
+                </View>
+
+                <View style={styles.contentFilter}>
+                  <Picker
+                    selectedValue={selectCurricularUnit}
+                    style={Platform.OS === 'ios' ? styles.datePickerIOS : styles.datePickerANDROID}
+                    onValueChange={(itemValue) => setSelectCourses(itemValue)}
+                    mode={"dropdown"}
+                  >
+                    {curricularUnit?.map((cru) => {
+                      return (
+                        <Picker.Item
+                          label={cru.nome}
+                          value={cru.nome}
+                          style={styles.itemDatePicker}
+                        />
+                      );
+                    })}
+                  </Picker>
+                </View>
               </View>
               <TouchableOpacity
                 style={styles.button}
@@ -285,7 +291,7 @@ export function Teachers() {
               >
                 <Text style={styles.txtButton}>Buscar</Text>
               </TouchableOpacity>
-            </View>
+            </Pressable>
           </Pressable>
         ) : (
           ""

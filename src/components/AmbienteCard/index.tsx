@@ -29,7 +29,7 @@ export function AmbienteCard({ data, ...rest }: Props) {
           </View>
         </View>
 
-        <View style={{width:'25%', position: 'absolute', top: 10, right: 8}}>
+        <View style={{width:'28%', position: 'absolute', top: 10, right: 8, alignItems: 'center', justifyContent: 'center'}}>
           <TouchableOpacity style={styles.status}>
             <Text style={styles.txtType}>Livre</Text>
           </TouchableOpacity>
