@@ -80,6 +80,7 @@ import { MAIN } from "../../utils/listMain";
 import { InicioCard } from "../../components/InicioCard";
 import { Loading } from "../../components/Loading";
 import { NavigationContainer } from "@react-navigation/native";
+import * as bottomTabs from '@react-navigation/bottom-tabs';
 
 interface HomeProps { }
 
@@ -211,8 +212,7 @@ export function Home() {
             initialDate={dateCurrent}
             minDate={"2022-09-20"}
             enableSwipeMonths={true}
-            // Props para os dias do calendário
-            // dayComponent={}
+
 
             // Props para o dia selecionado
             onDayPress={(day) => {

@@ -1,9 +1,11 @@
 export const THEME = {
     COLORS: {
       BACKGROUND_900: '#121214',
-     
+      BACKGROUND_FORM: '#FCFCFD',
   
       TEXT: '#3F3C3C',
+      TITLE_FORM: '#6D6D6D', 
+      TEXT_PLACE: 'rgba(109, 109, 109, 0.5)',     
       SELECT: 'rgba(109, 109, 109, 0.5)',
 
       CAPTION_500: '#71717A',

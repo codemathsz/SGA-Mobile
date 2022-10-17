@@ -11,6 +11,8 @@ import { Teachers } from './Teachers';
 import { ProfileTeacher } from './ProfileTeacher';
 import { Logo } from '../components/Logo';
 
+// import somente feito para adiantar a 
+import {AdvancedSearch} from './AdvancedSearch';
 
 const Drawer = createDrawerNavigator()
 const Stack = createStackNavigator()
