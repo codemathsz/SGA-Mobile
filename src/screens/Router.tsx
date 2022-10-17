@@ -11,46 +11,62 @@ import { Teachers } from './Teachers';
 import { ProfileTeacher } from './ProfileTeacher';
 import { Logo } from '../components/Logo';
 
-// import somente feito para adiantar a 
-import {AdvancedSearch} from './AdvancedSearch';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { AdvancedSearch } from './AdvancedSearch';
+
+const Tab = createBottomTabNavigator()
 
 const Drawer = createDrawerNavigator()
 const Stack = createStackNavigator()
 
 
 
-function DrawerNavigator() {
+export function DrawerNavigator() {
 
-  
   return (
     <Drawer.Navigator
       screenOptions={{
-        headerTitle:() => <Logo />, 
-        drawerPosition:'right', 
-        headerStyle:{
-          height: 65,
-          alignItems: 'center',
-          justifyContent: 'center',
-          
-        }
+        headerTitle: () => <Logo />,
+        drawerPosition: 'right',
       }}
     >
-      <Drawer.Screen  name="Inicio"  component={Home}/>
-      <Drawer.Screen name="Curso" component={Courses}/>
-      <Drawer.Screen name="Ambientes" component={Environments} />
+      <Drawer.Screen name="Inicio" component={TabNavigation} />
       <Drawer.Screen name="Professores" component={Teachers} />
+      <Drawer.Screen name="Ambientes" component={Environments} />
+      <Drawer.Screen name="Cursos" component={Courses} />
     </Drawer.Navigator>
   )
 }
-export function Router() {
+
+function TabNavigation() {
   return (
-    <Stack.Navigator  screenOptions={{
-      
-      headerTitle:'', 
-   
-    }} >
-      <Stack.Screen options={{ headerShown: false }} name="Drawer" component={DrawerNavigator} />
-      <Stack.Screen   name="ProfileTeacher" component={ProfileTeacher} />
+    <Tab.Navigator
+      initialRouteName='Home'
+      screenOptions={{
+        headerShown: false,
+        headerTitle: '',
+        headerStyle: {
+          display: 'none'
+        }
+      }}
+    >
+      <Tab.Screen name=" Inicio" component={Home} />
+      <Tab.Screen name="AdvancedSearch" component={AdvancedSearch} />
+    </Tab.Navigator>
+
+  )
+}
+export function StackNav() {
+  return (
+    <Stack.Navigator
+    initialRouteName='Drawer'
+      screenOptions={{
+        headerShown: false,
+        headerTitle: '',
+      }}
+    >
+      <Stack.Screen name='Drawer' component={DrawerNavigator}/>
+      <Stack.Screen options={{headerShown: true}} name="ProfileTeacher" component={ProfileTeacher} />
     </Stack.Navigator>
   );
 }

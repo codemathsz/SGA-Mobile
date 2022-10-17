@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image } from 'react-native';
+import { View, Image, Platform } from 'react-native';
 
 import { styles } from './styles';
 
@@ -10,7 +10,8 @@ export function Logo() {
   return (
     <Image
       source={LogoM}
-      style={{width:60, height:30}}
+      
+      style={Platform.OS === 'ios'?{width:60, height:30} :{width:60, height:30, position: 'absolute', left:100, right: 100}}
     />
 
   );

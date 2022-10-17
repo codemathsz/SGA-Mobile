@@ -10,10 +10,6 @@ import {
   Platform,
 } from "react-native";
 
-
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-const Tab = createBottomTabNavigator()
-
 import { Calendar, LocaleConfig } from "react-native-calendars";
 import { RadioButton } from "react-native-paper";
 
@@ -67,20 +63,32 @@ import {
   Inter_900Black,
 } from "@expo-google-fonts/inter";
 import { useFonts } from "expo-font";
-import AppLoading from "expo-app-loading";
 
 import { ViewDay } from "../../components/ViewDay";
 import { Background } from "../../components/Background";
 import { Header } from "../../components/Header";
 import { Search } from "../../components/Search";
 import { Filter } from "../../components/Filter";
-import { THEME } from "../../themes";
 import { MAIN } from "../../utils/listMain";
 
 import { InicioCard } from "../../components/InicioCard";
 import { Loading } from "../../components/Loading";
 import { NavigationContainer } from "@react-navigation/native";
-import * as bottomTabs from '@react-navigation/bottom-tabs';
+
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { AdvancedSearch } from "../AdvancedSearch";
+const Tab = createBottomTabNavigator()
+
+const TabNavigation = () => {
+  return (
+    <NavigationContainer>
+      <Tab.Navigator>
+        <Tab.Screen name="AdvancedSearch" component={AdvancedSearch} />
+      </Tab.Navigator>
+    </NavigationContainer>
+  )
+}
+
 
 interface HomeProps { }
 
@@ -166,10 +174,11 @@ export function Home() {
     }
   };
 
+
+  
   return (
-
+    
     <ScrollView>
-
       <Background>
         <Header
           title="Bem Vindo"
@@ -291,8 +300,8 @@ export function Home() {
             renderItem={({ item }) => <InicioCard data={item} />}
           ></FlatList>
         </View>
+      
       </Background>
     </ScrollView>
-
   );
 }

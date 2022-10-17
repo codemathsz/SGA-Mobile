@@ -10,7 +10,7 @@ import {
 } from "@expo-google-fonts/inter";
 
 import { NavigationContainer } from "@react-navigation/native";
-import { Router } from "./src/screens/Router";
+import { DrawerNavigator,  StackNav } from "./src/screens/Router";
 import { StatusBar } from "react-native";
 import { Loading } from "./src/components/Loading";
 
@@ -29,7 +29,7 @@ function App() {
 
   return (
     <NavigationContainer>
-      {fontsLoaded ? <Router /> : <Loading />}
+      {fontsLoaded ? <StackNav /> : <Loading />}
      
       <StatusBar
         barStyle={"light-content"}
