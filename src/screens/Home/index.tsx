@@ -98,6 +98,7 @@ export function Home() {
   const [daySelected, setDaySelected] = useState(0);
   // passando o dia selecionado para o calendário
   const [dayIndicator, setDayIndicator] = useState('');
+  // const para RadioButton
   const [periodSelected, setPeriodSelected] = useState("all");
   // para o valor do input search
   const [valueSearch, setValueSearch] = useState();

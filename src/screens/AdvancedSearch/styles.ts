@@ -21,7 +21,7 @@ export const styles = StyleSheet.create({
   titleForm: {
     paddingLeft: 15,
     color: THEME.COLORS.TITLE_FORM,
-    fontSize: 20,
+    fontSize: 18,
     fontFamily: THEME.FONT_FAMILY.EXTRA_BOLD,
   },
   inputForm: {
@@ -62,5 +62,18 @@ export const styles = StyleSheet.create({
     color: THEME.COLORS.TEXT_PLACE,
     fontFamily: THEME.FONT_FAMILY.EXTRA_BOLD,
     fontWeight: '800'
+  },
+  containerRadio:{
+    paddingTop: 10,
+    flexDirection: 'row',
+  },
+  divRadio: {
+    marginHorizontal: 5,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  titleRadio: {
+    color: THEME.COLORS.TEXT_PLACE,
+    fontFamily: THEME.FONT_FAMILY.REGULAR
   }
 });
