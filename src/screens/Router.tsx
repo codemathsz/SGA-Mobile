@@ -11,8 +11,11 @@ import { Teachers } from './Teachers';
 import { ProfileTeacher } from './ProfileTeacher';
 import { Logo } from '../components/Logo';
 
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { AdvancedSearch } from './AdvancedSearch';
+import { THEME } from '../themes';
 
 const Tab = createBottomTabNavigator()
 
@@ -42,16 +45,29 @@ function TabNavigation() {
   return (
     <Tab.Navigator
       initialRouteName='Home'
-      screenOptions={{
+      screenOptions={({ route }) => ({
         headerShown: false,
         headerTitle: '',
-        headerStyle: {
-          display: 'none'
-        }
-      }}
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+
+          if (route.name === ' Inicio') {
+            iconName = focused
+              ? 'home'
+              : 'home';
+          } else if (route.name === 'Busca Avançada') {
+            iconName = focused ? 'help' : 'help';
+          }
+
+          // You can return any component that you like here!
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+        tabBarActiveTintColor: THEME.COLORS.AZUL_500,
+        tabBarInactiveTintColor: 'gray',
+      })}
     >
       <Tab.Screen name=" Inicio" component={Home} />
-      <Tab.Screen name="AdvancedSearch" component={AdvancedSearch} />
+      <Tab.Screen name="Busca Avançada" component={AdvancedSearch} />
     </Tab.Navigator>
 
   )
@@ -59,14 +75,14 @@ function TabNavigation() {
 export function StackNav() {
   return (
     <Stack.Navigator
-    initialRouteName='Drawer'
+      initialRouteName='Drawer'
       screenOptions={{
         headerShown: false,
         headerTitle: '',
       }}
     >
-      <Stack.Screen name='Drawer' component={DrawerNavigator}/>
-      <Stack.Screen options={{headerShown: true}} name="ProfileTeacher" component={ProfileTeacher} />
+      <Stack.Screen name='Drawer' component={DrawerNavigator} />
+      <Stack.Screen options={{ headerShown: true }} name="ProfileTeacher" component={ProfileTeacher} />
     </Stack.Navigator>
   );
 }
