@@ -56,7 +56,7 @@ function TabNavigation() {
               ? 'home'
               : 'home';
           } else if (route.name === 'Busca Avançada') {
-            iconName = focused ? 'help' : 'help';
+            iconName = focused ? 'earth' : 'earth';
           }
 
           // You can return any component that you like here!
