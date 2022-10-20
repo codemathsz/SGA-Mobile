@@ -4,6 +4,7 @@ export const THEME = {
       BACKGROUND_FORM: '#FCFCFD',
   
       TEXT: '#3F3C3C',
+      TEXT_OPACIT: '#CDCDCD',
       TEXT_BLUE: '#1E1E40',
       TITLE_FORM: '#6D6D6D', 
       TEXT_PLACE: 'rgba(109, 109, 109, 0.5)',     

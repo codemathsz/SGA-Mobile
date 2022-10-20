@@ -4,7 +4,6 @@ import { THEME } from '../../themes';
 export const styles = StyleSheet.create({
     container: {
         width: "100%",
-        backgroundColor: THEME.COLORS.PRIMARY,
        
       },
       containerLogo: {

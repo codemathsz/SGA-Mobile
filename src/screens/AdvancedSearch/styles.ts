@@ -3,15 +3,13 @@ import { shadow } from "react-native-paper";
 import { THEME } from "../../themes";
 
 export const styles = StyleSheet.create({
-  container: {},
   containerForm: {
     marginTop: 5,
     paddingHorizontal: 10,
-    paddingTop: 25,
+    paddingVertical: 25,
     borderTopStartRadius: 15,
     borderTopRightRadius: 15,
     backgroundColor: THEME.COLORS.BACKGROUND_FORM,
-
     elevation: 10,
   },
   divForm: {
@@ -158,4 +156,54 @@ export const styles = StyleSheet.create({
     color: THEME.COLORS.TEXT_PLACE,
     fontFamily: THEME.FONT_FAMILY.EXTRA_BOLD,
   },
+  containerSearch:{
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  btn:{
+    marginTop: 12,
+    paddingHorizontal: 8,
+    paddingVertical: 6,
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: THEME.COLORS.AZUL_500,
+  },
+  textBtn:{
+    fontSize: 18,
+    color: THEME.COLORS.WHITE,
+    fontFamily: THEME.FONT_FAMILY.BOLD,
+  },
+  containerOptions:{
+    width: "100%",
+    marginTop: 30,
+    paddingHorizontal: 5,
+    flexDirection: "row",
+    marginVertical: 8,
+    justifyContent:"space-between", 
+  },
+  containerFlatlist:{
+
+  },
+  containerText:{
+    marginTop: 30,
+    textAlign: "center",
+    alignItems: "center",
+    justifyContent:"center",
+  },
+  textResult:{
+    textAlign: "center",
+    fontSize: 16,
+    fontFamily: THEME.FONT_FAMILY.REGULAR,
+  },
+  textResultState:{
+    color: THEME.COLORS.AZUL_300
+  },
+  btnsSearchAplic:{
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    marginTop: 20,
+  }
 });
