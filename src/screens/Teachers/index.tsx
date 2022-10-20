@@ -26,6 +26,7 @@ import { styles } from "./styles";
 
 import API from "../../services/api";
 import { ConfigApplicator } from "../../components/ConfigApplicator";
+import { Loading } from "../../components/Loading";
 
 export interface Teachers {
   id: string;
@@ -166,6 +167,7 @@ export function Teachers() {
     }
   };
 
+
   return (
     <Pressable onPress={Keyboard.dismiss} style={styles.container}>
       <Background>
@@ -187,46 +189,52 @@ export function Teachers() {
 
         {/* Operador ternário para sabe se está sendo feita uma busca personalizada */}
 
-        {filter == true ? (
-          <FlatList
-            ListHeaderComponent={
-              <ConfigApplicator
-                text="Filtro Aplicado"
-                functionFilter={validateCloseSearch}
+        {
+          professor.length == 0 ?
+            <Loading />
+            :
+            filter == true ? (
+              <FlatList
+                ListHeaderComponent={
+                  <ConfigApplicator
+                    text="Filtro Aplicado"
+                    functionFilter={validateCloseSearch}
+                  />
+                }
+                data={professor}
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={({ item }) => <ProfessoresCard data={item} />}
+                horizontal={false}
+                showsVerticalScrollIndicator
+                style={styles.list}
               />
-            }
-            data={professor}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => <ProfessoresCard data={item} />}
-            horizontal={false}
-            showsVerticalScrollIndicator
-            style={styles.list}
-          />
-        ) : search == true ? (
-          <FlatList
-            ListHeaderComponent={
-              <ConfigApplicator
-                text="Busca Aplicado"
-                functionFilter={validateCloseSearch}
+            ) : search == true ? (
+              <FlatList
+                ListHeaderComponent={
+                  <ConfigApplicator
+                    text="Busca Aplicado"
+                    functionFilter={validateCloseSearch}
+                  />
+                }
+                data={teachersSearch}
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={({ item }) => <ProfessoresCard data={item} />}
+                horizontal={false}
+                showsVerticalScrollIndicator
+                style={styles.list}
               />
-            }
-            data={teachersSearch}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => <ProfessoresCard data={item} />}
-            horizontal={false}
-            showsVerticalScrollIndicator
-            style={styles.list}
-          />
-        ) : (
-          <FlatList
-            data={professor}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => <ProfessoresCard data={item} />}
-            horizontal={false}
-            showsVerticalScrollIndicator
-            style={styles.list}
-          />
-        )}
+            ) : (
+              <FlatList
+                data={professor}
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={({ item }) => <ProfessoresCard data={item} />}
+                horizontal={false}
+                showsVerticalScrollIndicator
+                style={styles.list}
+              />
+            )
+
+        }
 
         {showModal == true ? (
           <Pressable

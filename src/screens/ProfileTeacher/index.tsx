@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import {
   View,
@@ -9,6 +9,7 @@ import {
   Platform
 } from 'react-native';
 import { color } from 'react-native-reanimated';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import Photo from '../../assets/foto.png'
 import { Background } from '../../components/Background';
@@ -16,11 +17,15 @@ import { THEME } from '../../themes';
 import { AULAS } from '../../utils/aulas';
 
 import { styles } from './styles';
+import { LogBox } from 'react-native';
 
 
 
+export function ProfileTeacher({ route }: any) {
 
-export function ProfileTeacher({route}: any) {
+  useEffect(() => {
+    LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+  }, [])
   return (
     <ScrollView>
       <Background>
@@ -48,6 +53,7 @@ export function ProfileTeacher({route}: any) {
               style={{ fontFamily: THEME.FONT_FAMILY.SEMI_BOLD, fontSize: THEME.FONT_SIZE.LG }}
             >Aulas</Text>
           </View>
+
           <FlatList
             data={AULAS}
             keyExtractor={item => item.id}
@@ -68,9 +74,9 @@ export function ProfileTeacher({route}: any) {
               </View>
             )}
             style={{ width: '100%', height: 350 }}
-            /* showsVerticalScrollIndicator={true} */
-          >
-          </FlatList>
+          /* showsVerticalScrollIndicator={true} */
+          />
+
         </View>
       </Background>
     </ScrollView>

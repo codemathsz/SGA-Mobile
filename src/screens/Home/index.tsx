@@ -1,9 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
-  Button,
   Text,
-  Image,
   TouchableOpacity,
   ScrollView,
   FlatList,
@@ -69,30 +67,48 @@ import { Background } from "../../components/Background";
 import { Header } from "../../components/Header";
 import { Search } from "../../components/Search";
 import { Filter } from "../../components/Filter";
-import { MAIN } from "../../utils/listMain";
 
 import { InicioCard } from "../../components/InicioCard";
 import { Loading } from "../../components/Loading";
-import { NavigationContainer } from "@react-navigation/native";
+import API from "../../services/api";
+import { THEME } from "../../themes";
 
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { AdvancedSearch } from "../AdvancedSearch";
-const Tab = createBottomTabNavigator()
-
-const TabNavigation = () => {
-  return (
-    <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen name="AdvancedSearch" component={AdvancedSearch} />
-      </Tab.Navigator>
-    </NavigationContainer>
-  )
+export interface Aula {
+  id: number
+  cargaDiaria: string
+  codTurma: string
+  data: string
+  periodo: string
+  ambiente: {
+    id: number,
+    nome: string,
+    capacidade: number,
+    tipoAmbiente: string,
+    cep: string,
+    complemento: string
+    ativo: string,
+    endereco: string
+  }
+  professor: {
+    id: number,
+    nome: string,
+    email: string,
+    crgaSemanal: string,
+    ativo: string,
+    competencia: []
+  }
+  unidadeCurricular: {
+    id: number,
+    nome: string,
+    horas: string
+  }
 }
 
-
-interface HomeProps { }
-
 export function Home() {
+
+  // para guardar a lista de aulas
+  const [aula, setAula] = useState<Aula[]>([]);
+  // para abrir a modal
   const [showModal, setShowModal] = useState(false);
   // const para passar o dia para o indicador maior
   const [daySelected, setDaySelected] = useState(0);
@@ -106,24 +122,9 @@ export function Home() {
   const [filter, setFilter] = useState(false);
   // para saber se a busca foi aplicada
   const [search, setSearch] = useState(false);
+  // para guardar a data selecionada formatada
+  const [dateSelectedFormat, setDateSelectedFormat] = useState('');
 
-  // função para retornar as fonts depois do loading do app
-
-  let [fontsLoaded, error] = useFonts({
-    Inter_100Thin,
-    Inter_200ExtraLight,
-    Inter_300Light,
-    Inter_400Regular,
-    Inter_500Medium,
-    Inter_600SemiBold,
-    Inter_700Bold,
-    Inter_800ExtraBold,
-    Inter_900Black,
-  });
-
-  if (!fontsLoaded) {
-    return <Loading />;
-  }
 
   // funções para o calendário
 
@@ -133,7 +134,7 @@ export function Home() {
   var monthCurrent = String(date.getMonth() + 1).padStart(2, "0");
   var yearCurrent = date.getFullYear();
   const dateCurrent = yearCurrent + "-" + monthCurrent + "-" + dayCurrent;
-
+  const dateInitial = dayCurrent + "/" + monthCurrent + "/" + yearCurrent
   // função para o componente "ViewDay",
   // por Padrão de inicio ele recebe o dia atual para os indicadores
   if (daySelected === 0) {
@@ -176,9 +177,23 @@ export function Home() {
   };
 
 
-  
+  // api para pegar as aulas
+  async function getAulaDidMount() {
+    try {
+      const response = await API.get('/api/aula')
+      setAula(response.data)
+    } catch (error) {
+      return error
+    }
+  }
+
+  useEffect(() => {
+    getAulaDidMount()
+  }, [])
+
+  console.log(aula[1])
   return (
-    
+
     <ScrollView>
       <Background>
         <Header
@@ -226,9 +241,13 @@ export function Home() {
 
             // Props para o dia selecionado
             onDayPress={(day) => {
-              var passDate = day.day;
+
               var indicatorDay = day.dateString;
-              setDaySelected(passDate);
+              var daySelect = day.day
+              var monthSelect = day.month
+              var yearSelect = day.year
+              var dateSelectCurrent = `${daySelect}/${monthSelect}/${yearSelect}`
+              setDateSelectedFormat(dateSelectCurrent)
               setDayIndicator(indicatorDay)
             }}
 
@@ -236,9 +255,7 @@ export function Home() {
               [dayIndicator]: { selected: true, marked: true },
             }}
           />
-          <View style={styles.sectionCentralization}>
-            <ViewDay dateSelected={daySelected} />
-          </View>
+
         </View>
 
         <View style={styles.containerSearch}>
@@ -294,14 +311,27 @@ export function Home() {
             <Text style={styles.textRadioFour}>Noite</Text>
           </View>
         </View>
-        <View>
-          <FlatList
-            data={MAIN}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => <InicioCard data={item} />}
-          ></FlatList>
+        <View style={{ width: '100%', alignItems: 'center', justifyContent: 'center' }}>
+          {
+            aula.length == 0 ?
+              <Text style={{ fontSize: 22, paddingBottom: 30, color: THEME.COLORS.SELECT }}>Nenhuma aula encontrada!</Text>
+              :
+              <View style={styles.containerLista}>
+                <View style={styles.msgDate}>
+                  <Text style={{ color: THEME.COLORS.SELECT, textTransform: 'uppercase' }}>{`Aulas do dia: ${dateSelectedFormat == '' ? dateInitial : dateSelectedFormat}`}</Text>
+                </View>
+                <View style={{ width: '100%' }}>
+                  <FlatList
+                    data={aula}
+                    keyExtractor={(item) => item.id.toString()}
+                    renderItem={({ item }) => <InicioCard data={item} />}
+
+                  />
+                </View>
+              </View>
+          }
         </View>
-      
+
       </Background>
     </ScrollView>
   );

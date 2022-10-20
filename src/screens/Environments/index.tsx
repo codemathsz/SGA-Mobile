@@ -23,6 +23,7 @@ import { styles } from "./styles";
 
 import API from "../../services/api";
 import { ConfigApplicator } from "../../components/ConfigApplicator";
+import { Loading } from "../../components/Loading";
 
 export interface Ambientes {
   id: string;
@@ -251,46 +252,52 @@ export function Environments({ id, ...rest }: Ambientes) {
             <Filter />
           </TouchableOpacity>
         </View>
-        {filter == true ? (
-          <FlatList
-            ListHeaderComponent={
-              <ConfigApplicator
-                text="Filtro Aplicado"
-                functionFilter={validateCloseSearch}
-              />
-            }
-            data={getFilters()}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => <AmbienteCard data={item} />}
-            horizontal={false}
-            showsVerticalScrollIndicator
-            style={styles.list}
-          ></FlatList>
-        ) : search == true ? (
-          <FlatList
-            ListHeaderComponent={
-              <ConfigApplicator
-                text="Busca Aplicada"
-                functionFilter={validateCloseSearch}
-              />
-            }
-            data={searchEnvironment}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => <AmbienteCard data={item} />}
-            horizontal={false}
-            showsVerticalScrollIndicator
-            style={styles.list}
-          ></FlatList>
-        ) : (
-          <FlatList
-            data={ambientes}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => <AmbienteCard data={item} />}
-            horizontal={false}
-            showsVerticalScrollIndicator
-            style={styles.list}
-          ></FlatList>
-        )}
+        {
+          ambientes.length == 0 ?
+
+            <Loading />
+
+            :
+            filter == true ? (
+              <FlatList
+                ListHeaderComponent={
+                  <ConfigApplicator
+                    text="Filtro Aplicado"
+                    functionFilter={validateCloseSearch}
+                  />
+                }
+                data={getFilters()}
+                keyExtractor={(item) => item.id}
+                renderItem={({ item }) => <AmbienteCard data={item} />}
+                horizontal={false}
+                showsVerticalScrollIndicator
+                style={styles.list}
+              ></FlatList>
+            ) : search == true ? (
+              <FlatList
+                ListHeaderComponent={
+                  <ConfigApplicator
+                    text="Busca Aplicada"
+                    functionFilter={validateCloseSearch}
+                  />
+                }
+                data={searchEnvironment}
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={({ item }) => <AmbienteCard data={item} />}
+                horizontal={false}
+                showsVerticalScrollIndicator
+                style={styles.list}
+              ></FlatList>
+            ) : (
+              <FlatList
+                data={ambientes}
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={({ item }) => <AmbienteCard data={item} />}
+                horizontal={false}
+                showsVerticalScrollIndicator
+                style={styles.list}
+              ></FlatList>
+            )}
         {showModal == true ? (
           <Pressable
             style={styles.background}

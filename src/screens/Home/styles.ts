@@ -127,4 +127,14 @@ export const styles = StyleSheet.create({
     shadowOpacity: 0.7,  
     shadowRadius: 3,  
   },
+  containerLista:{
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  msgDate:{
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  }
 });

@@ -8,54 +8,40 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
- card:{
+  card: {
     width: '90%',
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
-    marginTop:20,
-    marginBottom:20,
-    borderTopRightRadius:14,
-    borderTopLeftRadius:14,
-    borderBottomRightRadius:14,
-    borderBottomLeftRadius:14,
-    backgroundColor: THEME.COLORS.WHITE ,
-   
- },
-  header:{
+    marginTop: 20,
+    marginBottom: 20,
+    borderTopRightRadius: 14,
+    borderTopLeftRadius: 14,
+    borderBottomRightRadius: 14,
+    borderBottomLeftRadius: 14,
+    backgroundColor: THEME.COLORS.WHITE,
+
+  },
+  header: {
     width: '100%',
     height: 40,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     backgroundColor: THEME.COLORS.AZUL_500,
     alignItems: 'center',
-    borderTopRightRadius:14,
-    borderTopLeftRadius:14,
-    paddingLeft:40,
-    paddingRight:4
+    borderTopRightRadius: 14,
+    borderTopLeftRadius: 14,
+    paddingLeft: 40,
+    paddingRight: 4
   },
-  containerManha:{
+  containerPeriodos: {
     width: '100%',
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop:6,
-    marginBottom:6,
+    marginTop: 6,
+    marginBottom: 6,
   },
-  containerTarde:{
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    marginTop:6,
-    marginBottom:6,
-  },
-  containerNoite:{
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    marginTop:6,
-    marginBottom:6,
-  },
+  
+ 
 });

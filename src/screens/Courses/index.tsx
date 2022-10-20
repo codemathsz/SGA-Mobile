@@ -25,6 +25,7 @@ import IconSearch from "../../assets/icon_search.png";
 
 import { styles } from "./styles";
 import API from "../../services/api";
+import { Loading } from "../../components/Loading";
 
 export interface Curso {
   id: string;
@@ -176,50 +177,55 @@ export function Courses() {
         </View>
 
         {/* // Operador ternário  para aplicar as buscas* */}
-        {filter == true ? (
-          // se filtro for aplicado aparecera essa flatList
-          <FlatList
-            ListHeaderComponent={
-              <ConfigApplicator
-                text="Filtro Aplicado"
-                functionFilter={validateCloseSearch}
+        {
+          courses.length == 0 ?
+            <Loading />
+            :
+            filter == true ? (
+              // se filtro for aplicado aparecera essa flatList
+              <FlatList
+                ListHeaderComponent={
+                  <ConfigApplicator
+                    text="Filtro Aplicado"
+                    functionFilter={validateCloseSearch}
+                  />
+                }
+                data={searchTypeCourses}
+                keyExtractor={(item) => item?.id}
+                renderItem={({ item }) => <CursoCard data={item} />}
+                horizontal={false}
+                showsVerticalScrollIndicator
+                style={styles.list}
+                ListEmptyComponent={<Loading/>}
               />
-            }
-            data={searchTypeCourses}
-            keyExtractor={(item) => item?.id}
-            renderItem={({ item }) => <CursoCard data={item} />}
-            horizontal={false}
-            showsVerticalScrollIndicator
-            style={styles.list}
-          ></FlatList>
-        ) : // Se buscar estiver sendo feita aparecera essa flatList
-          search == true ? (
-            <FlatList
-              ListHeaderComponent={
-                <ConfigApplicator
-                  text="Busca Aplicado"
-                  functionFilter={validateCloseSearch}
-                />
-              }
-              data={searchCourses}
-              keyExtractor={(item) => item?.id}
-              renderItem={({ item }) => <CursoCard data={item} />}
-              horizontal={false}
-              showsVerticalScrollIndicator
-              style={styles.list}
-            ></FlatList>
-          ) : (
-            // Flatlist que aparece quando não tem nenhuma busca personalizada feita
-            <FlatList
-              /*  ListHeaderComponent={} */
-              data={courses}
-              keyExtractor={(item) => item?.id}
-              renderItem={({ item }) => <CursoCard data={item} />}
-              horizontal={false}
-              showsVerticalScrollIndicator
-              style={styles.list}
-            ></FlatList>
-          )}
+            ) : // Se buscar estiver sendo feita aparecera essa flatList
+              search == true ? (
+                <FlatList
+                  ListHeaderComponent={
+                    <ConfigApplicator
+                      text="Busca Aplicado"
+                      functionFilter={validateCloseSearch}
+                    />
+                  }
+                  data={searchCourses}
+                  keyExtractor={(item) => item?.id}
+                  renderItem={({ item }) => <CursoCard data={item} />}
+                  horizontal={false}
+                  showsVerticalScrollIndicator
+                  style={styles.list}
+                ></FlatList>
+              ) : (
+                // Flatlist que aparece quando não tem nenhuma busca personalizada feita
+                <FlatList
+                  /*  ListHeaderComponent={} */
+                  data={courses}
+                  keyExtractor={(item) => item?.id}
+                  renderItem={({ item }) => <CursoCard data={item} />}
+                  horizontal={false}
+                  showsVerticalScrollIndicator
+                  style={styles.list}
+                ></FlatList>
+              )}
 
         {showModal == true ? (
           <Pressable
@@ -227,7 +233,7 @@ export function Courses() {
             onPress={() => setShowModal(false)}
           >
             <Pressable style={styles.modal}
-             onPress={() => setShowModal(true)}
+              onPress={() => setShowModal(true)}
             >
               <View style={styles.modalHeader}>
                 <TouchableOpacity
@@ -242,7 +248,7 @@ export function Courses() {
               <View style={styles.containerFilter}>
                 <Picker
                   selectedValue={selectTypeCourses}
-                  style={Platform.OS === 'ios' ? styles.datePickerIOS :styles.datePickerANDROID}
+                  style={Platform.OS === 'ios' ? styles.datePickerIOS : styles.datePickerANDROID}
                   onValueChange={(itemValue) => setSelectTypeCourses(itemValue)}
                   mode={'dropdown'}
                 >
