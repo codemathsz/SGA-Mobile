@@ -34,6 +34,10 @@ export function AdvancedSearch() {
   // const para value do TextInput
   const [valueCurso, setValueCurso] = useState("");
   const [valueCompany, setValueCompany] = useState("");
+  // valores pela seleção de resultados da busca
+  const [selectedTeachers, setSelectedTeachers] = useState();
+
+  const [selectedEnvironments, setSelectedEnvironments] = useState();
   // const para o select da competência
   const [selectedCompetence, setSelectedCompetence] = useState([]);
   // const para o select de período
@@ -169,13 +173,21 @@ export function AdvancedSearch() {
     getTeachersDidMount();
     getEnvironmentDidMount();
   }
+
+  // Recebe o valor do professor selecionado
+  const teachersSelected = (t) => {
+    setSelectedTeachers(t);
+  };
+
   // função para quando for realizar outra busca
   function otherSearchApplied() {
     // tirando os valores dos resultados pela busca
     teachers.splice(0);
     environment.splice(0);
-    setValueCurso('')
-    setValueCompany('')
+    setValueCurso("");
+    setValueCompany("");
+    selectedCompetence.splice(0);
+
     // retirando a busca
     setSearchAplic(false);
   }
@@ -214,6 +226,8 @@ export function AdvancedSearch() {
     getUnidadeCurricularDidMount();
   }, []);
 
+  console.log(selectedTeachers);
+
   return (
     <Background>
       <ScrollView>
@@ -243,9 +257,17 @@ export function AdvancedSearch() {
                   }
                   data={teachers}
                   keyExtractor={(item) => item?.id}
-                  renderItem={({ item }) => <TeachersOptionsCard data={item} />}
+                  renderItem={({ item }) => (
+                    <TeachersOptionsCard
+                      {...item}
+                      data={item}
+                      onPressTeacher={teachersSelected}
+                    />
+                  )}
                   horizontal={false}
                   showsVerticalScrollIndicator={true}
+
+                  //onPress={({item}) => teachersSelected(item.nome)}
                 />
               </View>
               <View style={styles.containerFlatlist}>
@@ -311,7 +333,13 @@ export function AdvancedSearch() {
                 )}
                 , no período da{" "}
                 <Text style={styles.textResultState}>{selectedPeriod}</Text>.
-                Será realizado pelo professor(a) {}, em {}.
+                Será realizado pelo professor(a){" "}
+                <Text style={styles.textResultState}>
+                  {selectedTeachers == null
+                    ? "Selecione um professor"
+                    : selectedTeachers}
+                </Text>
+                , em {selectedEnvironments}.
               </Text>
             </View>
             <View style={styles.btnsSearchAplic}>

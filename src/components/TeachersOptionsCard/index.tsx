@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   TouchableOpacityProps,
   TouchableOpacity,
@@ -12,12 +12,25 @@ import { Teachers } from "../../screens/Teachers";
 
 interface Props {
   data: Teachers;
+  onPressTeacher: any;
 }
 
-export function TeachersOptionsCard({ data }: Props) {
+function selectedTeacher() {}
+
+export function TeachersOptionsCard({ data, onPressTeacher }: Props) {
+  const [teacherSelect, setTeacherSelect] = useState(false);
+
+  function receiveSelected(nome) {
+    onPressTeacher(nome);
+
+  }
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.containerInfo}>
+      <TouchableOpacity
+        style={styles.containerInfo}
+        onPress={() => receiveSelected(data.nome)}
+      >
         <Text style={styles.text}>{data.nome}</Text>
       </TouchableOpacity>
     </View>
