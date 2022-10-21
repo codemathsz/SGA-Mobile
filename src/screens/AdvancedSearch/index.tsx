@@ -36,7 +36,7 @@ export function AdvancedSearch() {
   const [valueCompany, setValueCompany] = useState("");
   // valores pela seleção de resultados da busca
   const [selectedTeachers, setSelectedTeachers] = useState();
-
+  const [valueTeacher, setValueTeacher] = useState();
   const [selectedEnvironments, setSelectedEnvironments] = useState();
   // const para o select da competência
   const [selectedCompetence, setSelectedCompetence] = useState([]);
@@ -179,6 +179,10 @@ export function AdvancedSearch() {
     setSelectedTeachers(t);
   };
 
+  const valueTeacherSelected = (v) => {
+    setValueTeacher(v)
+  };
+
   // função para quando for realizar outra busca
   function otherSearchApplied() {
     // tirando os valores dos resultados pela busca
@@ -226,8 +230,6 @@ export function AdvancedSearch() {
     getUnidadeCurricularDidMount();
   }, []);
 
-  console.log(selectedTeachers);
-
   return (
     <Background>
       <ScrollView>
@@ -262,6 +264,8 @@ export function AdvancedSearch() {
                       {...item}
                       data={item}
                       onPressTeacher={teachersSelected}
+                      valueTeacher={valueTeacherSelected}
+                      validStyle={valueTeacher}
                     />
                   )}
                   horizontal={false}
