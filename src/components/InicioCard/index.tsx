@@ -1,5 +1,5 @@
-import React from "react";
-import { View, TouchableOpacityProps, Text } from "react-native";
+import React, { useState } from "react";
+import { View, TouchableOpacityProps, Text, TouchableOpacity } from "react-native";
 import { Aula } from "../../screens/Home";
 
 import { THEME } from "../../themes";
@@ -8,27 +8,45 @@ import { styles } from "./styles";
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
+
 interface Props extends TouchableOpacityProps {
   data: Aula;
+  valueModal: any
 }
-export function InicioCard({ data, ...rest }: Props) {
+export function InicioCard({ data, valueModal }: Props) {
+
+  const [showModal, setShowModal] = useState(false)
+
+  function validModal(){
+    if(showModal == true){
+      valueModal(false)
+    }else{
+      valueModal(true)
+    }
+  }
+  
   return (
-    <View style={styles.container} {...rest}>
-      <View style={styles.card}>
+    <View style={styles.container} >
+      <TouchableOpacity style={styles.card}
+        onPress={() => validModal()}
+      >
         <View style={styles.header}>
-          <View style={{ width: '70%' }}>
+          <View style={{ width: '34%' }}>
             <Text style={{ fontFamily: THEME.FONT_FAMILY.BOLD, fontSize: THEME.FONT_SIZE.MD, color: THEME.COLORS.WHITE }}>{data.ambiente.nome}</Text>
           </View>
-          <View style={{ width: '30%' }}>
+          <View style={{ width: '36%' }}>
+            <Text style={{ fontFamily: THEME.FONT_FAMILY.BOLD, fontSize: THEME.FONT_SIZE.MD, color: THEME.COLORS.WHITE }}>Aula</Text>
+          </View>
+          <View style={{ width: '25%' }}>
             <Text style={{ fontFamily: THEME.FONT_FAMILY.BOLD, fontSize: THEME.FONT_SIZE.MD, color: THEME.COLORS.WHITE }}>Professor</Text>
           </View>
         </View>
         <View style={styles.containerPeriodos}>{/* Manha */}
-          <View style={{ width: '50%', flexDirection: 'row', justifyContent: 'space-around', alignContent: 'center' }}>
-            <View>
-              <Text> <Ionicons name='sunny' size={15} color={'#FFF974'} /></Text>
+          <View style={{ width: '70%', flexDirection: 'row', justifyContent: 'space-around', alignContent: 'center' }}>
+            <View >
+              <Text> <Ionicons name='sunny' size={18} color={'#FFF974'} /></Text>
             </View>
-            <View>
+            <View >
               <Text>
                 {data.unidadeCurricular.nome}
               </Text>
@@ -39,7 +57,7 @@ export function InicioCard({ data, ...rest }: Props) {
           </View>
         </View>
         <View style={styles.containerPeriodos}>{/* Tarde */}
-          <View style={{ width: '50%', flexDirection: 'row', justifyContent: 'space-around', alignContent: 'center' }}>
+          <View style={{ width: '70%', flexDirection: 'row', justifyContent: 'space-around', alignContent: 'center' }}>
             <View>
               <Text> <Ionicons name='partly-sunny' size={15} color={'#38BAF2'} /></Text>
             </View>
@@ -54,7 +72,7 @@ export function InicioCard({ data, ...rest }: Props) {
           </View>
         </View>
         <View style={styles.containerPeriodos}>{/* Noite */}
-          <View style={{ width: '50%', flexDirection: 'row', justifyContent: 'space-around', alignContent: 'center' }}>
+          <View style={{ width: '70%', flexDirection: 'row', justifyContent: 'space-around', alignContent: 'center' }}>
             <View>
               <Text> <Ionicons name='moon' size={15} color={'#3B0665'} /></Text>
             </View>
@@ -68,7 +86,7 @@ export function InicioCard({ data, ...rest }: Props) {
             <Text>{data.professor.nome}</Text>
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
     </View>
   );
 

@@ -191,7 +191,11 @@ export function Home() {
     getAulaDidMount()
   }, [])
 
-  console.log(aula[1])
+  const clickModal = (v) =>{
+    setShowModal(v)
+  }
+  
+  console.log(showModal)
   return (
 
     <ScrollView>
@@ -267,7 +271,7 @@ export function Home() {
           />
           <TouchableOpacity
             style={Platform.OS === 'ios' ? styles.btnModalIOS : styles.btnModalANDROID}
-            onPress={() => setShowModal(true)}
+            
           >
             <Filter />
           </TouchableOpacity>
@@ -324,7 +328,7 @@ export function Home() {
                   <FlatList
                     data={aula}
                     keyExtractor={(item) => item.id.toString()}
-                    renderItem={({ item }) => <InicioCard data={item} />}
+                    renderItem={({ item }) => <InicioCard data={item}  valueModal={clickModal}/>}
 
                   />
                 </View>

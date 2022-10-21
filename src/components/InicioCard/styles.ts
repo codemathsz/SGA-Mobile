@@ -26,13 +26,12 @@ export const styles = StyleSheet.create({
     width: '100%',
     height: 40,
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     backgroundColor: THEME.COLORS.AZUL_500,
     alignItems: 'center',
     borderTopRightRadius: 14,
     borderTopLeftRadius: 14,
-    paddingLeft: 40,
-    paddingRight: 4
+    paddingLeft: 10,
   },
   containerPeriodos: {
     width: '100%',
