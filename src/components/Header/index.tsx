@@ -3,34 +3,29 @@ import { View, Button, Text, Image, TouchableOpacity } from 'react-native';
 
 import { styles } from './styles';
 
-import { 
-    Inter_100Thin,
-    Inter_200ExtraLight,
-    Inter_300Light,
-    Inter_400Regular,
-    Inter_500Medium,
-    Inter_600SemiBold,
-    Inter_700Bold,
-    Inter_800ExtraBold,
-    Inter_900Black 
-  } from '@expo-google-fonts/inter';
+// para fazer os gradient nos textos
+import { LinearGradient } from 'expo-linear-gradient'
+import MaskedView from '@react-native-masked-view/masked-view'
 
-  import {useFonts} from 'expo-font';
-  import AppLoading from 'expo-app-loading';
-  
-  import Soon from '../../assets/Soon.png'
-
-interface HeaderProps{
-    title: string;
-    subTitle: string;
+interface HeaderProps {
+  title: string;
+  subTitle: string;
 }
-export function Header({title, subTitle}: HeaderProps) {
+export function Header({ title, subTitle }: HeaderProps) {
   return (
     <View style={styles.container}>
-        <View style={styles.contenText}>
-          <Text style={styles.titleInitial}>{title}</Text>
-          <Text style={styles.subTitle}>{subTitle}</Text>
-        </View>
+      <View style={styles.contenText}>
+        <MaskedView maskElement={<Text style={[styles.titleInitial, { backgroundColor: 'transparent' }]}>{title}</Text>}>
+          <LinearGradient
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            colors={['#25B5E9', '#367FBF']}
+          >
+            <Text style={[styles.titleInitial, { opacity: 0 }]}>{title}</Text>
+          </LinearGradient>
+        </MaskedView>
+        <Text style={styles.subTitle}>{subTitle}</Text>
       </View>
+    </View>
   );
 }
