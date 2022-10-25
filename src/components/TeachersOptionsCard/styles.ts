@@ -47,4 +47,9 @@ export const styles = StyleSheet.create({
     fontFamily: THEME.FONT_FAMILY.REGULAR,
     color: THEME.COLORS.TEXT,
   },
+  textSelect:{
+    fontSize: 18,
+    fontFamily: THEME.FONT_FAMILY.SEMI_BOLD,
+    color: THEME.COLORS.WHITE
+  }
 });
