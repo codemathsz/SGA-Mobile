@@ -184,7 +184,10 @@ export const styles = StyleSheet.create({
     justifyContent:"space-between", 
   },
   containerFlatlist:{
-
+    height: 215
+  },
+  listResults:{
+    width: "100%",
   },
   containerText:{
     marginTop: 30,

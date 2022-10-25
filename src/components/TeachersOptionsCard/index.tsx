@@ -17,19 +17,19 @@ interface Props {
   validStyle: any;
 }
 
-function selectedTeacher() {}
-
 export function TeachersOptionsCard({
   data,
   onPressTeacher,
   valueTeacher,
   validStyle,
 }: Props) {
+  // aplicar o style conforme o valor
   const [teacherSelect, setTeacherSelect] = useState(false);
+
   const [value, setValue] = useState(null);
 
   function receiveSelected(data) {
-    setValue(data.id)
+    setValue(data.id);
     onPressTeacher(data.nome);
     valueTeacher(data.id);
     validFunction();
@@ -38,14 +38,14 @@ export function TeachersOptionsCard({
   const validFunction = () => {
     if (validStyle === value) {
       setTeacherSelect(true);
-    } else{
+    } else {
       setTeacherSelect(false);
     }
   };
 
   useEffect(() => {
-    validFunction()
-  }, [validStyle])
+    validFunction();
+  }, [validStyle]);
 
   return (
     <View style={styles.container}>
@@ -57,7 +57,9 @@ export function TeachersOptionsCard({
         }
         onPress={() => receiveSelected(data)}
       >
-        <Text style={styles.text}>{data.nome}</Text>
+        <Text style={teacherSelect == true ? styles.textSelect : styles.text}>
+          {data.nome}
+        </Text>
       </TouchableOpacity>
     </View>
   );

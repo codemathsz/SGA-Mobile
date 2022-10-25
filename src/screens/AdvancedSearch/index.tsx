@@ -38,6 +38,7 @@ export function AdvancedSearch() {
   const [selectedTeachers, setSelectedTeachers] = useState();
   const [valueTeacher, setValueTeacher] = useState();
   const [selectedEnvironments, setSelectedEnvironments] = useState();
+  const [valueEnvironment, setValueEnvironment] = useState();
   // const para o select da competência
   const [selectedCompetence, setSelectedCompetence] = useState([]);
   // const para o select de período
@@ -174,14 +175,22 @@ export function AdvancedSearch() {
     getEnvironmentDidMount();
   }
 
-  // Recebe o valor do professor selecionado
+  // Recebe o valor das opções selecionadas
   const teachersSelected = (t) => {
     setSelectedTeachers(t);
   };
 
   const valueTeacherSelected = (v) => {
-    setValueTeacher(v)
+    setValueTeacher(v);
   };
+
+  const environmentSelected = (e) => {
+    setSelectedEnvironments(e);
+  }
+
+  const valueEnvironmentSelected = (e) => {
+    setValueEnvironment(e)
+  }
 
   // função para quando for realizar outra busca
   function otherSearchApplied() {
@@ -270,7 +279,7 @@ export function AdvancedSearch() {
                   )}
                   horizontal={false}
                   showsVerticalScrollIndicator={true}
-
+                  style={styles.listResults}
                   //onPress={({item}) => teachersSelected(item.nome)}
                 />
               </View>
@@ -285,10 +294,17 @@ export function AdvancedSearch() {
                   data={environment}
                   keyExtractor={(item) => item?.id}
                   renderItem={({ item }) => (
-                    <EnvironmentsOptionsCard data={item} />
+                    <EnvironmentsOptionsCard 
+                    {...item}
+                    data={item} 
+                    onPressEnvironment={environmentSelected}
+                    valueEnvironment={valueEnvironmentSelected}
+                    validStyle={valueEnvironment}
+                    />
                   )}
                   horizontal={false}
                   showsVerticalScrollIndicator={true}
+                  style={styles.listResults}
                 />
               </View>
             </View>
@@ -298,8 +314,10 @@ export function AdvancedSearch() {
                 A solicitação do{" "}
                 <Text style={styles.textResultState}>{valueCurso}</Text>, pela{" "}
                 <Text style={styles.textResultState}>{valueCompany}</Text>{" "}
-                poderá ser marcado. Sendo assim a data é de {valueDateInit} até{" "}
-                {valueDateFinal}, incluindo os dias da semana
+                poderá ser marcado. Sendo assim a data é de{" "}
+                <Text style={styles.textResultState}>{valueDateInit}</Text> até{" "}
+                <Text style={styles.textResultState}>{valueDateFinal}</Text>,
+                incluindo os dias da semana
                 {dayDom == true ? (
                   <Text style={styles.textResultState}> Domingo </Text>
                 ) : (
@@ -343,7 +361,13 @@ export function AdvancedSearch() {
                     ? "Selecione um professor"
                     : selectedTeachers}
                 </Text>
-                , em {selectedEnvironments}.
+                , em{" "}
+                <Text style={styles.textResultState}>
+                  {selectedEnvironments == null
+                    ? "Selecione um ambiente"
+                    : selectedEnvironments}
+                </Text>
+                .
               </Text>
             </View>
             <View style={styles.btnsSearchAplic}>
