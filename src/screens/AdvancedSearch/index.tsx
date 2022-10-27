@@ -6,11 +6,13 @@ import {
   TextInput,
   TouchableOpacity,
   FlatList,
+  Vibration,
 } from "react-native";
 import { Picker, PickerIOS } from "@react-native-picker/picker";
 import { RadioButton } from "react-native-paper";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { TextInputMask } from "react-native-masked-text";
 
 import { Background } from "../../components/Background";
 import { Header } from "../../components/Header";
@@ -34,6 +36,7 @@ export function AdvancedSearch() {
   // const para value do TextInput
   const [valueCurso, setValueCurso] = useState("");
   const [valueCompany, setValueCompany] = useState("");
+  const [valueCep, setValueCep] = useState("");
   // valores pela seleção de resultados da busca
   const [selectedTeachers, setSelectedTeachers] = useState();
   const [valueTeacher, setValueTeacher] = useState();
@@ -73,7 +76,14 @@ export function AdvancedSearch() {
   const [openDateFinal, setOpenDateFinal] = useState(false);
   // const para saber se busca foi aplicada
   const [searchAplic, setSearchAplic] = useState(false);
-
+  // usados para fazer a validação do formulário
+  const [erroMessage, setErroMessage] = useState("");
+  const [erroCurse, setErroCurse] = useState(false);
+  const [erroCompetence, setErroCompetence] = useState(false);
+  const [erroCompany, setErroCompany] = useState(false);
+  const [erroCep, setErroCep] = useState(false);
+  const [erroDay, setErroDay] = useState(false);
+  const [erroPeriod, setErroPeriod] = useState(false);
   // Feita para saber os valores obtidos ao escolher a data do Date Picker
   var monthDateInit = String(dateInit.getMonth() + 1).padStart(2, "0");
   var valueDateInit = String(
@@ -170,10 +180,64 @@ export function AdvancedSearch() {
 
   // para ser aplicada quando for fazer a busca
   function searchApplied() {
-    setSearchAplic(true);
+    validateSearch();
     getTeachersDidMount();
     getEnvironmentDidMount();
+    console.log("AQUI a competência" + selectedCompetence);
   }
+
+  // deixando erros no estado inicial
+  const erroReset = () => {
+    setErroCurse(false);
+    setErroCompetence(false);
+    setErroCompany(false);
+    setErroCep(false);
+    setErroDay(false);
+    setErroPeriod(false);
+  };
+
+  // fazendo a validação dos campos antes de fazer a busca
+  const validateSearch = () => {
+    erroReset();
+    if (valueCurso === "") {
+      Vibration.vibrate();
+      setErroMessage("Campo obrigatório*");
+      return setErroCurse(true);
+    } else if (selectedCompetence.length == 0) {
+      Vibration.vibrate();
+      setErroMessage("Selecione uma competência*");
+      return setErroCompetence(true);
+    } else if (valueCompany == "") {
+      Vibration.vibrate();
+      setErroMessage("Campo obrigatório*");
+      return setErroCompany(true);
+    } else if (localeClasses == "company" && valueCep == "") {
+      Vibration.vibrate();
+      setErroMessage("Campo obrigatório*");
+      return setErroCep(true);
+    } else if (valueCep.length < 9) {
+      Vibration.vibrate();
+      setErroMessage("CEP Invalido*")
+      return setErroCep(true);
+    } else if (
+      dayDom == false &&
+      daySeg == false &&
+      dayTer == false &&
+      dayQua == false &&
+      dayQui == false &&
+      daySex == false &&
+      daySab == false
+    ) {
+      Vibration.vibrate();
+      setErroMessage("Selecione um Dia*");
+      return setErroDay(true);
+    } else if (selectedPeriod.length == 0) {
+      Vibration.vibrate();
+      setErroMessage("Selecione um período*");
+      return setErroPeriod(true);
+    }
+    return setSearchAplic(true);
+  };
 
   // Recebe o valor das opções selecionadas
   const teachersSelected = (t) => {
@@ -186,11 +250,11 @@ export function AdvancedSearch() {
 
   const environmentSelected = (e) => {
     setSelectedEnvironments(e);
-  }
+  };
 
   const valueEnvironmentSelected = (e) => {
-    setValueEnvironment(e)
-  }
+    setValueEnvironment(e);
+  };
 
   // função para quando for realizar outra busca
   function otherSearchApplied() {
@@ -199,8 +263,17 @@ export function AdvancedSearch() {
     environment.splice(0);
     setValueCurso("");
     setValueCompany("");
-    selectedCompetence.splice(0);
-
+    setSelectedCompetence([]);
+    setLocaleClasses("senai");
+    setValueCep("");
+    setDayDom(false);
+    setDaySeg(false);
+    setDayTer(false);
+    setDayQua(false);
+    setDayQui(false);
+    setDaySex(false);
+    setDaySab(false);
+    setSelectedPeriod([]);
     // retirando a busca
     setSearchAplic(false);
   }
@@ -294,12 +367,12 @@ export function AdvancedSearch() {
                   data={environment}
                   keyExtractor={(item) => item?.id}
                   renderItem={({ item }) => (
-                    <EnvironmentsOptionsCard 
-                    {...item}
-                    data={item} 
-                    onPressEnvironment={environmentSelected}
-                    valueEnvironment={valueEnvironmentSelected}
-                    validStyle={valueEnvironment}
+                    <EnvironmentsOptionsCard
+                      {...item}
+                      data={item}
+                      onPressEnvironment={environmentSelected}
+                      valueEnvironment={valueEnvironmentSelected}
+                      validStyle={valueEnvironment}
                     />
                   )}
                   horizontal={false}
@@ -386,8 +459,14 @@ export function AdvancedSearch() {
           </View>
         ) : (
           <View style={styles.containerForm}>
+            {/* TextInput Curso */}
             <View style={styles.divForm}>
               <Text style={styles.titleForm}>Curso</Text>
+              {erroCurse ? (
+                <Text style={styles.erroMessage}>{erroMessage}</Text>
+              ) : (
+                ""
+              )}
               <TextInput
                 style={styles.inputForm}
                 placeholder="Digite o nome do Curso"
@@ -395,8 +474,14 @@ export function AdvancedSearch() {
                 onChangeText={(t) => setValueCurso(t)}
               />
             </View>
+            {/* Select Competência */}
             <View style={styles.divForm}>
               <Text style={styles.titleForm}>Principal Competência</Text>
+              {erroCompetence ? (
+                <Text style={styles.erroMessage}>{erroMessage}</Text>
+              ) : (
+                ""
+              )}
               <View style={styles.selectForm}>
                 <Picker
                   selectedValue={selectedCompetence}
@@ -422,8 +507,14 @@ export function AdvancedSearch() {
                 </Picker>
               </View>
             </View>
+            {/* Campo empresa */}
             <View style={styles.divForm}>
               <Text style={styles.titleForm}>Empresa</Text>
+              {erroCompany ? (
+                <Text style={styles.erroMessage}>{erroMessage}</Text>
+              ) : (
+                ""
+              )}
               <TextInput
                 style={styles.inputForm}
                 placeholder="Digite o nome da Empresa"
@@ -465,9 +556,18 @@ export function AdvancedSearch() {
             {localeClasses === "company" ? (
               <View style={styles.divForm}>
                 <Text style={styles.titleForm}>CEP</Text>
-                <TextInput
+                {erroCep ? (
+                  <Text style={styles.erroMessage}>{erroMessage}</Text>
+                ) : (
+                  ""
+                )}
+                <TextInputMask
                   style={styles.inputForm}
+                  type={"zip-code"}
                   placeholder="Digite o cep do local da empresa"
+                  keyboardType="numeric"
+                  value={valueCep}
+                  onChangeText={(t) => setValueCep(t)}
                 />
               </View>
             ) : (
@@ -534,6 +634,11 @@ export function AdvancedSearch() {
             {/* Selecionador de dias*/}
             <View style={styles.divForm}>
               <Text style={styles.titleForm}>Dias da Semana</Text>
+              {erroDay ? (
+                <Text style={styles.erroMessage}>{erroMessage}</Text>
+              ) : (
+                ""
+              )}
               <View style={styles.containerDays}>
                 <TouchableOpacity
                   style={dayDom == true ? styles.daySelected : styles.divDays}
@@ -623,6 +728,11 @@ export function AdvancedSearch() {
             </View>
             <View style={styles.divForm}>
               <Text style={styles.titleForm}>Período</Text>
+              {erroPeriod ? (
+                <Text style={styles.erroMessage}>{erroMessage}</Text>
+              ) : (
+                ""
+              )}
               <View style={styles.selectForm}>
                 <Picker
                   selectedValue={selectedPeriod}
