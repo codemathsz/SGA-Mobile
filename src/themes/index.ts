@@ -23,7 +23,7 @@ export const THEME = {
       WHITE: '#FFF',
 
       SUCCESS: '#34D399',
-      ALERT: '#F87171',
+      ALERT: '#D90404',
   
       TITLE: ['rgba(37,181,233,1)', 'rgba(54,127,191,1)'],
       OVERLAY: 'rgba(0,0,0,0.6)',

@@ -208,5 +208,10 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-evenly",
     marginTop: 20,
+  },
+  erroMessage:{
+    paddingLeft: 15,
+    fontFamily: THEME.FONT_FAMILY.BOLD,
+    color: THEME.COLORS.ALERT
   }
 });
