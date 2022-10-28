@@ -4,6 +4,7 @@ import { THEME } from "../../themes";
 
 export const styles = StyleSheet.create({
   containerForm: {
+    height:'100%',
     marginTop: 5,
     paddingHorizontal: 10,
     paddingVertical: 25,
@@ -183,11 +184,27 @@ export const styles = StyleSheet.create({
     marginVertical: 8,
     justifyContent:"space-between", 
   },
-  containerFlatlist:{
-    height: 215
-  },
-  listResults:{
+  containerOptionsCompany:{
     width: "100%",
+    marginTop: 30,
+    paddingHorizontal: 5,
+    flexDirection: "row",
+    marginVertical: 8,
+    justifyContent: 'center',
+  },
+  containerFlatlist:{
+    height: 215,
+    
+  },
+  containerFlatlistCompany:{
+    width: '90%',
+    height: 215,
+    justifyContent: 'center',
+    
+  },
+  optionsFlatlist:{
+    height: 215,
+    
   },
   containerText:{
     marginTop: 30,
