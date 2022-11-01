@@ -183,7 +183,6 @@ export function AdvancedSearch() {
     validateSearch();
     getTeachersDidMount();
     getEnvironmentDidMount();
-    console.log("AQUI a competência" + selectedCompetence);
   }
 
   // deixando erros no estado inicial
@@ -215,9 +214,9 @@ export function AdvancedSearch() {
       Vibration.vibrate();
       setErroMessage("Campo obrigatório*");
       return setErroCep(true);
-    } else if (valueCep.length < 9) {
+    } else if (localeClasses == "company" && valueCep.length < 9) {
       Vibration.vibrate();
-      setErroMessage("CEP Invalido*")
+      setErroMessage("CEP Invalido*");
       return setErroCep(true);
     } else if (
       dayDom == false &&
@@ -314,7 +313,7 @@ export function AdvancedSearch() {
 
   return (
     <Background>
-      <ScrollView>
+      <ScrollView endFillColor={THEME.COLORS.AZUL_300}>
         {searchAplic == true ? (
           ""
         ) : (
@@ -330,58 +329,89 @@ export function AdvancedSearch() {
               subTitle="Organize sua busca avançada e compartilhe a informação exata do nosso sistema."
             />
             {/* Listagem de opções para o usuário */}
-            <View style={styles.containerOptions}>
-              <View style={styles.containerFlatlist}>
-                <FlatList
-                  ListHeaderComponent={
-                    <FlatSearchAvanced
-                      title="Professores"
-                      subtitle="Selecione um professor."
-                    />
-                  }
-                  data={teachers}
-                  keyExtractor={(item) => item?.id}
-                  renderItem={({ item }) => (
-                    <TeachersOptionsCard
-                      {...item}
-                      data={item}
-                      onPressTeacher={teachersSelected}
-                      valueTeacher={valueTeacherSelected}
-                      validStyle={valueTeacher}
-                    />
-                  )}
-                  horizontal={false}
-                  showsVerticalScrollIndicator={true}
-                  style={styles.listResults}
-                  //onPress={({item}) => teachersSelected(item.nome)}
-                />
+
+            {localeClasses == "company" ? (
+              <View style={styles.containerOptionsCompany}>
+                <View style={styles.containerFlatlistCompany}>
+                  <FlatList
+                    ListHeaderComponent={
+                      <FlatSearchAvanced
+                        title="Professores"
+                        subtitle="Selecione um professor."
+                      />
+                    }
+                    data={teachers}
+                    keyExtractor={(item) => item?.id}
+                    renderItem={({ item }) => (
+                      <TeachersOptionsCard
+                        {...item}
+                        data={item}
+                        onPressTeacher={teachersSelected}
+                        valueTeacher={valueTeacherSelected}
+                        validStyle={valueTeacher}
+                      />
+                    )}
+                    horizontal={false}
+                    showsVerticalScrollIndicator={true}
+                    nestedScrollEnabled={true}
+                  />
+                </View>
               </View>
-              <View style={styles.containerFlatlist}>
-                <FlatList
-                  ListHeaderComponent={
-                    <FlatSearchAvanced
-                      title="Ambientes"
-                      subtitle="Selecione um ambiente."
-                    />
-                  }
-                  data={environment}
-                  keyExtractor={(item) => item?.id}
-                  renderItem={({ item }) => (
-                    <EnvironmentsOptionsCard
-                      {...item}
-                      data={item}
-                      onPressEnvironment={environmentSelected}
-                      valueEnvironment={valueEnvironmentSelected}
-                      validStyle={valueEnvironment}
-                    />
-                  )}
-                  horizontal={false}
-                  showsVerticalScrollIndicator={true}
-                  style={styles.listResults}
-                />
+            ) : (
+              <View style={styles.containerOptions}>
+                <View style={styles.containerFlatlist}>
+                  <FlatList
+                    ListHeaderComponent={
+                      <FlatSearchAvanced
+                        title="Professores"
+                        subtitle="Selecione um professor."
+                      />
+                    }
+                    data={teachers}
+                    keyExtractor={(item) => item?.id}
+                    renderItem={({ item }) => (
+                      <TeachersOptionsCard
+                        {...item}
+                        data={item}
+                        onPressTeacher={teachersSelected}
+                        valueTeacher={valueTeacherSelected}
+                        validStyle={valueTeacher}
+                      />
+                    )}
+                    horizontal={false}
+                    showsVerticalScrollIndicator={true}
+                    nestedScrollEnabled
+                  />
+                </View>
+                <View style={styles.containerFlatlist}>
+                  <FlatList
+                    ListHeaderComponent={
+                      <FlatSearchAvanced
+                        title="Ambientes"
+                        subtitle="Selecione um ambiente."
+                      />
+                    }
+                    data={environment}
+                    keyExtractor={(item) => item?.id}
+                    renderItem={({ item }) => (
+                      <EnvironmentsOptionsCard
+                        {...item}
+                        data={item}
+                        onPressEnvironment={environmentSelected}
+                        valueEnvironment={valueEnvironmentSelected}
+                        validStyle={valueEnvironment}
+                      />
+                    )}
+                    horizontal={false}
+                    showsVerticalScrollIndicator={true}
+                    nestedScrollEnabled
+                  />
+                </View>
               </View>
-            </View>
+            )}
+
             {/* Texto a ser compartilhado */}
+
             <View style={styles.containerText}>
               <Text style={styles.textResult}>
                 A solicitação do{" "}
@@ -434,12 +464,24 @@ export function AdvancedSearch() {
                     ? "Selecione um professor"
                     : selectedTeachers}
                 </Text>
-                , em{" "}
-                <Text style={styles.textResultState}>
-                  {selectedEnvironments == null
-                    ? "Selecione um ambiente"
-                    : selectedEnvironments}
-                </Text>
+                ,{" "}
+                {localeClasses == "company" ? (
+                  <>
+                    <Text style={styles.textResult}>
+                      no endereço solicitado pela empresa cujo o CEP é:{" "}
+                    </Text>
+                    <Text style={styles.textResultState}>{valueCep}</Text>
+                  </>
+                ) : (
+                  <>
+                    <Text style={styles.textResult}>em </Text>
+                    <Text style={styles.textResultState}>
+                      {selectedEnvironments == null
+                        ? "Selecione um ambiente"
+                        : selectedEnvironments}
+                    </Text>
+                  </>
+                )}
                 .
               </Text>
             </View>
