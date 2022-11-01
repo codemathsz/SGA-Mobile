@@ -27,7 +27,7 @@ export const styles = StyleSheet.create({
 
   },
   contentText:{
-    width: '60%',
+    width: '70%',
     flexDirection: 'column',
     justifyContent: 'flex-start'
   },
@@ -40,7 +40,7 @@ export const styles = StyleSheet.create({
     fontSize:12,
   },
   typeCourse:{
-    width:100,
+    width:115,
     
     alignItems: 'center',
     marginRight:8,

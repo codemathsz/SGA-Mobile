@@ -12,8 +12,9 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 interface Props extends TouchableOpacityProps {
   data: Aula;
   valueModal: any
+  idItem : any
 }
-export function InicioCard({ data, valueModal }: Props) {
+export function InicioCard({ data, valueModal, idItem }: Props) {
 
   const [showModal, setShowModal] = useState(false)
 
@@ -28,7 +29,7 @@ export function InicioCard({ data, valueModal }: Props) {
   return (
     <View style={styles.container} >
       <TouchableOpacity style={styles.card}
-        onPress={() => validModal()}
+        onPress={() => [validModal(), idItem(data)]}
       >
         <View style={styles.header}>
           <View style={{ width: '34%' }}>

@@ -125,6 +125,9 @@ export function Home() {
   // para guardar a data selecionada formatada
   const [dateSelectedFormat, setDateSelectedFormat] = useState('');
 
+  // id aula clicada
+  const [dataAulaModal, setDataAulaModal] = useState([]);
+
 
   // funções para o calendário
 
@@ -197,146 +200,332 @@ export function Home() {
 
   console.log(showModal)
   return (
+    <View>
+      {
+        showModal == true ?
+          <View style={{ height: '100%' }}>
+            <Background>
+              <Header
+                title="Bem Vindo"
+                subTitle="Selecione um dia e veja as ocupações dos ambientes"
+              />
 
-    <ScrollView>
-      <Background>
-        <Header
-          title="Bem Vindo"
-          subTitle="Selecione um dia e veja as ocupações dos ambientes"
-        />
+              <View style={styles.sectionCalendar}>
+                <Calendar
+                  // Para estilização do calendário
+                  style={{
+                    width: "90%",
+                    height: "auto",
 
-        <View style={styles.sectionCalendar}>
-          <Calendar
-            // Para estilização do calendário
-            style={{
-              width: "90%",
-              height: "auto",
-
-              marginHorizontal: 20,
-            }}
-            theme={{
-              backgroundColor: "#FEFEFE",
-              calendarBackground: "#FEFEFE",
-              textSectionTitleColor: "#1E1E40",
-              textSectionTitleDisabledColor: "rgb(17, 17, 17, 0.2)",
-              selectedDayBackgroundColor: "#25B5E9",
-              selectedDayTextColor: "#ffffff",
-              todayTextColor: "#25B5E9",
-              dayTextColor: "#1E1E40",
-              textDisabledColor: "rgba(17, 17, 17, 0.2)",
-              dotColor: "#fff",
-              selectedDotColor: "#25B5E9",
-              arrowColor: "#1E1E40",
-              disabledArrowColor: "#d9e1e8",
-              monthTextColor: "#1E1E40",
-              indicatorColor: "blue",
-              textDayFontWeight: "300",
-              textMonthFontWeight: "bold",
-              textDayHeaderFontWeight: "bold",
-              textDayFontSize: 16,
-              textMonthFontSize: 20,
-              textDayHeaderFontSize: 15,
-            }}
-            // config gerais do calendário
-            initialDate={dateCurrent}
-            minDate={"2022-09-20"}
-            enableSwipeMonths={true}
+                    marginHorizontal: 20,
+                  }}
+                  theme={{
+                    backgroundColor: "#FEFEFE",
+                    calendarBackground: "#FEFEFE",
+                    textSectionTitleColor: "#1E1E40",
+                    textSectionTitleDisabledColor: "rgb(17, 17, 17, 0.2)",
+                    selectedDayBackgroundColor: "#25B5E9",
+                    selectedDayTextColor: "#ffffff",
+                    todayTextColor: "#25B5E9",
+                    dayTextColor: "#1E1E40",
+                    textDisabledColor: "rgba(17, 17, 17, 0.2)",
+                    dotColor: "#fff",
+                    selectedDotColor: "#25B5E9",
+                    arrowColor: "#1E1E40",
+                    disabledArrowColor: "#d9e1e8",
+                    monthTextColor: "#1E1E40",
+                    indicatorColor: "blue",
+                    textDayFontWeight: "300",
+                    textMonthFontWeight: "bold",
+                    textDayHeaderFontWeight: "bold",
+                    textDayFontSize: 16,
+                    textMonthFontSize: 20,
+                    textDayHeaderFontSize: 15,
+                  }}
+                  // config gerais do calendário
+                  initialDate={dateCurrent}
+                  minDate={"2022-09-20"}
+                  enableSwipeMonths={true}
 
 
-            // Props para o dia selecionado
-            onDayPress={(day) => {
+                  // Props para o dia selecionado
+                  onDayPress={(day) => {
 
-              var indicatorDay = day.dateString;
-              var daySelect = day.day
-              var monthSelect = day.month
-              var yearSelect = day.year
-              var dateSelectCurrent = `${daySelect}/${monthSelect}/${yearSelect}`
-              setDateSelectedFormat(dateSelectCurrent)
-              setDayIndicator(indicatorDay)
-            }}
+                    var indicatorDay = day.dateString;
+                    var daySelect = day.day
+                    var monthSelect = day.month
+                    var yearSelect = day.year
+                    var dateSelectCurrent = `${daySelect}/${monthSelect}/${yearSelect}`
+                    setDateSelectedFormat(dateSelectCurrent)
+                    setDayIndicator(indicatorDay)
+                  }}
 
-            markedDates={{
-              [dayIndicator]: { selected: true, marked: true },
-            }}
-          />
+                  markedDates={{
+                    [dayIndicator]: { selected: true, marked: true },
+                  }}
+                />
 
-        </View>
+              </View>
 
-        <View style={styles.containerSearch}>
-          <Search
-            placeholder="Pesquisar..."
-            aplicSearch={searchAplic}
-            receiveSearch={searchReceive}
-            clenSearch={valueSearch}
-          />
-          <TouchableOpacity
-            style={Platform.OS === 'ios' ? styles.btnModalIOS : styles.btnModalANDROID}
+              <View style={styles.containerSearch}>
+                <Search
+                  placeholder="Pesquisar..."
+                  aplicSearch={searchAplic}
+                  receiveSearch={searchReceive}
+                  clenSearch={valueSearch}
+                />
+                <TouchableOpacity
+                  style={Platform.OS === 'ios' ? styles.btnModalIOS : styles.btnModalANDROID}
 
-          >
-            <Filter />
-          </TouchableOpacity>
-        </View>
+                >
+                  <Filter />
+                </TouchableOpacity>
+              </View>
 
-        <View style={styles.containerRadios}>
-          <View style={styles.containerRadio}>
-            <RadioButton
-              value="all"
-              color="black"
-              status={periodSelected === "all" ? "checked" : "unchecked"}
-              onPress={() => setPeriodSelected("all")}
-            />
-            <Text style={styles.textRadioOne}>Todos</Text>
-          </View>
-          <View style={styles.containerRadio}>
-            <RadioButton
-              value="morning"
-              color="black"
-              status={periodSelected === "morning" ? "checked" : "unchecked"}
-              onPress={() => setPeriodSelected("morning")}
-            />
-            <Text style={styles.textRadioTwo}>Manhã</Text>
-          </View>
-          <View style={styles.containerRadio}>
-            <RadioButton
-              value="afternoon"
-              color="black"
-              status={periodSelected === "afternoon" ? "checked" : "unchecked"}
-              onPress={() => setPeriodSelected("afternoon")}
-            />
-            <Text style={styles.textRadioThree}>Tarde</Text>
-          </View>
-          <View style={styles.containerRadio}>
-            <RadioButton
-              value="night"
-              color="black"
-              status={periodSelected === "night" ? "checked" : "unchecked"}
-              onPress={() => setPeriodSelected("night")}
-            />
-            <Text style={styles.textRadioFour}>Noite</Text>
-          </View>
-        </View>
-        <View style={{ width: '100%', alignItems: 'center', justifyContent: 'center' }}>
-          {
-            aula.length == 0 ?
-              <Text style={{ fontSize: 22, paddingBottom: 30, color: THEME.COLORS.SELECT }}>Nenhuma aula encontrada!</Text>
-              :
-              <View style={styles.containerLista}>
-                <View style={styles.msgDate}>
-                  <Text style={{ color: THEME.COLORS.SELECT, textTransform: 'uppercase' }}>{`Aulas do dia: ${dateSelectedFormat == '' ? dateInitial : dateSelectedFormat}`}</Text>
-                </View>
-                <View style={{ width: '100%' }}>
-                  <FlatList
-                    data={aula}
-                    keyExtractor={(item) => item.id.toString()}
-                    renderItem={({ item }) => <InicioCard data={item} valueModal={clickModal} />}
-
+              <View style={styles.containerRadios}>
+                <View style={styles.containerRadio}>
+                  <RadioButton
+                    value="all"
+                    color="black"
+                    status={periodSelected === "all" ? "checked" : "unchecked"}
+                    onPress={() => setPeriodSelected("all")}
                   />
+                  <Text style={styles.textRadioOne}>Todos</Text>
+                </View>
+                <View style={styles.containerRadio}>
+                  <RadioButton
+                    value="morning"
+                    color="black"
+                    status={periodSelected === "morning" ? "checked" : "unchecked"}
+                    onPress={() => setPeriodSelected("morning")}
+                  />
+                  <Text style={styles.textRadioTwo}>Manhã</Text>
+                </View>
+                <View style={styles.containerRadio}>
+                  <RadioButton
+                    value="afternoon"
+                    color="black"
+                    status={periodSelected === "afternoon" ? "checked" : "unchecked"}
+                    onPress={() => setPeriodSelected("afternoon")}
+                  />
+                  <Text style={styles.textRadioThree}>Tarde</Text>
+                </View>
+                <View style={styles.containerRadio}>
+                  <RadioButton
+                    value="night"
+                    color="black"
+                    status={periodSelected === "night" ? "checked" : "unchecked"}
+                    onPress={() => setPeriodSelected("night")}
+                  />
+                  <Text style={styles.textRadioFour}>Noite</Text>
                 </View>
               </View>
-          }
-        </View>
+              <View style={{ width: '100%', alignItems: 'center', justifyContent: 'center' }}>
+                {
+                  aula.length == 0 ?
+                    <Text style={{ fontSize: 22, paddingBottom: 30, color: THEME.COLORS.SELECT }}>Nenhuma aula encontrada!</Text>
+                    :
+                    <View style={styles.containerLista}>
+                      <View style={styles.msgDate}>
+                        <Text style={{ color: THEME.COLORS.SELECT, textTransform: 'uppercase' }}>{`Aulas do dia: ${dateSelectedFormat == '' ? dateInitial : dateSelectedFormat}`}</Text>
+                      </View>
+                      <View style={{ width: '100%' }}>
+                        <FlatList
+                          data={aula}
+                          keyExtractor={(item) => item.id.toString()}
+                          renderItem={({ item }) =>
+                            <InicioCard
+                              data={item}
+                              valueModal={clickModal}
+                              idItem={setDataAulaModal}
+                            />
+                          }
 
-      </Background>
-    </ScrollView>
+                        />
+                      </View>
+
+                    </View>
+                }
+
+              </View>
+
+            </Background>
+            <View style={styles.contentModal}>
+              <View style={styles.modal}>
+                <View style={styles.headerModal}>
+                  <View><Text style={styles.titleHeaderModal}>Informações da Aula</Text></View>
+                  <TouchableOpacity
+                    onPress={() => setShowModal(false)}
+                  >
+                    <Text style={styles.closeModal}>X</Text>
+                  </TouchableOpacity>
+                </View>
+                <TouchableOpacity >
+                  <Text style={{ color: '#000' }}>Ambiente: {dataAulaModal?.ambiente?.nome}</Text>
+                  <Text style={{ color: '#000' }}>Aula: {dataAulaModal?.unidadeCurricular?.nome}</Text>
+                  <Text style={{ color: '#000' }}>Carga Horária da Unidade Curricular: {dataAulaModal?.unidadeCurricular?.horas} horas</Text>
+                  <Text style={{ color: '#000' }}>Carga Diaria: {dataAulaModal?.cargaDiaria} horas</Text>
+                  <Text style={{ color: '#000' }}>Professor(a): {dataAulaModal?.professor?.nome}</Text>
+                  <Text style={{ color: '#000' }}>Período: {dataAulaModal?.periodo}</Text>
+                  <Text style={{ color: '#000' }}>Código da Turma: {dataAulaModal?.codTurma}</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+
+
+          : <ScrollView
+
+          >
+            <Background>
+              <Header
+                title="Bem Vindo"
+                subTitle="Selecione um dia e veja as ocupações dos ambientes"
+              />
+
+              <View style={styles.sectionCalendar}>
+                <Calendar
+                  // Para estilização do calendário
+                  style={{
+                    width: "90%",
+                    height: "auto",
+
+                    marginHorizontal: 20,
+                  }}
+                  theme={{
+                    backgroundColor: "#FEFEFE",
+                    calendarBackground: "#FEFEFE",
+                    textSectionTitleColor: "#1E1E40",
+                    textSectionTitleDisabledColor: "rgb(17, 17, 17, 0.2)",
+                    selectedDayBackgroundColor: "#25B5E9",
+                    selectedDayTextColor: "#ffffff",
+                    todayTextColor: "#25B5E9",
+                    dayTextColor: "#1E1E40",
+                    textDisabledColor: "rgba(17, 17, 17, 0.2)",
+                    dotColor: "#fff",
+                    selectedDotColor: "#25B5E9",
+                    arrowColor: "#1E1E40",
+                    disabledArrowColor: "#d9e1e8",
+                    monthTextColor: "#1E1E40",
+                    indicatorColor: "blue",
+                    textDayFontWeight: "300",
+                    textMonthFontWeight: "bold",
+                    textDayHeaderFontWeight: "bold",
+                    textDayFontSize: 16,
+                    textMonthFontSize: 20,
+                    textDayHeaderFontSize: 15,
+                  }}
+                  // config gerais do calendário
+                  initialDate={dateCurrent}
+                  minDate={"2022-09-20"}
+                  enableSwipeMonths={true}
+
+
+                  // Props para o dia selecionado
+                  onDayPress={(day) => {
+
+                    var indicatorDay = day.dateString;
+                    var daySelect = day.day
+                    var monthSelect = day.month
+                    var yearSelect = day.year
+                    var dateSelectCurrent = `${daySelect}/${monthSelect}/${yearSelect}`
+                    setDateSelectedFormat(dateSelectCurrent)
+                    setDayIndicator(indicatorDay)
+                  }}
+
+                  markedDates={{
+                    [dayIndicator]: { selected: true, marked: true },
+                  }}
+                />
+
+              </View>
+
+              <View style={styles.containerSearch}>
+                <Search
+                  placeholder="Pesquisar..."
+                  aplicSearch={searchAplic}
+                  receiveSearch={searchReceive}
+                  clenSearch={valueSearch}
+                />
+                <TouchableOpacity
+                  style={Platform.OS === 'ios' ? styles.btnModalIOS : styles.btnModalANDROID}
+
+                >
+                  <Filter />
+                </TouchableOpacity>
+              </View>
+
+              <View style={styles.containerRadios}>
+                <View style={styles.containerRadio}>
+                  <RadioButton
+                    value="all"
+                    color="black"
+                    status={periodSelected === "all" ? "checked" : "unchecked"}
+                    onPress={() => setPeriodSelected("all")}
+                  />
+                  <Text style={styles.textRadioOne}>Todos</Text>
+                </View>
+                <View style={styles.containerRadio}>
+                  <RadioButton
+                    value="morning"
+                    color="black"
+                    status={periodSelected === "morning" ? "checked" : "unchecked"}
+                    onPress={() => setPeriodSelected("morning")}
+                  />
+                  <Text style={styles.textRadioTwo}>Manhã</Text>
+                </View>
+                <View style={styles.containerRadio}>
+                  <RadioButton
+                    value="afternoon"
+                    color="black"
+                    status={periodSelected === "afternoon" ? "checked" : "unchecked"}
+                    onPress={() => setPeriodSelected("afternoon")}
+                  />
+                  <Text style={styles.textRadioThree}>Tarde</Text>
+                </View>
+                <View style={styles.containerRadio}>
+                  <RadioButton
+                    value="night"
+                    color="black"
+                    status={periodSelected === "night" ? "checked" : "unchecked"}
+                    onPress={() => setPeriodSelected("night")}
+                  />
+                  <Text style={styles.textRadioFour}>Noite</Text>
+                </View>
+              </View>
+              <View style={{ width: '100%', alignItems: 'center', justifyContent: 'center' }}>
+                {
+                  aula.length == 0 ?
+                    <Text style={{ fontSize: 22, paddingBottom: 30, color: THEME.COLORS.SELECT }}>Nenhuma aula encontrada!</Text>
+                    :
+                    <View style={styles.containerLista}>
+                      <View style={styles.msgDate}>
+                        <Text style={{ color: THEME.COLORS.SELECT, textTransform: 'uppercase' }}>{`Aulas do dia: ${dateSelectedFormat == '' ? dateInitial : dateSelectedFormat}`}</Text>
+                      </View>
+                      <View style={{ width: '100%' }}>
+                        <FlatList
+                          data={aula}
+                          keyExtractor={(item) => item.id.toString()}
+                          renderItem={({ item }) =>
+                            <InicioCard
+                              data={item}
+                              valueModal={clickModal}
+                              idItem={setDataAulaModal}
+                            />
+                          }
+
+                        />
+                      </View>
+
+                    </View>
+                }
+
+              </View>
+
+            </Background>
+          </ScrollView>
+      }
+
+    </View>
   );
 }
