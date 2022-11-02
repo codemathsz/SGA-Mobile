@@ -112,7 +112,6 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     marginTop: Platform.OS === 'ios' ? 80 : 60,
-    
   },
   datePickerANDROID: {
     width: '90%',
@@ -120,31 +119,29 @@ export const styles = StyleSheet.create({
     borderWidth: 4,
     color: THEME.COLORS.SELECT,
   },
-  datePickerIOS: {
-    width: '100%',
-    height: 50,
-    justifyContent: 'center',
-  },
   itemDatePicker: {
     borderColor: '#000',
     fontSize: THEME.FONT_SIZE.MD,
     color: THEME.COLORS.TEXT
   },
   input: {
-    backgroundColor: THEME.COLORS.WHITE,
-    width: '70%',
-    height: 40,
-    borderColor: '#fff',
-    borderWidth: 1,
-    borderStyle: 'solid',
-    shadowOffset: { width: 2, height: -2 },
-    shadowColor: '#000',
-    shadowOpacity: 0.7,
-    shadowRadius: 3,
-    elevation: 4,
-    padding: 2,
+    width: '80%',
+    paddingVertical: 12,
     borderRadius: 8,
-    textAlign: 'center'
+    color: THEME.COLORS.TEXT_PLACE,
+    fontFamily: THEME.FONT_FAMILY.EXTRA_BOLD,
+    backgroundColor: THEME.COLORS.WHITE,
+    shadowColor: THEME.COLORS.BLACK,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 4,
   },
   containerImg: {
     width: 40,

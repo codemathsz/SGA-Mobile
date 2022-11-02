@@ -24,31 +24,43 @@ export const styles = StyleSheet.create({
   },
   calendarANDROID:{
     width: '100%',
-    height: 300,
+    height: 'auto',
     backgroundColor: THEME.COLORS.WHITE,
     marginTop:80,
     borderTopRightRadius:40,
     borderTopLeftRadius:40,
-    alignItems: 'center',
     shadowOffset: {width: 80, height: -8},  
     shadowColor: '#000',  
     shadowOpacity: 0.4,  
     shadowRadius: 3,  
     elevation: 10,
+    flexDirection: 'column'
   },
   calendarIOS:{
     width: '100%',
-    height: 300,
+    height: 'auto',
     backgroundColor: THEME.COLORS.WHITE,
     marginTop:80,
     borderTopRightRadius:40,
     borderTopLeftRadius:40,
-    alignItems: 'center',
     shadowOffset: { width: 2, height: -4 },
     shadowColor: '#000',
     shadowOpacity: 0.2,
     shadowRadius: 3, 
     elevation: 10,
+    flexDirection: 'column'
+  },
+  contentSubTitleCalendar:{
+    width: '100%',
+    height: 50,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  },
+  subTitleCalendar:{
+    width: '33%',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly'
   },
   containerListANDROID:{
     width: '90%',

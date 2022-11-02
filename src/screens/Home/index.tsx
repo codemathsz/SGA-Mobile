@@ -360,6 +360,9 @@ export function Home() {
                     <Text style={styles.closeModal}>X</Text>
                   </TouchableOpacity>
                 </View>
+                <View style={styles.contentInformationsLesson}>
+
+                </View>
                 <TouchableOpacity >
                   <Text style={{ color: '#000' }}>Ambiente: {dataAulaModal?.ambiente?.nome}</Text>
                   <Text style={{ color: '#000' }}>Aula: {dataAulaModal?.unidadeCurricular?.nome}</Text>

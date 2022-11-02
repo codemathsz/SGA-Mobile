@@ -175,5 +175,8 @@ export const styles = StyleSheet.create({
     fontSize: THEME.FONT_SIZE.MD,
     fontFamily: THEME.FONT_FAMILY.BOLD,
     color: '#fff'
+  },
+  contentInformationsLesson:{
+    
   }
 });

@@ -10,6 +10,7 @@ import {
   Image,
   Button,
   Platform,
+  ActionSheetIOS,
 } from "react-native";
 
 import { Picker } from "@react-native-picker/picker";
@@ -46,6 +47,8 @@ export function Courses() {
   const [typeCourses, setTypeCourses] = useState([]);
   // para guardar o que foi selecionado no select
   const [selectTypeCourses, setSelectTypeCourses] = useState([]);
+  // IOS
+  const [selectTypeCoursesIOS, setSelectTypeCoursesIOS] = useState('Selecione um tipo de curso');
   // para receber os cursos conforme a busca
   const [searchCourses, setSearchCourses] = useState<Curso[]>([]);
   // value do Search para ser limpado
@@ -78,13 +81,22 @@ export function Courses() {
   // buscando cursos pelo filtro tipo de curso
   async function getSearchTypesCoursesDidMount() {
     try {
-      const response = await API.get(
-        "/api/curso/buscacurso/" + selectTypeCourses
-      );
+      if (Platform.OS === 'ios') {
+        const response = await API.get(
+          "/api/curso/buscacurso/" + selectTypeCoursesIOS
+        );
+        // deixando a array vazia
+        searchTypeCourses.splice(0);
+        setSearchTypeCourses(response.data);
+      } else {
+        const response = await API.get(
+          "/api/curso/buscacurso/" + selectTypeCourses
+        );
+        // deixando a array vazia
+        searchTypeCourses.splice(0);
+        setSearchTypeCourses(response.data);
+      }
 
-      // deixando a array vazia
-      searchTypeCourses.splice(0);
-      setSearchTypeCourses(response.data);
     } catch (error) {
       console.log(error);
     }
@@ -156,6 +168,8 @@ export function Courses() {
     }
   };
 
+ 
+
   return (
     <Pressable onPress={Keyboard.dismiss} style={styles.container}>
       <Background>
@@ -196,7 +210,7 @@ export function Courses() {
                 horizontal={false}
                 showsVerticalScrollIndicator
                 style={styles.list}
-                ListEmptyComponent={<Loading/>}
+                ListEmptyComponent={<Loading />}
               />
             ) : // Se buscar estiver sendo feita aparecera essa flatList
               search == true ? (
@@ -246,22 +260,53 @@ export function Courses() {
                 </View>
               </View>
               <View style={styles.containerFilter}>
-                <Picker
-                  selectedValue={selectTypeCourses}
-                  style={Platform.OS === 'ios' ? styles.datePickerIOS : styles.datePickerANDROID}
-                  onValueChange={(itemValue) => setSelectTypeCourses(itemValue)}
-                  mode={'dropdown'}
-                >
-                  {typeCourses.map((cr) => {
-                    return (
-                      <Picker.Item
-                        label={cr}
-                        value={cr}
-                        style={styles.itemDatePicker}
-                      />
-                    );
-                  })}
-                </Picker>
+                {
+                  Platform.OS == 'ios'
+                    ?
+                    <TouchableOpacity
+                      onPress={() => ActionSheetIOS.showActionSheetWithOptions(
+                        {
+                          message:'Selecione uma opção',
+                          options: ["Cancelar", "FIC", "REGULAR", "Limpar Campo"],
+                          destructiveButtonIndex: 3,
+                          cancelButtonIndex: 0,
+                          userInterfaceStyle: 'dark'
+                        },
+                        buttonIndex => {
+                          if (buttonIndex === 0) {
+                            // cancel action
+                          } else if (buttonIndex === 1) {
+                            setSelectTypeCoursesIOS('FIC');
+                          } else if (buttonIndex === 2) {
+                            setSelectTypeCoursesIOS("REGULAR");
+                          }else if (buttonIndex === 3){
+                            setSelectTypeCoursesIOS('Selecione um tipo de curso')
+                          }
+                        }
+                      )}
+
+                      style={styles.input}
+                    >
+                      <Text>{selectTypeCoursesIOS}</Text>
+                    </TouchableOpacity>
+                    :
+                    <Picker
+                      selectedValue={selectTypeCourses}
+                      style={styles.datePickerANDROID}
+                      onValueChange={(itemValue) => setSelectTypeCourses(itemValue)}
+                      mode={'dropdown'}
+                    >
+                      {typeCourses.map((cr) => {
+                        return (
+                          <Picker.Item
+                            label={cr}
+                            value={cr}
+                            style={styles.itemDatePicker}
+                          />
+                        );
+                      })}
+                    </Picker>
+                }
               </View>
               <TouchableOpacity
                 style={styles.button}
