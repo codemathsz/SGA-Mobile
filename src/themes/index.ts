@@ -31,6 +31,7 @@ export const THEME = {
       AZUL_300: '#25B5E9',
       AZUL_400: '#5AADD1',
       AZUL_500: '#367FBF',
+      AZUL_500_DISABLED: 'rgba(54, 127, 191,0.5)',
       AZUL_600: '#0031B0',
 
     },

@@ -7,6 +7,9 @@ import {
   TouchableOpacity,
   FlatList,
   Vibration,
+  Platform,
+  ActivityIndicator,
+  Share,
 } from "react-native";
 import { Picker, PickerIOS } from "@react-native-picker/picker";
 import { RadioButton } from "react-native-paper";
@@ -38,9 +41,9 @@ export function AdvancedSearch() {
   const [valueCompany, setValueCompany] = useState("");
   const [valueCep, setValueCep] = useState("");
   // valores pela seleção de resultados da busca
-  const [selectedTeachers, setSelectedTeachers] = useState();
+  const [selectedTeachers, setSelectedTeachers] = useState("");
   const [valueTeacher, setValueTeacher] = useState();
-  const [selectedEnvironments, setSelectedEnvironments] = useState();
+  const [selectedEnvironments, setSelectedEnvironments] = useState("");
   const [valueEnvironment, setValueEnvironment] = useState();
   // const para o select da competência
   const [selectedCompetence, setSelectedCompetence] = useState([]);
@@ -84,6 +87,8 @@ export function AdvancedSearch() {
   const [erroCep, setErroCep] = useState(false);
   const [erroDay, setErroDay] = useState(false);
   const [erroPeriod, setErroPeriod] = useState(false);
+  // validação para compartilhar a busca
+  const [validateMessage, setValidateMessage] = useState(false);
   // Feita para saber os valores obtidos ao escolher a data do Date Picker
   var monthDateInit = String(dateInit.getMonth() + 1).padStart(2, "0");
   var valueDateInit = String(
@@ -273,9 +278,31 @@ export function AdvancedSearch() {
     setDaySex(false);
     setDaySab(false);
     setSelectedPeriod([]);
+    setSelectedTeachers("");
+    setSelectedEnvironments("");
     // retirando a busca
     setSearchAplic(false);
   }
+
+  // Compartilha o resultado da mensagem
+
+  const onShare = async () => {
+    let messageShare = `A solicitação do ${valueCurso}, pela ${valueCompany} poderá ser marcado. Sendo assim a data é de ${valueDateInit} até ${valueDateFinal}, incluindo os dias da semana${
+      dayDom == true ? " Domingo " : ""
+    }${daySeg == true ? " Segunda " : ""}${dayTer == true ? " Terça " : ""}${
+      dayQua == true ? " Quarta " : ""
+    }${dayQui == true ? " Quinta " : ""}${daySex == true ? " Sexta " : ""}${
+      daySab == true ? " Sábado " : ""
+    }, no período da ${selectedPeriod}.Será realizado pelo professor(a) ${selectedTeachers}, ${
+      localeClasses == "company"
+        ? "no endereço solicitado pela empresa cujo o CEP é " + valueCep
+        : "em " + selectedEnvironments
+    }`;
+
+    const result = await Share.share({
+      message: messageShare,
+    });
+  };
 
   // recebendo unidades curriculares
   async function getUnidadeCurricularDidMount() {
@@ -311,9 +338,20 @@ export function AdvancedSearch() {
     getUnidadeCurricularDidMount();
   }, []);
 
+  // usado para a validação de compartilhamento
+  useEffect(() => {
+    if (localeClasses == "senai" && selectedTeachers != "" && selectedEnvironments != "") {
+      setValidateMessage(true);
+    }else if (localeClasses == "company" && selectedTeachers != ""){
+      setValidateMessage(true)
+    }else {
+      setValidateMessage(false);
+    }
+  }, [valueTeacher, valueEnvironment]);
+
   return (
     <Background>
-      <ScrollView endFillColor={THEME.COLORS.AZUL_300}>
+      <ScrollView>
         {searchAplic == true ? (
           ""
         ) : (
@@ -413,6 +451,26 @@ export function AdvancedSearch() {
             {/* Texto a ser compartilhado */}
 
             <View style={styles.containerText}>
+              {validateMessage === false ? (
+                <View style={styles.containerValidate}>
+                  <ActivityIndicator color={THEME.COLORS.AZUL_500} size={30} />
+                  <Text style={styles.validateMessage}>
+                    Processando Mensagem
+                  </Text>
+                </View>
+              ) : (
+                <View style={styles.containerValidate}>
+                  <Ionicons
+                    name="checkmark-circle"
+                    size={32}
+                    color={THEME.COLORS.AZUL_500}
+                  />
+                  <Text style={styles.validateMessage}>
+                    Mensagem Processada
+                  </Text>
+                </View>
+              )}
+
               <Text style={styles.textResult}>
                 A solicitação do{" "}
                 <Text style={styles.textResultState}>{valueCurso}</Text>, pela{" "}
@@ -460,7 +518,7 @@ export function AdvancedSearch() {
                 <Text style={styles.textResultState}>{selectedPeriod}</Text>.
                 Será realizado pelo professor(a){" "}
                 <Text style={styles.textResultState}>
-                  {selectedTeachers == null
+                  {selectedTeachers == ""
                     ? "Selecione um professor"
                     : selectedTeachers}
                 </Text>
@@ -476,7 +534,7 @@ export function AdvancedSearch() {
                   <>
                     <Text style={styles.textResult}>em </Text>
                     <Text style={styles.textResultState}>
-                      {selectedEnvironments == null
+                      {selectedEnvironments == ""
                         ? "Selecione um ambiente"
                         : selectedEnvironments}
                     </Text>
@@ -486,17 +544,24 @@ export function AdvancedSearch() {
               </Text>
             </View>
             <View style={styles.btnsSearchAplic}>
-              <TouchableOpacity style={styles.btn}>
-                <Text
-                  style={styles.textBtn}
-                  onPress={() => otherSearchApplied()}
+              <TouchableOpacity
+                style={styles.btn}
+                onPress={() => otherSearchApplied()}
+              >
+                <Text style={styles.textBtn}>Outra Busca</Text>
+              </TouchableOpacity>
+              {validateMessage === true ? (
+                <TouchableOpacity 
+                  style={styles.btn}
+                  onPress={() => onShare()}
                 >
-                  Outra Busca
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.btn}>
-                <Text style={styles.textBtn}>Compartilhar</Text>
-              </TouchableOpacity>
+                  <Text style={styles.textBtn}>Compartilhar</Text>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity style={styles.btnDisable} disabled={true}>
+                  <Text style={styles.textBtnDisable}>Compartilhar</Text>
+                </TouchableOpacity>
+              )}
             </View>
           </View>
         ) : (
@@ -525,28 +590,53 @@ export function AdvancedSearch() {
                 ""
               )}
               <View style={styles.selectForm}>
-                <Picker
-                  selectedValue={selectedCompetence}
-                  onValueChange={(itemValue) =>
-                    setSelectedCompetence(itemValue)
-                  }
-                  mode={"dropdown"}
-                >
-                  <Picker.Item
-                    label="Selecione a Competência"
-                    value="default"
-                    style={styles.itemSelect}
-                  />
-                  {unidadeCurricular.map((cr) => {
-                    return (
-                      <Picker.Item
-                        label={cr.nome}
-                        value={cr.nome}
-                        style={styles.itemSelect}
-                      />
-                    );
-                  })}
-                </Picker>
+                {/* Validação para trocar o picker conforme o sistema operacional */}
+                {Platform.OS === "android" ? (
+                  <Picker
+                    selectedValue={selectedCompetence}
+                    onValueChange={(itemValue) =>
+                      setSelectedCompetence(itemValue)
+                    }
+                    mode={"dropdown"}
+                  >
+                    <Picker.Item
+                      label="Selecione a Competência"
+                      value="default"
+                      style={styles.itemSelect}
+                    />
+                    {unidadeCurricular.map((cr) => {
+                      return (
+                        <Picker.Item
+                          label={cr.nome}
+                          value={cr.nome}
+                          style={styles.itemSelect}
+                        />
+                      );
+                    })}
+                  </Picker>
+                ) : (
+                  <Picker
+                    selectedValue={selectedCompetence}
+                    onValueChange={(itemValue) =>
+                      setSelectedCompetence(itemValue)
+                    }
+                  >
+                    <Picker.Item
+                      label="Selecione a Competência"
+                      value="default"
+                      style={styles.itemSelect}
+                    />
+                    {unidadeCurricular.map((cr) => {
+                      return (
+                        <Picker.Item
+                          label={cr.nome}
+                          value={cr.nome}
+                          style={styles.itemSelect}
+                        />
+                      );
+                    })}
+                  </Picker>
+                )}
               </View>
             </View>
             {/* Campo empresa */}
