@@ -29,7 +29,7 @@ export interface Ambientes {
   id: string;
   nome: string;
   capacidade: string;
-  tipoAmbiente: string;
+  tipo: string;
   cep: string;
   complemento: string;
   ativo: boolean;
