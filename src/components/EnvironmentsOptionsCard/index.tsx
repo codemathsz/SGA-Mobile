@@ -61,6 +61,7 @@ export function EnvironmentsOptionsCard({
       >
         <Text
           style={environmentSelect == true ? styles.textSelect : styles.text}
+          
         >
           {data.nome}
         </Text>

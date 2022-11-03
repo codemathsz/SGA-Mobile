@@ -89,6 +89,8 @@ export function AdvancedSearch() {
   const [erroPeriod, setErroPeriod] = useState(false);
   // validação para compartilhar a busca
   const [validateMessage, setValidateMessage] = useState(false);
+  // validação da busca, se não possuir resultado
+  const [erroResult, setErroResult] = useState(false);
   // Feita para saber os valores obtidos ao escolher a data do Date Picker
   var monthDateInit = String(dateInit.getMonth() + 1).padStart(2, "0");
   var valueDateInit = String(
@@ -894,6 +896,9 @@ export function AdvancedSearch() {
           </View>
         )}
       </ScrollView>
+
+      {/* Modal de erro ao trazer o resultado */}
+      {erroResult == true?(''):('')}
     </Background>
   );
 }

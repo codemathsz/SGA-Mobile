@@ -25,7 +25,7 @@ export function AmbienteCard({ data, ...rest }: Props) {
           <View>
             <Text style={styles.texts}>Capacidade: {data.capacidade}</Text>
             <Text style={styles.texts}>Complemento: {data.complemento}</Text>
-            <Text style={styles.texts}>Tipo de Ambiente: {data.tipoAmbiente}</Text>
+            <Text style={styles.texts}>Tipo de Ambiente: {data.tipo}</Text>
           </View>
         </View>
 
