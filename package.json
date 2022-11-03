@@ -34,6 +34,7 @@
     "react-native-calendars": "^1.1289.0",
     "react-native-date-picker": "^4.2.5",
     "react-native-datepicker": "^1.7.2",
+    "react-native-ios-picker": "^1.0.0",
     "react-native-linear-gradient": "^2.6.2",
     "react-native-masked-text": "^1.13.0",
     "react-native-paper": "^5.0.0-rc.5",

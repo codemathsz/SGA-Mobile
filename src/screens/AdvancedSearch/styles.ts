@@ -4,7 +4,7 @@ import { THEME } from "../../themes";
 
 export const styles = StyleSheet.create({
   containerForm: {
-    height:'100%',
+    height: "100%",
     marginTop: 5,
     paddingHorizontal: 10,
     paddingVertical: 25,
@@ -157,78 +157,100 @@ export const styles = StyleSheet.create({
     color: THEME.COLORS.TEXT_PLACE,
     fontFamily: THEME.FONT_FAMILY.EXTRA_BOLD,
   },
-  containerSearch:{
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
+  containerSearch: {
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
   },
-  btn:{
+  btn: {
     marginTop: 12,
     paddingHorizontal: 8,
     paddingVertical: 6,
     borderRadius: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     backgroundColor: THEME.COLORS.AZUL_500,
   },
-  textBtn:{
+  textBtn: {
     fontSize: 18,
     color: THEME.COLORS.WHITE,
     fontFamily: THEME.FONT_FAMILY.BOLD,
   },
-  containerOptions:{
+  btnDisable: {
+    marginTop: 12,
+    paddingHorizontal: 8,
+    paddingVertical: 6,
+    borderRadius: 5,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: THEME.COLORS.AZUL_500_DISABLED,
+  },
+  textBtnDisable: {
+    fontSize: 18,
+    color: THEME.COLORS.WHITE,
+    fontFamily: THEME.FONT_FAMILY.BOLD,
+  },
+  containerOptions: {
     width: "100%",
-    marginTop: 30,
+    marginTop: 10,
+    marginBottom: 2,
     paddingHorizontal: 5,
     flexDirection: "row",
-    marginVertical: 8,
-    justifyContent:"space-between", 
+    justifyContent: "space-between",
   },
-  containerOptionsCompany:{
+  containerOptionsCompany: {
     width: "100%",
-    marginTop: 30,
+    marginTop: 8,
+    marginBottom: 5,
     paddingHorizontal: 5,
     flexDirection: "row",
-    marginVertical: 8,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
-  containerFlatlist:{
+  containerFlatlist: {
     height: 215,
-    
   },
-  containerFlatlistCompany:{
-    width: '90%',
+  containerFlatlistCompany: {
+    width: "90%",
     height: 215,
-    justifyContent: 'center',
-    
+    justifyContent: "center",
   },
-  optionsFlatlist:{
+  optionsFlatlist: {
     height: 215,
-    
   },
-  containerText:{
+  containerText: {
     marginTop: 30,
     textAlign: "center",
     alignItems: "center",
-    justifyContent:"center",
+    justifyContent: "center",
   },
-  textResult:{
+  textResult: {
     textAlign: "center",
     fontSize: 16,
     fontFamily: THEME.FONT_FAMILY.REGULAR,
   },
-  textResultState:{
-    color: THEME.COLORS.AZUL_300
+  textResultState: {
+    color: THEME.COLORS.AZUL_300,
   },
-  btnsSearchAplic:{
+  btnsSearchAplic: {
     width: "100%",
     flexDirection: "row",
     justifyContent: "space-evenly",
     marginTop: 20,
   },
-  erroMessage:{
+  erroMessage: {
     paddingLeft: 15,
     fontFamily: THEME.FONT_FAMILY.BOLD,
-    color: THEME.COLORS.ALERT
-  }
+    color: THEME.COLORS.ALERT,
+  },
+  containerValidate: {
+    width: "90%",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    marginBottom: 8,
+  },
+  validateMessage: {
+    fontSize: 22,
+    fontFamily: THEME.FONT_FAMILY.BOLD,
+    color: THEME.COLORS.AZUL_500,
+  },
 });
