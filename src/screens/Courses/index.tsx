@@ -31,7 +31,7 @@ import { Loading } from "../../components/Loading";
 export interface Curso {
   id: string;
   nome: string;
-  tipoCurso: string;
+  tipo: string;
   ativo: string;
   unidadeCurricular: [];
 }
@@ -71,8 +71,9 @@ export function Courses() {
   // pegando as Enums do tipo curso
   async function getTypesCoursesDidMount() {
     try {
-      const response = await API.get("/api/curso/tipocurso");
+      const response =  await API.get("/api/curso/tipocurso"); 
       setTypeCourses(response.data);
+      
     } catch (error) {
       console.log(error);
     }
@@ -261,26 +262,24 @@ export function Courses() {
               </View>
               <View style={styles.containerFilter}>
                 {
-                  Platform.OS == 'ios'
+                  Platform.OS === 'ios'
                     ?
                     <TouchableOpacity
                       onPress={() => ActionSheetIOS.showActionSheetWithOptions(
                         {
-                          message:'Selecione uma opção',
-                          options: ["Cancelar", "FIC", "REGULAR", "Limpar Campo"],
-                          destructiveButtonIndex: 3,
+                          title:'Selecione uma opção',
+                          options: ['cancelar','LIMPAR'].concat(typeCourses),
                           cancelButtonIndex: 0,
-                          userInterfaceStyle: 'dark'
+                          destructiveButtonIndex: 1,
+                          userInterfaceStyle: 'dark',
                         },
                         buttonIndex => {
                           if (buttonIndex === 0) {
                             // cancel action
-                          } else if (buttonIndex === 1) {
-                            setSelectTypeCoursesIOS('FIC');
-                          } else if (buttonIndex === 2) {
-                            setSelectTypeCoursesIOS("REGULAR");
-                          }else if (buttonIndex === 3){
+                          }else if (buttonIndex === 1){
                             setSelectTypeCoursesIOS('Selecione um tipo de curso')
+                          }else{
+                            setSelectTypeCoursesIOS(typeCourses[buttonIndex - 2])
                           }
                         }
                       )}

@@ -34,7 +34,7 @@ export function CursoCard({ data }: Props) {
         </View>
         <View style={{width:'27%'}}>
           <TouchableOpacity style={styles.typeCourse}>
-            <Text style={styles.txtType}>{data.tipoCurso}</Text>
+            <Text style={styles.txtType}>{data.tipo}</Text>
           </TouchableOpacity>
         </View>
       </TouchableOpacity>

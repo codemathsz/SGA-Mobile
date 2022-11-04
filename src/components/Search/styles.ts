@@ -3,7 +3,7 @@ import { THEME } from '../../themes';
 
 export const styles = StyleSheet.create({
   mainANDROID: {
-    width: 310,
+    width: 290,
     height: 45,
     backgroundColor: THEME.COLORS.WHITE,
     borderTopLeftRadius: 12,

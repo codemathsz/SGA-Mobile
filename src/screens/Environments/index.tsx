@@ -9,6 +9,7 @@ import {
   Image,
   TextInput,
   Platform,
+  ActionSheetIOS,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import Icon from "../../assets/icon_curso.png";
@@ -55,13 +56,22 @@ export function Environments({ id, ...rest }: Ambientes) {
   // tipo de ambiente selecionado no select
   const [selectTypeAmbient, setSelectTypeAmbient] = useState();
   // valor para os picker.item
-  const [capacidadeAmbient, setCapacidadeAmbient] = useState([
+  const [capacidadeAmbient] = useState([
     "Selecione a capacidade do Ambiente",
     "10-15",
     "20-25",
     "25-30",
     "30+",
   ]);
+
+    // valor para o IOS
+    const [capacidadeAmbientIOS] = useState([
+      "10-15",
+      "20-25",
+      "25-30",
+      "30+",
+    ]);
+  
   // valor do select da capacidade do ambiente
   const [selectCapacidadeAmbient, setSelectCapacidadeAmbient] = useState([]);
   const [filter, setFilter] = useState(false);
@@ -71,6 +81,11 @@ export function Environments({ id, ...rest }: Ambientes) {
   const [searchEnvironment, setSearchEnvironment] = useState<Ambientes[]>([]);
   // value do Search para ser limpado
   const [valueSearch, setValueSearch] = useState();
+
+  // IOS, input tipo ambiente
+  const [selectTypeEnviromentsIOS, setSelectTypeEnviromentsIOS] = useState('Selecione um tipo de ambiente');
+  // IOS
+  const [selectCapacityIOS, setSelectCapacityIOS] = useState('Selecione a capacidade do ambiente');
 
   // APIs
 
@@ -87,7 +102,7 @@ export function Environments({ id, ...rest }: Ambientes) {
   // trazer todos os tipos de ambiente para alimentar o picker
   async function getTypeAmbientesDidMount() {
     try {
-      const response = await API.get("/api/ambiente/tipoambiente");
+      const response = await API.get("/api/ambiente/tipo");
       setTypeAmbiente(response.data);
     } catch (error) {
       console.log(error);
@@ -109,7 +124,7 @@ export function Environments({ id, ...rest }: Ambientes) {
   }
 
   // filtro para buscar ambientes pela a capacidade selecionada no picker
-  const getFilterCapacityDidMount = async () => {
+  const getFilterCapacityDidMountANDROID = async () => {
     let capacityPositionInitial = [capacidadeAmbient[0]];
     let capacityPositionFinal = [capacidadeAmbient[4]];
 
@@ -120,18 +135,33 @@ export function Environments({ id, ...rest }: Ambientes) {
         "filtro +30 " + " posição 1 :" + selectCapacidadeAmbient.slice(0, 2)
       );
       const response = await API.get(
-        `/api/ambiente/capacidade?capacidadeMin=${selectCapacidadeAmbient.slice(
-          0,
-          2
-        )}&capacidadeMax=${100}`
+        `/api/ambiente/capacidade?capacidadeMin=${selectCapacidadeAmbient.slice(0,2)}&capacidadeMax=${100}`
       );
       setCapacitySearchAmbiente(response.data);
     } else {
       const response = await API.get(
-        `/api/ambiente/capacidade?capacidadeMin=${selectCapacidadeAmbient.slice(
-          0,
-          2
-        )}&capacidadeMax=${selectCapacidadeAmbient.slice(3)}`
+        `/api/ambiente/capacidade?capacidadeMin=${selectCapacidadeAmbient.slice(0,2)}&capacidadeMax=${selectCapacidadeAmbient.slice(3)}`
+      );
+      setCapacitySearchAmbiente(response.data);
+    }
+  };
+
+  // filtro para buscar ambientes pela a capacidade selecionada no IOS
+  const getFilterCapacityDidMountIOS = async () => {
+   
+    if (selectCapacityIOS == 'Selecione a capacidade do ambiente') {
+      console.log("filtro não selecionado ");
+    } else if (selectCapacityIOS == '30+') {
+      console.log(
+        "filtro +30 " + " posição 1 :" + selectCapacityIOS.slice(0, 2)
+      );
+      const response = await API.get(
+        `/api/ambiente/capacidade?capacidadeMin=${selectCapacityIOS.slice(0,2)}&capacidadeMax=${100}`
+      );
+      setCapacitySearchAmbiente(response.data);
+    } else {
+      const response = await API.get(
+        `/api/ambiente/capacidade?capacidadeMin=${selectCapacidadeAmbient.slice(0,2)}&capacidadeMax=${selectCapacidadeAmbient.slice(3)}`
       );
       setCapacitySearchAmbiente(response.data);
     }
@@ -190,7 +220,7 @@ export function Environments({ id, ...rest }: Ambientes) {
     setShowModal(false);
     filterAplic();
     getFilterTypeEnvironmentsDidMount();
-    getFilterCapacityDidMount();
+    getFilterCapacityDidMountANDROID();
     getTypeAndCapacityDidMount();
   }
 
@@ -318,49 +348,106 @@ export function Environments({ id, ...rest }: Ambientes) {
               </View>
               <View style={styles.containerFilter}>
                 <View style={styles.contentFilter}>
-                  <Picker
-                    selectedValue={selectTypeAmbient}
-                    style={Platform.OS === 'ios' ? styles.datePickerIOS : styles.datePickerANDROID}
-                    mode={"dropdown"}
-                    onValueChange={(itemValue) =>
-                      setSelectTypeAmbient(itemValue)
-                    }
-                  >
-                    <Picker.Item
-                      label="Selecione um tipo de Ambiente"
-                      value={"default"}
-                      color="#00000090"
-                    />
-                    {typeAmbiente.map((cr) => {
-                      return (
+                  {
+                    Platform.OS == 'ios' ?
+                      <TouchableOpacity
+                        onPress={() => ActionSheetIOS.showActionSheetWithOptions(
+                          {
+                            title: 'Selecione uma opção',
+                            options: ['cancelar', 'LIMPAR'].concat(typeAmbiente),
+                            cancelButtonIndex: 0,
+                            destructiveButtonIndex: 1,
+                            userInterfaceStyle: 'dark',
+                          },
+                          buttonIndex => {
+                            if (buttonIndex === 0) {
+                              // cancel action
+                            } else if (buttonIndex === 1) {
+                              setSelectTypeEnviromentsIOS('Selecione um tipo de ambiente')
+                            } else {
+                              setSelectTypeEnviromentsIOS(typeAmbiente[buttonIndex - 2])
+                            }
+                          }
+                        )}
+
+                        style={styles.input}
+                      >
+                        <Text>{selectTypeEnviromentsIOS}</Text>
+                      </TouchableOpacity>
+                      :
+                      <Picker
+                        selectedValue={selectTypeAmbient}
+                        style={styles.datePickerANDROID}
+                        mode={"dropdown"}
+                        onValueChange={(itemValue) =>
+                          setSelectTypeAmbient(itemValue)
+                        }
+                      >
                         <Picker.Item
-                          label={cr}
-                          value={cr}
-                          style={styles.itemDatePicker}
+                          label="Selecione um tipo de Ambiente"
+                          value={"default"}
+                          color="#00000090"
                         />
-                      );
-                    })}
-                  </Picker>
+                        {typeAmbiente.map((cr) => {
+                          return (
+                            <Picker.Item
+                              label={cr}
+                              value={cr}
+                              style={styles.itemDatePicker}
+                            />
+                          );
+                        })}
+                      </Picker>
+                  }
+
                 </View>
                 <View style={styles.contentFilter}>
-                  <Picker
-                    selectedValue={selectCapacidadeAmbient}
-                    style={Platform.OS === 'ios' ? styles.datePickerIOS : styles.datePickerANDROID}
-                    mode={"dropdown"}
-                    onValueChange={(itemValue) =>
-                      setSelectCapacidadeAmbient(itemValue)
-                    }
-                  >
-                    {capacidadeAmbient.map((cr) => {
-                      return (
-                        <Picker.Item
-                          label={cr}
-                          value={cr}
-                          style={styles.itemDatePicker}
-                        />
-                      );
-                    })}
-                  </Picker>
+                  {
+                    Platform.OS == 'ios' ?
+                      <TouchableOpacity
+                        onPress={() => ActionSheetIOS.showActionSheetWithOptions(
+                          {
+                            title: 'Selecione uma opção',
+                            options: ['cancelar', 'LIMPAR'].concat(capacidadeAmbientIOS),
+                            cancelButtonIndex: 0,
+                            destructiveButtonIndex: 1,
+                            userInterfaceStyle: 'dark',
+                          },
+                          buttonIndex => {
+                            if (buttonIndex === 0) {
+                              // cancel action
+                            } else if (buttonIndex === 1) {
+                              setSelectCapacityIOS('Selecione a capacidade do ambiente')
+                            } else {
+                              setSelectCapacityIOS(capacidadeAmbientIOS[buttonIndex - 2])
+                            }
+                          }
+                        )}
+
+                        style={styles.input}
+                      >
+                        <Text>{selectCapacityIOS}</Text>
+                      </TouchableOpacity>
+                      :
+                      <Picker
+                        selectedValue={selectCapacidadeAmbient}
+                        style={styles.datePickerANDROID}
+                        mode={"dropdown"}
+                        onValueChange={(itemValue) =>
+                          setSelectCapacidadeAmbient(itemValue)
+                        }
+                      >
+                        {capacidadeAmbient.map((cr) => {
+                          return (
+                            <Picker.Item
+                              label={cr}
+                              value={cr}
+                              style={styles.itemDatePicker}
+                            />
+                          );
+                        })}
+                      </Picker>
+                  }
                 </View>
               </View>
               <TouchableOpacity
