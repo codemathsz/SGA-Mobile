@@ -10,6 +10,8 @@ import {
   Platform,
   ActivityIndicator,
   Share,
+  Alert,
+  Pressable,
 } from "react-native";
 import { Picker, PickerIOS } from "@react-native-picker/picker";
 import { RadioButton } from "react-native-paper";
@@ -91,6 +93,7 @@ export function AdvancedSearch() {
   const [validateMessage, setValidateMessage] = useState(false);
   // validação da busca, se não possuir resultado
   const [erroResult, setErroResult] = useState(false);
+  const [erroResultTitle, setErroResultTitle] = useState("");
   // Feita para saber os valores obtidos ao escolher a data do Date Picker
   var monthDateInit = String(dateInit.getMonth() + 1).padStart(2, "0");
   var valueDateInit = String(
@@ -205,6 +208,8 @@ export function AdvancedSearch() {
   // fazendo a validação dos campos antes de fazer a busca
   const validateSearch = () => {
     erroReset();
+
+    // validação campos
     if (valueCurso === "") {
       Vibration.vibrate();
       setErroMessage("Campo obrigatório*");
@@ -242,7 +247,20 @@ export function AdvancedSearch() {
       setErroMessage("Selecione um período*");
       return setErroPeriod(true);
     }
-    return setSearchAplic(true);
+
+    // validação se resultado for vazio
+    if (teachers.length === 0 && environment.length === 0) {
+      setErroResultTitle("Não a Professores e Ambientes");
+      return setErroResult(true);
+    } else if (teachers.length === 0) {
+      setErroResultTitle("Não a Professores");
+      return setErroResult(true);
+    } else if (environment.length === 0) {
+      setErroResultTitle("Não a Ambientes");
+      return setErroResult(true);
+    } else {
+      return setSearchAplic(true);
+    }
   };
 
   // Recebe o valor das opções selecionadas
@@ -342,11 +360,15 @@ export function AdvancedSearch() {
 
   // usado para a validação de compartilhamento
   useEffect(() => {
-    if (localeClasses == "senai" && selectedTeachers != "" && selectedEnvironments != "") {
+    if (
+      localeClasses == "senai" &&
+      selectedTeachers != "" &&
+      selectedEnvironments != ""
+    ) {
       setValidateMessage(true);
-    }else if (localeClasses == "company" && selectedTeachers != ""){
-      setValidateMessage(true)
-    }else {
+    } else if (localeClasses == "company" && selectedTeachers != "") {
+      setValidateMessage(true);
+    } else {
       setValidateMessage(false);
     }
   }, [valueTeacher, valueEnvironment]);
@@ -553,10 +575,7 @@ export function AdvancedSearch() {
                 <Text style={styles.textBtn}>Outra Busca</Text>
               </TouchableOpacity>
               {validateMessage === true ? (
-                <TouchableOpacity 
-                  style={styles.btn}
-                  onPress={() => onShare()}
-                >
+                <TouchableOpacity style={styles.btn} onPress={() => onShare()}>
                   <Text style={styles.textBtn}>Compartilhar</Text>
                 </TouchableOpacity>
               ) : (
@@ -898,7 +917,36 @@ export function AdvancedSearch() {
       </ScrollView>
 
       {/* Modal de erro ao trazer o resultado */}
-      {erroResult == true?(''):('')}
+      {erroResult == true ? (
+        <Pressable style={styles.background}>
+          <Pressable style={styles.modal} onPress={() => setErroResult(true)}>
+            <View style={styles.sectionModal}>
+              <Ionicons
+                name="close-circle"
+                size={70}
+                color={THEME.COLORS.ALERT}
+              />
+              <Text style={styles.erroTitle}>{erroResultTitle} :(</Text>
+              <View style={styles.divTextModal}>
+                <Text style={styles.erroText}>
+                  Para mudar esse resultado você precisa alterar as datas e
+                  assim achar uma forma de solicitar essa aula..
+                </Text>
+              </View>
+            </View>
+            <View style={styles.sectionButtonModal}>
+              <TouchableOpacity
+                style={styles.divButtonModal}
+                onPress={() => setErroResult(false)}
+              >
+                <Text style={styles.textModalErro}>Refazer Buscar</Text>
+              </TouchableOpacity>
+            </View>
+          </Pressable>
+        </Pressable>
+      ) : (
+        ""
+      )}
     </Background>
   );
 }

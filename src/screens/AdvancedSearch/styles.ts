@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 import { shadow } from "react-native-paper";
 import { THEME } from "../../themes";
 
@@ -252,5 +252,67 @@ export const styles = StyleSheet.create({
     fontSize: 22,
     fontFamily: THEME.FONT_FAMILY.BOLD,
     color: THEME.COLORS.AZUL_500,
+  },
+  background: {
+    backgroundColor: "rgba(190,190,190,0.6)",
+    position: "absolute",
+    zIndex: 1000,
+    width: "100%",
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modal: {
+    width: "85%",
+    paddingTop: 20,
+    position: "absolute",
+    zIndex: 1002,
+    alignItems: "center",
+    borderRadius: 8,
+    flexDirection: "column",
+    justifyContent: "center",
+    backgroundColor: THEME.COLORS.WHITE,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+
+    elevation: 4,
+  },
+
+  sectionModal: {
+    alignItems: "center",
+  },
+  erroTitle: {
+    marginTop: 10,
+    fontSize: 18,
+    fontFamily: THEME.FONT_FAMILY.BOLD,
+  },
+  divTextModal: {
+    marginVertical: 10,
+    paddingHorizontal: 10,
+  },
+  erroText: {
+    textAlign: "center",
+    fontFamily: THEME.FONT_FAMILY.REGULAR,
+  },
+  sectionButtonModal: {
+    width: "100%",
+    justifyContent: "space-between",
+    marginTop: 20,
+    paddingVertical: 12,
+    borderColor: THEME.COLORS.TEXT_OPACIT,
+    borderTopWidth: 0.6,
+  },
+  divButtonModal: {
+    alignItems: "center",
+  },
+  textModalErro: {
+    fontSize: 16,
+    fontFamily: THEME.FONT_FAMILY.BOLD,
+    color: THEME.COLORS.TEXT_OPACIT,
   },
 });
