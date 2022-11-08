@@ -45,7 +45,7 @@ export const styles = StyleSheet.create({
     elevation: 8,
     paddingBottom: 15,
   },
-  containerRadios:{
+  containerRadios: {
     width: '100%',
     marginTop: 25,
     paddingBottom: 20,
@@ -53,7 +53,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center'
   },
-  containerRadio:{
+  containerRadio: {
     flexDirection: 'row',
   },
   textRadioOne: {
@@ -84,13 +84,13 @@ export const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
   },
-  containerSearch:{
+  containerSearch: {
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginTop:50,
+    marginTop: 50,
   },
-  btnModalANDROID:{
+  btnModalANDROID: {
     width: 48,
     height: 48,
     borderTopLeftRadius: 10,
@@ -103,13 +103,13 @@ export const styles = StyleSheet.create({
     borderColor: '#fff',
     borderWidth: 1,
     borderStyle: 'solid',
-    shadowOffset: {width: 2, height: -8},  
-    shadowColor: '#000',  
-    shadowOpacity: 0.7,  
-    shadowRadius: 3,  
+    shadowOffset: { width: 2, height: -8 },
+    shadowColor: '#000',
+    shadowOpacity: 0.7,
+    shadowRadius: 3,
     elevation: 10,
   },
-  btnModalIOS:{
+  btnModalIOS: {
     width: 48,
     height: 48,
     borderTopLeftRadius: 10,
@@ -122,26 +122,26 @@ export const styles = StyleSheet.create({
     borderColor: '#fff',
     borderWidth: 1,
     borderStyle: 'solid',
-    shadowOffset: {width: 2, height: 2},  
-    shadowColor: '#000',  
-    shadowOpacity: 0.7,  
-    shadowRadius: 3,  
+    shadowOffset: { width: 2, height: 2 },
+    shadowColor: '#000',
+    shadowOpacity: 0.7,
+    shadowRadius: 3,
   },
-  containerLista:{
+  containerLista: {
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  msgDate:{
+  msgDate: {
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  listaAulas:{
+  listaAulas: {
     justifyContent: 'center',
     alignItems: 'center'
   },
-  contentModal:{
+  contentModal: {
     width: '100%',
     height: '100%',
     position: 'absolute',
@@ -150,33 +150,40 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'rgba(190,190,190,0.6)',
   },
-  modal:{
+  modal: {
     width: '80%',
     height: '60%',
     backgroundColor: '#fff',
     borderRadius: 8,
   },
-  closeModal:{
+  closeModal: {
     fontFamily: THEME.FONT_FAMILY.BOLD,
     fontSize: THEME.FONT_SIZE.MD,
     color: '#fff'
   },
-  headerModal:{
+  headerModal: {
     width: '100%',
     height: 'auto',
-    padding:5,
+    padding: 5,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: THEME.COLORS.AZUL_500,
     borderRadius: 8,
   },
-  titleHeaderModal:{
+  titleHeaderModal: {
     fontSize: THEME.FONT_SIZE.MD,
     fontFamily: THEME.FONT_FAMILY.BOLD,
     color: '#fff'
   },
-  contentInformationsLesson:{
-    
-  }
+  contentInformationsLesson: {
+
+  },
+  emptyListStyle: {
+    padding: 10,
+    alignItems: 'center',
+    fontSize: 22,
+    textAlign: 'center',
+    color: THEME.COLORS.SELECT,
+  },
 });

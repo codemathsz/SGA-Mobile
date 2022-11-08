@@ -128,8 +128,11 @@ export function Home() {
   // id aula clicada
   const [dataAulaModal, setDataAulaModal] = useState([]);
 
+  // listagem de aula na home, por uma data selecionada
+  const [listAulaFromDaySelect, setListAulaFromDaySelect] = useState<Aula[]>([])
 
-  // funções para o calendário
+  // loading na flatlist
+  const [loading, setLoading] = useState(true)
 
   // função para o calendário iniciar na data atual
   var date = new Date();
@@ -179,26 +182,33 @@ export function Home() {
     }
   };
 
-
-  // api para pegar as aulas
-  async function getAulaDidMount() {
+  async function getAulaFromDaySelected() {
     try {
-      const response = await API.get('/api/aula')
-      setAula(response.data)
+      const response = await API.get(`/api/aula/${dayIndicator == '' ? dateCurrent : dayIndicator}`)
+      setListAulaFromDaySelect(response.data)
+      setLoading(false)
     } catch (error) {
       return error
     }
   }
 
   useEffect(() => {
-    getAulaDidMount()
-  }, [])
+    getAulaFromDaySelected()
+  }, [dayIndicator])
 
   const clickModal = (v) => {
     setShowModal(v)
   }
 
-  console.log(showModal)
+  const EmptyListMessage = () => {
+    return (
+      <Text style={styles.emptyListStyle}>
+        Nenhuma aula encontrada!
+      </Text>
+    );
+  };
+
+  console.log(dateCurrent)
   return (
     <View>
       {
@@ -321,32 +331,34 @@ export function Home() {
                 </View>
               </View>
               <View style={{ width: '100%', alignItems: 'center', justifyContent: 'center' }}>
-                {
-                  aula.length == 0 ?
-                    <Text style={{ fontSize: 22, paddingBottom: 30, color: THEME.COLORS.SELECT }}>Nenhuma aula encontrada!</Text>
-                    :
-                    <View style={styles.containerLista}>
-                      <View style={styles.msgDate}>
-                        <Text style={{ color: THEME.COLORS.SELECT, textTransform: 'uppercase' }}>{`Aulas do dia: ${dateSelectedFormat == '' ? dateInitial : dateSelectedFormat}`}</Text>
-                      </View>
-                      <View style={{ width: '100%' }}>
+
+                <View style={styles.containerLista}>
+                  <View style={styles.msgDate}>
+                    <Text style={{ color: THEME.COLORS.SELECT, textTransform: 'uppercase' }}>{`Aulas do dia: ${dateSelectedFormat == '' ? dateInitial : dateSelectedFormat}`}</Text>
+                  </View>
+                  <View style={{ width: '100%' }}>
+                    {
+                      loading ?
+                        <Loading />
+                        :
                         <FlatList
-                          data={aula}
+                          data={listAulaFromDaySelect}
                           keyExtractor={(item) => item.id.toString()}
                           renderItem={({ item }) =>
+
                             <InicioCard
                               data={item}
                               valueModal={clickModal}
                               idItem={setDataAulaModal}
                             />
                           }
+                          ListEmptyComponent={EmptyListMessage}
 
                         />
-                      </View>
+                    }
+                  </View>
 
-                    </View>
-                }
-
+                </View>
               </View>
 
             </Background>
@@ -497,32 +509,33 @@ export function Home() {
                 </View>
               </View>
               <View style={{ width: '100%', alignItems: 'center', justifyContent: 'center' }}>
-                {
-                  aula.length == 0 ?
-                    <Text style={{ fontSize: 22, paddingBottom: 30, color: THEME.COLORS.SELECT }}>Nenhuma aula encontrada!</Text>
-                    :
-                    <View style={styles.containerLista}>
-                      <View style={styles.msgDate}>
-                        <Text style={{ color: THEME.COLORS.SELECT, textTransform: 'uppercase' }}>{`Aulas do dia: ${dateSelectedFormat == '' ? dateInitial : dateSelectedFormat}`}</Text>
-                      </View>
-                      <View style={{ width: '100%' }}>
+                <View style={styles.containerLista}>
+                  <View style={styles.msgDate}>
+                    <Text style={{ color: THEME.COLORS.SELECT, textTransform: 'uppercase' }}>{`Aulas do dia: ${dateSelectedFormat == '' ? dateInitial : dateSelectedFormat}`}</Text>
+                  </View>
+                  <View style={{ width: '100%' }}>
+                    {
+                      loading ?
+                        <Loading />
+                        :
                         <FlatList
-                          data={aula}
+                          data={listAulaFromDaySelect}
                           keyExtractor={(item) => item.id.toString()}
                           renderItem={({ item }) =>
+
                             <InicioCard
                               data={item}
                               valueModal={clickModal}
                               idItem={setDataAulaModal}
                             />
                           }
+                          ListEmptyComponent={EmptyListMessage}
 
                         />
-                      </View>
+                    }
+                  </View>
 
-                    </View>
-                }
-
+                </View>
               </View>
 
             </Background>
