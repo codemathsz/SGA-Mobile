@@ -57,11 +57,35 @@ export const styles = StyleSheet.create({
 
     elevation: 4,
   },
+
+  selectFormIos:{
+    marginTop: 5,
+    paddingVertical: 14,
+    paddingLeft: 10,
+    borderRadius: 8,
+    backgroundColor: THEME.COLORS.WHITE,
+    shadowColor: THEME.COLORS.BLACK,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+
+    elevation: 4,
+  },
+
   itemSelect: {
     color: THEME.COLORS.TEXT_PLACE,
     fontFamily: THEME.FONT_FAMILY.EXTRA_BOLD,
     fontWeight: "800",
   },
+
+  itemSelectIos:{
+    color: THEME.COLORS.TEXT_PLACE,
+    fontFamily: THEME.FONT_FAMILY.EXTRA_BOLD,
+  },
+
   containerRadio: {
     paddingTop: 10,
     flexDirection: "row",

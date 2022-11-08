@@ -12,6 +12,7 @@ import {
   Share,
   Alert,
   Pressable,
+  ActionSheetIOS,
 } from "react-native";
 import { Picker, PickerIOS } from "@react-native-picker/picker";
 import { RadioButton } from "react-native-paper";
@@ -49,6 +50,9 @@ export function AdvancedSearch() {
   const [valueEnvironment, setValueEnvironment] = useState();
   // const para o select da competência
   const [selectedCompetence, setSelectedCompetence] = useState([]);
+  const [selectedCompetenceIos, setSelectedCompetenceIos] = useState(
+    "Selecione uma competência"
+  );
   // const para o select de período
   const [selectedPeriod, setSelectedPeriod] = useState([]);
   const [periods, setPeriods] = useState([
@@ -71,6 +75,7 @@ export function AdvancedSearch() {
   const [unidadeCurricular, setUnidadeCurricular] = useState<
     unidadeCurricular[]
   >([]);
+  const [unidadeCurricularIos, setUnidadeCurricularIos] = useState([]);
   // Guarda respostas consumidas da API
   const [teachers, setTeachers] = useState<Teachers[]>([]);
   const [environment, setEnvironment] = useState<Ambientes[]>([]);
@@ -96,16 +101,18 @@ export function AdvancedSearch() {
   const [erroResultTitle, setErroResultTitle] = useState("");
   // Feita para saber os valores obtidos ao escolher a data do Date Picker
   var monthDateInit = String(dateInit.getMonth() + 1).padStart(2, "0");
+  var dayDateInit = String(dateInit.getDate()).padStart(2, "0")
   var valueDateInit = String(
-    `${dateInit.getDate()}/${monthDateInit}/${dateInit.getFullYear()}`
+    `${dayDateInit}/${monthDateInit}/${dateInit.getFullYear()}`
   );
 
   var monthDateFin = String(dateFinal.getMonth() + 1).padStart(2, "0");
+  var dayDateFin = String(dateFinal.getDate()).padStart(2, "0");
   var valueDateFinal =
     dateFinal < dateInit
       ? DateFinalEqualsInit()
       : String(
-          `${dateFinal.getDate()}/${monthDateFin}/${dateFinal.getFullYear()}`
+          `${dayDateFin}/${monthDateFin}/${dateFinal.getFullYear()}`
         );
 
   function DateFinalEqualsInit() {
@@ -190,9 +197,9 @@ export function AdvancedSearch() {
 
   // para ser aplicada quando for fazer a busca
   function searchApplied() {
-    validateSearch();
     getTeachersDidMount();
     getEnvironmentDidMount();
+    validateSearch();
   }
 
   // deixando erros no estado inicial
@@ -250,13 +257,13 @@ export function AdvancedSearch() {
 
     // validação se resultado for vazio
     if (teachers.length === 0 && environment.length === 0) {
-      setErroResultTitle("Não a Professores e Ambientes");
+      setErroResultTitle("Não há Professores e Ambientes");
       return setErroResult(true);
     } else if (teachers.length === 0) {
-      setErroResultTitle("Não a Professores");
+      setErroResultTitle("Não há Professores");
       return setErroResult(true);
     } else if (environment.length === 0) {
-      setErroResultTitle("Não a Ambientes");
+      setErroResultTitle("Não há Ambientes");
       return setErroResult(true);
     } else {
       return setSearchAplic(true);
@@ -329,6 +336,7 @@ export function AdvancedSearch() {
     try {
       const response = await API.get("/api/unidade");
       setUnidadeCurricular(response.data);
+      setUnidadeCurricularIos(response.data.nome)
     } catch (error) {
       console.log(error);
     }
@@ -610,9 +618,10 @@ export function AdvancedSearch() {
               ) : (
                 ""
               )}
-              <View style={styles.selectForm}>
-                {/* Validação para trocar o picker conforme o sistema operacional */}
-                {Platform.OS === "android" ? (
+
+              {/* Validação para trocar o picker conforme o sistema operacional */}
+              {Platform.OS === "android" ? (
+                <View style={styles.selectForm}>
                   <Picker
                     selectedValue={selectedCompetence}
                     onValueChange={(itemValue) =>
@@ -635,30 +644,37 @@ export function AdvancedSearch() {
                       );
                     })}
                   </Picker>
-                ) : (
-                  <Picker
-                    selectedValue={selectedCompetence}
-                    onValueChange={(itemValue) =>
-                      setSelectedCompetence(itemValue)
-                    }
-                  >
-                    <Picker.Item
-                      label="Selecione a Competência"
-                      value="default"
-                      style={styles.itemSelect}
-                    />
-                    {unidadeCurricular.map((cr) => {
-                      return (
-                        <Picker.Item
-                          label={cr.nome}
-                          value={cr.nome}
-                          style={styles.itemSelect}
-                        />
-                      );
-                    })}
-                  </Picker>
-                )}
-              </View>
+                </View>
+              ) : (
+                <TouchableOpacity
+                  style={styles.selectFormIos}
+                  onPress={() =>
+                    ActionSheetIOS.showActionSheetWithOptions(
+                      {
+                        title: "Selecione uma opção",
+                        options: ["cancelar", "LIMPAR"].concat(unidadeCurricularIos),
+                        cancelButtonIndex: 0,
+                        destructiveButtonIndex: 1,
+                        userInterfaceStyle: "dark",
+                      },
+                      (buttonIndex) => {
+                        if (buttonIndex === 0) {
+                          // cancel action
+                        } else if (buttonIndex === 1) {
+                          setSelectedCompetenceIos("Selecione um tipo de curso");
+                        } else {
+                          setSelectedCompetenceIos(unidadeCurricularIos[buttonIndex - 2]);
+                          setSelectedCompetence(unidadeCurricularIos[buttonIndex - 2]);
+                        }
+                      }
+                    )
+                  }
+                >
+                  <Text style={styles.itemSelectIos}>
+                    {selectedCompetenceIos}
+                  </Text>
+                </TouchableOpacity>
+              )}
             </View>
             {/* Campo empresa */}
             <View style={styles.divForm}>
