@@ -121,6 +121,7 @@ export function Teachers() {
     }
   }
 
+  // Recebe Dados conforme a filtragem de Professor
   async function getFilterUnityCursesDidMount(){
     try {
       // deixando a Array vazia para não entrar em conflito com novos valores

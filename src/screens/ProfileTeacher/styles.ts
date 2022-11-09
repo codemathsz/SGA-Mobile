@@ -60,7 +60,8 @@ export const styles = StyleSheet.create({
   subTitleCalendar:{
     width: '33%',
     flexDirection: 'row',
-    justifyContent: 'space-evenly'
+    justifyContent: 'space-evenly',
+    alignItems: 'center'
   },
   containerListANDROID:{
     width: '90%',

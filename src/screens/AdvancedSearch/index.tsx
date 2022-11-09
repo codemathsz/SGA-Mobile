@@ -57,9 +57,9 @@ export function AdvancedSearch() {
   const [selectedPeriod, setSelectedPeriod] = useState([]);
   const [periods, setPeriods] = useState([
     "Selecione um período",
-    "Manhã",
-    "Tarde",
-    "Noite",
+    "MANHA",
+    "TARDE",
+    "NOITE",
   ]);
   // const para RadioButton
   const [localeClasses, setLocaleClasses] = useState("senai");
@@ -101,7 +101,7 @@ export function AdvancedSearch() {
   const [erroResultTitle, setErroResultTitle] = useState("");
   // Feita para saber os valores obtidos ao escolher a data do Date Picker
   var monthDateInit = String(dateInit.getMonth() + 1).padStart(2, "0");
-  var dayDateInit = String(dateInit.getDate()).padStart(2, "0")
+  var dayDateInit = String(dateInit.getDate()).padStart(2, "0");
   var valueDateInit = String(
     `${dayDateInit}/${monthDateInit}/${dateInit.getFullYear()}`
   );
@@ -111,9 +111,7 @@ export function AdvancedSearch() {
   var valueDateFinal =
     dateFinal < dateInit
       ? DateFinalEqualsInit()
-      : String(
-          `${dayDateFin}/${monthDateFin}/${dateFinal.getFullYear()}`
-        );
+      : String(`${dayDateFin}/${monthDateFin}/${dateFinal.getFullYear()}`);
 
   function DateFinalEqualsInit() {
     return (valueDateFinal = valueDateInit);
@@ -197,9 +195,7 @@ export function AdvancedSearch() {
 
   // para ser aplicada quando for fazer a busca
   function searchApplied() {
-    getTeachersDidMount();
-    getEnvironmentDidMount();
-    validateSearch();
+    validateSearch(getTeachersDidMount, getEnvironmentDidMount);
   }
 
   // deixando erros no estado inicial
@@ -213,8 +209,11 @@ export function AdvancedSearch() {
   };
 
   // fazendo a validação dos campos antes de fazer a busca
-  const validateSearch = () => {
+  const validateSearch = (professor, ambiente) => {
     erroReset();
+    // fazendo a requisição para depois validar todos os campos e busca de dados
+    professor()
+    ambiente()
 
     // validação campos
     if (valueCurso === "") {
@@ -312,7 +311,6 @@ export function AdvancedSearch() {
   }
 
   // Compartilha o resultado da mensagem
-
   const onShare = async () => {
     let messageShare = `A solicitação do ${valueCurso}, pela ${valueCompany} poderá ser marcado. Sendo assim a data é de ${valueDateInit} até ${valueDateFinal}, incluindo os dias da semana${
       dayDom == true ? " Domingo " : ""
@@ -336,7 +334,7 @@ export function AdvancedSearch() {
     try {
       const response = await API.get("/api/unidade");
       setUnidadeCurricular(response.data);
-      setUnidadeCurricularIos(response.data.nome)
+      setUnidadeCurricularIos(response.data.nome);
     } catch (error) {
       console.log(error);
     }
@@ -347,8 +345,8 @@ export function AdvancedSearch() {
     try {
       const response = await API.get("/api/professor");
       setTeachers(response.data);
-    } catch (erro) {
-      console.log(erro);
+    } catch (error) {
+      console.log(error);
     }
   }
 
@@ -652,7 +650,9 @@ export function AdvancedSearch() {
                     ActionSheetIOS.showActionSheetWithOptions(
                       {
                         title: "Selecione uma opção",
-                        options: ["cancelar", "LIMPAR"].concat(unidadeCurricularIos),
+                        options: ["cancelar", "LIMPAR"].concat(
+                          unidadeCurricularIos
+                        ),
                         cancelButtonIndex: 0,
                         destructiveButtonIndex: 1,
                         userInterfaceStyle: "dark",
@@ -661,10 +661,16 @@ export function AdvancedSearch() {
                         if (buttonIndex === 0) {
                           // cancel action
                         } else if (buttonIndex === 1) {
-                          setSelectedCompetenceIos("Selecione um tipo de curso");
+                          setSelectedCompetenceIos(
+                            "Selecione um tipo de curso"
+                          );
                         } else {
-                          setSelectedCompetenceIos(unidadeCurricularIos[buttonIndex - 2]);
-                          setSelectedCompetence(unidadeCurricularIos[buttonIndex - 2]);
+                          setSelectedCompetenceIos(
+                            unidadeCurricularIos[buttonIndex - 2]
+                          );
+                          setSelectedCompetence(
+                            unidadeCurricularIos[buttonIndex - 2]
+                          );
                         }
                       }
                     )
