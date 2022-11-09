@@ -188,7 +188,7 @@ export function Home() {
       setListAulaFromDaySelect(response.data)
       setLoading(false)
     } catch (error) {
-      return error
+      return console.log(error)
     }
   }
 
@@ -207,8 +207,6 @@ export function Home() {
       </Text>
     );
   };
-
-  console.log(dateCurrent)
   return (
     <View>
       {

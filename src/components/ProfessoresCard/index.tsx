@@ -5,13 +5,14 @@ import { styles } from './styles';
 
 import ProfessorFoto from '../../assets/foto_chile.png'
 import { THEME } from '../../themes';
-import { useNavigation } from '@react-navigation/native';
-import { Professores } from '../../screens/Teachers';
 
+import { useNavigation } from '@react-navigation/native';
+import { Teachers } from '../../screens/Teachers';
+import {ProfileTeacher} from '../../screens/ProfileTeacher'
 
 
 interface Props {
-    data: Professores
+    data: Teachers
 }
 
 
@@ -20,7 +21,7 @@ export function ProfessoresCard({ data }: Props) {
     const navigation = useNavigation();
 
     function goProfileTeacher(){
-        navigation.navigate("ProfileTeacher", {data} )
+        navigation.navigate("ProfileTeacher" as never, {data} as never)
     }
 
     return (
