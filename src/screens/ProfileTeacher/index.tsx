@@ -68,6 +68,7 @@ export interface ClassesType {
     email: string;
     cargaSemanal: string;
     ativo: boolean;
+    foto: string;
     competencia: [
       {
         id: string;
@@ -113,6 +114,8 @@ export interface ClassesType {
   codTurma: string;
   periodo: string;
 }
+
+import photoProfile from '../../assets/photoprofile.png'
 
 export function ProfileTeacher({ route }: any) {
   // Arrays que recebem aulas do professor
@@ -162,10 +165,11 @@ export function ProfileTeacher({ route }: any) {
           <View style={styles.contentPhoto}>
             <View>
               <Image
-                source={Photo}
+                source={route.params?.data?.foto == null ? photoProfile :{uri: route.params?.data?.foto}}
                 style={{
                   width: 200,
                   height: 200,
+                  borderRadius: 200
                 }}
               />
             </View>

@@ -8,8 +8,8 @@ import { THEME } from '../../themes';
 
 import { useNavigation } from '@react-navigation/native';
 import { Teachers } from '../../screens/Teachers';
-import {ProfileTeacher} from '../../screens/ProfileTeacher'
 
+import photoProfile from '../../assets/photoprofile.png'
 
 interface Props {
     data: Teachers
@@ -33,7 +33,7 @@ export function ProfessoresCard({ data }: Props) {
                 <View style={styles.contentMain}>
                     <View>
                         <Image
-                            source={ProfessorFoto}
+                            source={data.foto == null ? photoProfile : {uri:  data?.foto }}
                             style={{
                                 width: 60,
                                 height: 60,
