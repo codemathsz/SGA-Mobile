@@ -121,11 +121,23 @@ export function ProfileTeacher({ route }: any) {
   // Arrays que recebem aulas do professor
   const [classesFic, setClassesFic] = useState<ClassesType[]>();
   const [classesRegular, setClassesRegular] = useState<ClassesType[]>([]);
+  const [lessonsFromTeacher, setLessonsFromTeacher] = useState([])
+  // const para passar o dia para o indicador maior
+  const [daySelected, setDaySelected] = useState(0);
+  const [dayIndicator, setDayIndicator] = useState('')
 
-  useEffect(() => {
-    LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
-    getClassesDidMount();
-  }, []);
+  // função para o calendário iniciar na data atual
+  var date = new Date();
+  var dayCurrent = String(date.getDate()).padStart(2, "0");
+  var monthCurrent = String(date.getMonth() + 1).padStart(2, "0");
+  var yearCurrent = date.getFullYear();
+  const dateCurrent = dayCurrent + "/" + monthCurrent + "/" + yearCurrent;
+
+
+  async function getLessonFromTeacherDidMount() {
+    const respose = await API.get(`/api/aula/prof?idProf=${route.params.data.id}&data=${dayIndicator == '' ? dateCurrent : dayIndicator}`)
+    setLessonsFromTeacher(respose.data)
+  }
 
   // Deixando o dia marcado no calendário
   // Função que recebe as aulas do professor por tipo
@@ -158,6 +170,17 @@ export function ProfileTeacher({ route }: any) {
     // [classesFicDate]: { selected: true, marked: true, color:THEME.COLORS.AZUL_300, textColor:THEME.COLORS.WHITE},
     //[classesRegular]: { selected: true, marked: true, color:THEME.COLORS.AZUL_500, textColor:THEME.COLORS.WHITE},
   };
+
+  useEffect(() => {
+    LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
+    getClassesDidMount();
+  }, []);
+
+  useEffect(() => {
+    getLessonFromTeacherDidMount()
+  }, [dayIndicator])
+
+  console.log('dia selec: ' + dayIndicator)
   return (
     <ScrollView>
       <Background>
@@ -165,7 +188,7 @@ export function ProfileTeacher({ route }: any) {
           <View style={styles.contentPhoto}>
             <View>
               <Image
-                source={route.params?.data?.foto == null ? photoProfile :{uri: route.params?.data?.foto}}
+                source={route.params?.data?.foto == null ? photoProfile : { uri: route.params?.data?.foto }}
                 style={{
                   width: 200,
                   height: 200,
@@ -194,13 +217,13 @@ export function ProfileTeacher({ route }: any) {
                 calendarBackground: "#FEFEFE",
                 textSectionTitleColor: "#1E1E40",
                 textSectionTitleDisabledColor: "rgb(17, 17, 17, 0.2)",
-                selectedDayBackgroundColor: "#CDCDCD",
+                selectedDayBackgroundColor: "#25B5E9",
                 selectedDayTextColor: "#ffffff",
                 todayTextColor: "#25B5E9",
                 dayTextColor: "#1E1E40",
                 textDisabledColor: "rgba(17, 17, 17, 0.2)",
                 dotColor: "#fff",
-                selectedDotColor: "#CDCDCD",
+                selectedDotColor: "#25B5E9",
                 arrowColor: "#1E1E40",
                 disabledArrowColor: "#d9e1e8",
                 monthTextColor: "#1E1E40",
@@ -212,7 +235,20 @@ export function ProfileTeacher({ route }: any) {
                 textMonthFontSize: 20,
                 textDayHeaderFontSize: 15,
               }}
-              markedDates={typeDayStyle}
+
+              onDayPress={(day) => {
+                var indicatorDay = day.dateString;
+                var daySelect = day.day
+                var monthSelect = day.month
+                var yearSelect = day.year
+                var dateSelectCurrent = `${daySelect}/${monthSelect}/${yearSelect}`
+
+                setDayIndicator(dateSelectCurrent)
+              }}
+
+              markedDates={{
+                [dayIndicator]: { selected: true, marked: true },
+              }}
             />
             <View style={styles.contentSubTitleCalendar}>
               <View style={styles.subTitleCalendar}>
@@ -262,7 +298,7 @@ export function ProfileTeacher({ route }: any) {
           </View>
           {/* Aulas do Professor */}
           <FlatList
-            data={AULAS}
+            data={lessonsFromTeacher}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
               <View
@@ -280,19 +316,14 @@ export function ProfileTeacher({ route }: any) {
                   }
                 >
                   <View style={styles.item}>
-                    <Text>{item.dia}</Text>
-                    <Text>{item.curso}</Text>
-                    <Text>{item.Periodo}</Text>
-                  </View>
-                  <View style={styles.item}>
-                    <Text>{item.dia}</Text>
-                    <Text>{item.curso}</Text>
-                    <Text>{item.Periodo}</Text>
+                    <Text>{item.data}</Text>
+                    <Text>{item.unidadeCurricular.nome}</Text>
+                    <Text>{item.periodo}</Text>
                   </View>
                 </View>
               </View>
             )}
-            style={{ width: "100%", height: 350 }}
+            style={{ width: "100%" }}
           />
         </View>
       </Background>
