@@ -63,7 +63,7 @@ export function AdvancedSearch() {
   ]);
   // const para RadioButton
   const [localeClasses, setLocaleClasses] = useState("senai");
-  // const para dias selecionados
+  // Dias Selecionados
   const [dayDom, setDayDom] = useState(false);
   const [daySeg, setDaySeg] = useState(false);
   const [dayTer, setDayTer] = useState(false);
@@ -99,6 +99,9 @@ export function AdvancedSearch() {
   // validação da busca, se não possuir resultado
   const [erroResult, setErroResult] = useState(false);
   const [erroResultTitle, setErroResultTitle] = useState("");
+  // validate data result
+  const [completForm, setCompletForm] = useState(false);
+
   // Feita para saber os valores obtidos ao escolher a data do Date Picker
   var monthDateInit = String(dateInit.getMonth() + 1).padStart(2, "0");
   var dayDateInit = String(dateInit.getDate()).padStart(2, "0");
@@ -112,6 +115,61 @@ export function AdvancedSearch() {
     dateFinal < dateInit
       ? DateFinalEqualsInit()
       : String(`${dayDateFin}/${monthDateFin}/${dateFinal.getFullYear()}`);
+
+  useEffect(() => {
+    getUnidadeCurricularDidMount();
+  }, []);
+
+  useEffect(() => {
+    getTeachersDidMount();
+    getEnvironmentDidMount();
+  }, [completForm]);
+
+  // usado para a validação de compartilhamento
+  useEffect(() => {
+    if (
+      localeClasses == "senai" &&
+      selectedTeachers != "" &&
+      selectedEnvironments != ""
+    ) {
+      setValidateMessage(true);
+    } else if (localeClasses == "company" && selectedTeachers != "") {
+      setValidateMessage(true);
+    } else {
+      setValidateMessage(false);
+    }
+  }, [valueTeacher, valueEnvironment]);
+
+  // recebendo unidades curriculares
+  async function getUnidadeCurricularDidMount() {
+    try {
+      const response = await API.get("/api/unidade");
+      setUnidadeCurricular(response.data);
+      setUnidadeCurricularIos(response.data.nome);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  // ALTERAR FUTURAMENTE recebe professores conforme a busca avançada
+  async function getTeachersDidMount() {
+    try {
+      const response = await API.get("/api/professor");
+      setTeachers(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  // ALTERAR FUTURAMENTE recebe ambientes conforme a busca Avançada
+  async function getEnvironmentDidMount() {
+    try {
+      const response = await API.get("/api/ambiente");
+      setEnvironment(response.data);
+    } catch (erro) {
+      console.log(erro);
+    }
+  }
 
   function DateFinalEqualsInit() {
     return (valueDateFinal = valueDateInit);
@@ -183,23 +241,19 @@ export function AdvancedSearch() {
   const showDateInit = () => {
     setOpenDateInit(true);
   };
-  // Receber o valor da Data Final
+  // Value Data Final
   const onChangeDateFinal = (event, selectedDate) => {
     setOpenDateFinal(false);
     setDateFinal(selectedDate);
   };
-  // função para aparecer o Date picker da Data Final
+  // Show Date picker Data Final
   const showDateFinal = () => {
     setOpenDateFinal(true);
   };
 
-  // para ser aplicada quando for fazer a busca
-  function searchApplied() {
-    validateSearch(getTeachersDidMount, getEnvironmentDidMount);
-  }
-
   // deixando erros no estado inicial
   const erroReset = () => {
+    setCompletForm(false);
     setErroCurse(false);
     setErroCompetence(false);
     setErroCompany(false);
@@ -209,13 +263,9 @@ export function AdvancedSearch() {
   };
 
   // fazendo a validação dos campos antes de fazer a busca
-  const validateSearch = (professor, ambiente) => {
+  async function searchApplied() {
     erroReset();
-    // fazendo a requisição para depois validar todos os campos e busca de dados
-    professor()
-    ambiente()
-
-    // validação campos
+    // Validate Campos
     if (valueCurso === "") {
       Vibration.vibrate();
       setErroMessage("Campo obrigatório*");
@@ -252,23 +302,24 @@ export function AdvancedSearch() {
       Vibration.vibrate();
       setErroMessage("Selecione um período*");
       return setErroPeriod(true);
+      // Validate Dados
+    } else {
+      setCompletForm(true);
     }
 
-    // validação se resultado for vazio
-    if (teachers.length === 0 && environment.length === 0) {
+    if (teachers.length == 0 && environment.length == 0) {
       setErroResultTitle("Não há Professores e Ambientes");
       return setErroResult(true);
-    } else if (teachers.length === 0) {
+    } else if (teachers.length == 0) {
       setErroResultTitle("Não há Professores");
       return setErroResult(true);
-    } else if (environment.length === 0) {
+    } else if (environment.length == 0) {
       setErroResultTitle("Não há Ambientes");
       return setErroResult(true);
     } else {
       return setSearchAplic(true);
     }
-  };
-
+  }
   // Recebe o valor das opções selecionadas
   const teachersSelected = (t) => {
     setSelectedTeachers(t);
@@ -289,21 +340,9 @@ export function AdvancedSearch() {
   // função para quando for realizar outra busca
   function otherSearchApplied() {
     // tirando os valores dos resultados pela busca
+    setCompletForm(false);
     teachers.splice(0);
     environment.splice(0);
-    setValueCurso("");
-    setValueCompany("");
-    setSelectedCompetence([]);
-    setLocaleClasses("senai");
-    setValueCep("");
-    setDayDom(false);
-    setDaySeg(false);
-    setDayTer(false);
-    setDayQua(false);
-    setDayQui(false);
-    setDaySex(false);
-    setDaySab(false);
-    setSelectedPeriod([]);
     setSelectedTeachers("");
     setSelectedEnvironments("");
     // retirando a busca
@@ -328,56 +367,6 @@ export function AdvancedSearch() {
       message: messageShare,
     });
   };
-
-  // recebendo unidades curriculares
-  async function getUnidadeCurricularDidMount() {
-    try {
-      const response = await API.get("/api/unidade");
-      setUnidadeCurricular(response.data);
-      setUnidadeCurricularIos(response.data.nome);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  // ALTERAR FUTURAMENTE recebe professores conforme a busca avançada
-  async function getTeachersDidMount() {
-    try {
-      const response = await API.get("/api/professor");
-      setTeachers(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  // ALTERAR FUTURAMENTE recebe ambientes conforme a busca Avançada
-  async function getEnvironmentDidMount() {
-    try {
-      const response = await API.get("/api/ambiente");
-      setEnvironment(response.data);
-    } catch (erro) {
-      console.log(erro);
-    }
-  }
-
-  useEffect(() => {
-    getUnidadeCurricularDidMount();
-  }, []);
-
-  // usado para a validação de compartilhamento
-  useEffect(() => {
-    if (
-      localeClasses == "senai" &&
-      selectedTeachers != "" &&
-      selectedEnvironments != ""
-    ) {
-      setValidateMessage(true);
-    } else if (localeClasses == "company" && selectedTeachers != "") {
-      setValidateMessage(true);
-    } else {
-      setValidateMessage(false);
-    }
-  }, [valueTeacher, valueEnvironment]);
 
   return (
     <Background>
