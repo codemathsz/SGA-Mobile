@@ -72,6 +72,7 @@ import { InicioCard } from "../../components/InicioCard";
 import { Loading } from "../../components/Loading";
 import API from "../../services/api";
 import { THEME } from "../../themes";
+import { ModalHome } from "../../components/ModalHome";
 
 export interface Aula {
   id: number
@@ -360,30 +361,7 @@ export function Home() {
               </View>
 
             </Background>
-            <View style={styles.contentModal}>
-              <View style={styles.modal}>
-                <View style={styles.headerModal}>
-                  <View><Text style={styles.titleHeaderModal}>Informações da Aula</Text></View>
-                  <TouchableOpacity
-                    onPress={() => setShowModal(false)}
-                  >
-                    <Text style={styles.closeModal}>X</Text>
-                  </TouchableOpacity>
-                </View>
-                <View style={styles.contentInformationsLesson}>
-
-                </View>
-                <TouchableOpacity >
-                  <Text style={{ color: '#000' }}>Ambiente: {dataAulaModal?.ambiente?.nome}</Text>
-                  <Text style={{ color: '#000' }}>Aula: {dataAulaModal?.unidadeCurricular?.nome}</Text>
-                  <Text style={{ color: '#000' }}>Carga Horária da Unidade Curricular: {dataAulaModal?.unidadeCurricular?.horas} horas</Text>
-                  <Text style={{ color: '#000' }}>Carga Diaria: {dataAulaModal?.cargaDiaria} horas</Text>
-                  <Text style={{ color: '#000' }}>Professor(a): {dataAulaModal?.professor?.nome}</Text>
-                  <Text style={{ color: '#000' }}>Período: {dataAulaModal?.periodo}</Text>
-                  <Text style={{ color: '#000' }}>Código da Turma: {dataAulaModal?.codTurma}</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
+            <ModalHome valueShowModal={setShowModal} data={dataAulaModal}/>
           </View>
 
 

@@ -35,6 +35,7 @@ export interface Teachers {
   competencia: [];
   ativo: boolean;
   email: string;
+  foto: string
 }
 
 export interface Course {
