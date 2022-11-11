@@ -55,6 +55,9 @@ export function AdvancedSearch() {
   );
   // const para o select de período
   const [selectedPeriod, setSelectedPeriod] = useState([]);
+  const [selectedPeriodIos, setSelectedPeriodIos] = useState(
+    "Selecione um período"
+  );
   const [periods, setPeriods] = useState([
     "Selecione um período",
     "MANHA",
@@ -270,7 +273,7 @@ export function AdvancedSearch() {
       Vibration.vibrate();
       setErroMessage("Campo obrigatório*");
       return setErroCurse(true);
-    } else if (selectedCompetence.length == 0) {
+    } else if (Platform.OS == "android" && selectedCompetence.length == 0 || Platform.OS === 'ios' && selectedCompetenceIos.length == 0) {
       Vibration.vibrate();
       setErroMessage("Selecione uma competência*");
       return setErroCompetence(true);
@@ -298,7 +301,7 @@ export function AdvancedSearch() {
       Vibration.vibrate();
       setErroMessage("Selecione um Dia*");
       return setErroDay(true);
-    } else if (selectedPeriod.length == 0) {
+    } else if (Platform.OS == "android" && selectedPeriod.length == 0 || Platform.OS === 'ios' && selectedPeriodIos.length == 0) {
       Vibration.vibrate();
       setErroMessage("Selecione um período*");
       return setErroPeriod(true);
@@ -317,6 +320,7 @@ export function AdvancedSearch() {
       setErroResultTitle("Não há Ambientes");
       return setErroResult(true);
     } else {
+      setValidateMessage(false)
       return setSearchAplic(true);
     }
   }
@@ -357,7 +361,9 @@ export function AdvancedSearch() {
       dayQua == true ? " Quarta " : ""
     }${dayQui == true ? " Quinta " : ""}${daySex == true ? " Sexta " : ""}${
       daySab == true ? " Sábado " : ""
-    }, no período da ${selectedPeriod}.Será realizado pelo professor(a) ${selectedTeachers}, ${
+    }, no período da ${
+      Platform.OS == "android" ? selectedPeriod : selectedPeriodIos
+    }}.Será realizado pelo professor(a) ${selectedTeachers}, ${
       localeClasses == "company"
         ? "no endereço solicitado pela empresa cujo o CEP é " + valueCep
         : "em " + selectedEnvironments
@@ -534,7 +540,7 @@ export function AdvancedSearch() {
                   ""
                 )}
                 , no período da{" "}
-                <Text style={styles.textResultState}>{selectedPeriod}</Text>.
+                <Text style={styles.textResultState}>{Platform.OS == "android" ? selectedPeriod:selectedPeriodIos}</Text>.
                 Será realizado pelo professor(a){" "}
                 <Text style={styles.textResultState}>
                   {selectedTeachers == ""
@@ -634,13 +640,12 @@ export function AdvancedSearch() {
                 </View>
               ) : (
                 <TouchableOpacity
-                  style={styles.selectFormIos}
                   onPress={() =>
                     ActionSheetIOS.showActionSheetWithOptions(
                       {
                         title: "Selecione uma opção",
                         options: ["cancelar", "LIMPAR"].concat(
-                          unidadeCurricularIos
+                          unidadeCurricular.map((cr) => cr.nome)
                         ),
                         cancelButtonIndex: 0,
                         destructiveButtonIndex: 1,
@@ -655,15 +660,13 @@ export function AdvancedSearch() {
                           );
                         } else {
                           setSelectedCompetenceIos(
-                            unidadeCurricularIos[buttonIndex - 2]
-                          );
-                          setSelectedCompetence(
-                            unidadeCurricularIos[buttonIndex - 2]
+                            unidadeCurricular[buttonIndex - 2].nome
                           );
                         }
                       }
                     )
                   }
+                  style={styles.selectFormIos}
                 >
                   <Text style={styles.itemSelectIos}>
                     {selectedCompetenceIos}
@@ -897,23 +900,51 @@ export function AdvancedSearch() {
               ) : (
                 ""
               )}
-              <View style={styles.selectForm}>
-                <Picker
-                  selectedValue={selectedPeriod}
-                  onValueChange={(itemValue) => setSelectedPeriod(itemValue)}
-                  mode={"dropdown"}
+              {Platform.OS == "android" ? (
+                <View style={styles.selectForm}>
+                  <Picker
+                    selectedValue={selectedPeriod}
+                    onValueChange={(itemValue) => setSelectedPeriod(itemValue)}
+                    mode={"dropdown"}
+                  >
+                    {periods.map((cr) => {
+                      return (
+                        <Picker.Item
+                          label={cr}
+                          value={cr}
+                          style={styles.itemSelect}
+                        />
+                      );
+                    })}
+                  </Picker>
+                </View>
+              ) : (
+                <TouchableOpacity
+                  onPress={() =>
+                    ActionSheetIOS.showActionSheetWithOptions(
+                      {
+                        title: "Selecione uma opção",
+                        options: ["cancelar", "LIMPAR"].concat(periods),
+                        cancelButtonIndex: 0,
+                        destructiveButtonIndex: 1,
+                        userInterfaceStyle: "dark",
+                      },
+                      (buttonIndex) => {
+                        if (buttonIndex === 0) {
+                          // cancel action
+                        } else if (buttonIndex === 1) {
+                          setSelectedPeriodIos("Selecione um tipo de curso");
+                        } else {
+                          setSelectedPeriodIos(periods[buttonIndex - 2]);
+                        }
+                      }
+                    )
+                  }
+                  style={styles.selectFormIos}
                 >
-                  {periods.map((cr) => {
-                    return (
-                      <Picker.Item
-                        label={cr}
-                        value={cr}
-                        style={styles.itemSelect}
-                      />
-                    );
-                  })}
-                </Picker>
-              </View>
+                  <Text style={styles.itemSelectIos}>{selectedPeriodIos}</Text>
+                </TouchableOpacity>
+              )}
             </View>
             <View style={styles.containerSearch}>
               <TouchableOpacity
