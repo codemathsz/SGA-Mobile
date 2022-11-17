@@ -47,6 +47,7 @@ export interface Course {
 }
 
 export interface CurricularUnit {
+  id: string;
   nome: string;
   cargaHoraria: string;
 }
@@ -287,6 +288,7 @@ export function Teachers() {
                     {course?.map((cr) => {
                       return (
                         <Picker.Item
+                          key={cr.id}
                           label={cr.nome}
                           value={cr.nome}
                           style={styles.itemDatePicker}
@@ -306,6 +308,7 @@ export function Teachers() {
                     {curricularUnit?.map((cru) => {
                       return (
                         <Picker.Item
+                          key={cru.id}
                           label={cru.nome}
                           value={cru.nome}
                           style={styles.itemDatePicker}

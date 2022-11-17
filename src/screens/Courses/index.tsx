@@ -300,6 +300,7 @@ export function Courses() {
                       {typeCourses.map((cr) => {
                         return (
                           <Picker.Item
+                            key={cr}
                             label={cr}
                             value={cr}
                             style={styles.itemDatePicker}

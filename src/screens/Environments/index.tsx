@@ -384,6 +384,7 @@ export function Environments({ id, ...rest }: Ambientes) {
                         }
                       >
                         <Picker.Item
+                          key={0}
                           label="Selecione um tipo de Ambiente"
                           value={"default"}
                           color="#00000090"
@@ -391,6 +392,7 @@ export function Environments({ id, ...rest }: Ambientes) {
                         {typeAmbiente.map((cr) => {
                           return (
                             <Picker.Item
+                              key={cr}
                               label={cr}
                               value={cr}
                               style={styles.itemDatePicker}
@@ -440,6 +442,7 @@ export function Environments({ id, ...rest }: Ambientes) {
                         {capacidadeAmbient.map((cr) => {
                           return (
                             <Picker.Item
+                              key={cr}
                               label={cr}
                               value={cr}
                               style={styles.itemDatePicker}
