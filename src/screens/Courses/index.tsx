@@ -268,7 +268,9 @@ export function Courses() {
                       onPress={() => ActionSheetIOS.showActionSheetWithOptions(
                         {
                           title:'Selecione uma opção',
-                          options: ['cancelar','LIMPAR'].concat(typeCourses),
+                          options: ['cancelar','LIMPAR'].concat(
+                            typeCourses
+                            ),
                           cancelButtonIndex: 0,
                           destructiveButtonIndex: 1,
                           userInterfaceStyle: 'dark',

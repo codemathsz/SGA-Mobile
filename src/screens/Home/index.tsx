@@ -255,9 +255,6 @@ export function Home() {
                   initialDate={dateCurrent}
                   minDate={"2022-09-20"}
                   enableSwipeMonths={true}
-
-
-                  // Props para o dia selecionado
                   onDayPress={(day) => {
 
                     var indicatorDay = day.dateString;
@@ -330,7 +327,6 @@ export function Home() {
                 </View>
               </View>
               <View style={{ width: '100%', alignItems: 'center', justifyContent: 'center' }}>
-
                 <View style={styles.containerLista}>
                   <View style={styles.msgDate}>
                     <Text style={{ color: THEME.COLORS.SELECT, textTransform: 'uppercase' }}>{`Aulas do dia: ${dateSelectedFormat == '' ? dateInitial : dateSelectedFormat}`}</Text>
@@ -356,10 +352,8 @@ export function Home() {
                         />
                     }
                   </View>
-
                 </View>
               </View>
-
             </Background>
             <ModalHome valueShowModal={setShowModal} data={dataAulaModal}/>
           </View>
