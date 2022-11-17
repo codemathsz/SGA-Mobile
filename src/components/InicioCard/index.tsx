@@ -24,7 +24,7 @@ export function InicioCard({ data, valueModal, idItem }: Props) {
     }else{
       valueModal(true)
     }
-  }
+  } 
   
   return (
     <View style={styles.container} >
@@ -32,14 +32,19 @@ export function InicioCard({ data, valueModal, idItem }: Props) {
         onPress={() => [validModal(), idItem(data)]}
       >
         <View style={styles.header}>
-          <View style={{ width: '34%' }}>
+          <View style={styles.titleHeader}>
             <Text style={{ fontFamily: THEME.FONT_FAMILY.BOLD, fontSize: THEME.FONT_SIZE.MD, color: THEME.COLORS.WHITE }}>{data.ambiente.nome}</Text>
           </View>
-          <View style={{ width: '36%' }}>
-            <Text style={{ fontFamily: THEME.FONT_FAMILY.BOLD, fontSize: THEME.FONT_SIZE.MD, color: THEME.COLORS.WHITE }}>Aula</Text>
-          </View>
-          <View style={{ width: '25%' }}>
-            <Text style={{ fontFamily: THEME.FONT_FAMILY.BOLD, fontSize: THEME.FONT_SIZE.MD, color: THEME.COLORS.WHITE }}>Professor</Text>
+          <View style={styles.subTitleHeader}>
+            <View style={{ width: '34%' }}>
+              <Text style={{ fontFamily: THEME.FONT_FAMILY.BOLD, fontSize: THEME.FONT_SIZE.MD, color: THEME.COLORS.WHITE }}>Periodo</Text>
+            </View>
+            <View style={{ width: '36%' }}>
+              <Text style={{ fontFamily: THEME.FONT_FAMILY.BOLD, fontSize: THEME.FONT_SIZE.MD, color: THEME.COLORS.WHITE }}>Aula</Text>
+            </View>
+            <View style={{ width: '25%' }}>
+              <Text style={{ fontFamily: THEME.FONT_FAMILY.BOLD, fontSize: THEME.FONT_SIZE.MD, color: THEME.COLORS.WHITE }}>Professor</Text>
+            </View>
           </View>
         </View>
         <View style={styles.containerPeriodos}>{/* Manha */}

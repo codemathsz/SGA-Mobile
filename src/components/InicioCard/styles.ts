@@ -24,14 +24,29 @@ export const styles = StyleSheet.create({
   },
   header: {
     width: '100%',
-    height: 40,
-    flexDirection: 'row',
+    height: 60,
+    flexDirection: 'column',
     justifyContent: 'space-between',
     backgroundColor: THEME.COLORS.AZUL_500,
     alignItems: 'center',
     borderTopRightRadius: 14,
     borderTopLeftRadius: 14,
+  },
+  titleHeader:{
+    width: '100%',
+    height: 30,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  subTitleHeader:{
+    width: '100%',
+    height: 30,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     paddingLeft: 10,
+    
   },
   containerPeriodos: {
     width: '100%',
