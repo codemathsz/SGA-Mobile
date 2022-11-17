@@ -53,6 +53,7 @@ export function AdvancedSearch() {
   const [selectedCompetenceIos, setSelectedCompetenceIos] = useState(
     "Selecione uma competência"
   );
+  const [selectedCompetenceId, setSelectedCompetenceId] = useState("");
   // const para o select de período
   const [selectedPeriod, setSelectedPeriod] = useState([]);
   const [selectedPeriodIos, setSelectedPeriodIos] = useState(
@@ -78,7 +79,6 @@ export function AdvancedSearch() {
   const [unidadeCurricular, setUnidadeCurricular] = useState<
     unidadeCurricular[]
   >([]);
-  const [unidadeCurricularIos, setUnidadeCurricularIos] = useState([]);
   // Guarda respostas consumidas da API
   const [teachers, setTeachers] = useState<Teachers[]>([]);
   const [environment, setEnvironment] = useState<Ambientes[]>([]);
@@ -148,7 +148,6 @@ export function AdvancedSearch() {
     try {
       const response = await API.get("/api/unidade");
       setUnidadeCurricular(response.data);
-      setUnidadeCurricularIos(response.data.nome);
     } catch (error) {
       console.log(error);
     }
@@ -156,18 +155,30 @@ export function AdvancedSearch() {
 
   // ALTERAR FUTURAMENTE recebe professores conforme a busca avançada
   async function getTeachersDidMount() {
-    try {
-      const response = await API.get("/api/professor");
-      setTeachers(response.data);
-    } catch (error) {
-      console.log(error);
-    }
+    await API.post("/api/professor/disponibilidade", {
+      dataInicio: valueDateInit,
+      diasSemana: [dayDom, daySeg, dayTer, dayQua, dayQui, daySex, daySab],
+      dataFinal: "2022-10-19",
+      unidadeCurricular: { selectedCompetenceId },
+      periodo: Platform.OS == "android" ? selectedPeriod : selectedPeriodIos,
+    })
+      .then((response) => setTeachers(response.data))
+      .catch((error) => {
+        console.log(
+          `Erro ao consumir o post de Professor em Busca Avançada: ${error}`
+        );
+      });
+    // setTeachers(response.data);
   }
 
   // ALTERAR FUTURAMENTE recebe ambientes conforme a busca Avançada
   async function getEnvironmentDidMount() {
     try {
-      const response = await API.get("/api/ambiente");
+      const response = await API.get(
+        `/api/ambiente/disponivel?dataInicio=${valueDateInit}&dias=${dayDom},${daySeg},${dayTer},${dayQua},${dayQui},${daySex},${daySab}&dataFinal=${valueDateFinal}&periodo=${
+          Platform.OS == "android" ? selectedPeriod : selectedPeriodIos
+        }`
+      );
       setEnvironment(response.data);
     } catch (erro) {
       console.log(erro);
@@ -273,7 +284,10 @@ export function AdvancedSearch() {
       Vibration.vibrate();
       setErroMessage("Campo obrigatório*");
       return setErroCurse(true);
-    } else if (Platform.OS == "android" && selectedCompetence.length == 0 || Platform.OS === 'ios' && selectedCompetenceIos.length == 0) {
+    } else if (
+      (Platform.OS == "android" && selectedCompetence.length == 0) ||
+      (Platform.OS === "ios" && selectedCompetenceIos.length == 0)
+    ) {
       Vibration.vibrate();
       setErroMessage("Selecione uma competência*");
       return setErroCompetence(true);
@@ -301,7 +315,10 @@ export function AdvancedSearch() {
       Vibration.vibrate();
       setErroMessage("Selecione um Dia*");
       return setErroDay(true);
-    } else if (Platform.OS == "android" && selectedPeriod.length == 0 || Platform.OS === 'ios' && selectedPeriodIos.length == 0) {
+    } else if (
+      (Platform.OS == "android" && selectedPeriod.length == 0) ||
+      (Platform.OS === "ios" && selectedPeriodIos.length == 0)
+    ) {
       Vibration.vibrate();
       setErroMessage("Selecione um período*");
       return setErroPeriod(true);
@@ -320,7 +337,7 @@ export function AdvancedSearch() {
       setErroResultTitle("Não há Ambientes");
       return setErroResult(true);
     } else {
-      setValidateMessage(false)
+      setValidateMessage(false);
       return setSearchAplic(true);
     }
   }
@@ -353,7 +370,7 @@ export function AdvancedSearch() {
     setSearchAplic(false);
   }
 
-  // Compartilha o resultado da mensagem
+  // Share result message
   const onShare = async () => {
     let messageShare = `A solicitação do ${valueCurso}, pela ${valueCompany} poderá ser marcado. Sendo assim a data é de ${valueDateInit} até ${valueDateFinal}, incluindo os dias da semana${
       dayDom == true ? " Domingo " : ""
@@ -540,8 +557,12 @@ export function AdvancedSearch() {
                   ""
                 )}
                 , no período da{" "}
-                <Text style={styles.textResultState}>{Platform.OS == "android" ? selectedPeriod:selectedPeriodIos}</Text>.
-                Será realizado pelo professor(a){" "}
+                <Text style={styles.textResultState}>
+                  {Platform.OS == "android"
+                    ? selectedPeriod
+                    : selectedPeriodIos}
+                </Text>
+                . Será realizado pelo professor(a){" "}
                 <Text style={styles.textResultState}>
                   {selectedTeachers == ""
                     ? "Selecione um professor"
@@ -617,9 +638,16 @@ export function AdvancedSearch() {
                 <View style={styles.selectForm}>
                   <Picker
                     selectedValue={selectedCompetence}
-                    onValueChange={(itemValue) =>
-                      setSelectedCompetence(itemValue)
-                    }
+                    onValueChange={(itemValue, itemIndex) => {
+                      console.log(
+                        "Posição selecionada no Picker: " + itemIndex
+                      );
+                      setSelectedCompetence(itemValue);
+                      setSelectedCompetenceId(
+                        unidadeCurricular[itemIndex - 2].id
+                      );
+                      console.log("ID da competencia: " + selectedCompetenceId);
+                    }}
                     mode={"dropdown"}
                   >
                     <Picker.Item
@@ -661,6 +689,9 @@ export function AdvancedSearch() {
                         } else {
                           setSelectedCompetenceIos(
                             unidadeCurricular[buttonIndex - 2].nome
+                          );
+                          setSelectedCompetenceId(
+                            unidadeCurricular[buttonIndex - 2].id
                           );
                         }
                       }

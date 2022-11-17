@@ -55,27 +55,25 @@ export const styles = StyleSheet.create({
   },
   containerRadio: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   textRadioOne: {
-    paddingTop: 6,
     fontSize: THEME.FONT_SIZE.MD,
     fontFamily: THEME.FONT_FAMILY.BOLD,
     color: THEME.COLORS.BLACK
   },
   textRadioTwo: {
-    paddingTop: 6,
     fontFamily: THEME.FONT_FAMILY.BOLD,
     fontSize: THEME.FONT_SIZE.MD,
     color: THEME.COLORS.AZUL_400
   },
   textRadioThree: {
-    paddingTop: 6,
     fontFamily: THEME.FONT_FAMILY.BOLD,
     fontSize: THEME.FONT_SIZE.MD,
     color: THEME.COLORS.AZUL_500
   },
   textRadioFour: {
-    paddingTop: 6,
     fontFamily: THEME.FONT_FAMILY.BOLD,
     fontSize: THEME.FONT_SIZE.MD,
     color: THEME.COLORS.AZUL_600
