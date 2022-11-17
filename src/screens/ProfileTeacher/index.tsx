@@ -61,66 +61,15 @@ LocaleConfig.locales["pt-br"] = {
 LocaleConfig.defaultLocale = "pt-br";
 
 export interface ClassesType {
-  id: string;
-  professor: {
-    id: string;
-    nome: string;
-    email: string;
-    cargaSemanal: string;
-    ativo: boolean;
-    foto: string;
-    competencia: [
-      {
-        id: string;
-        unidadeCurricular: {
-          id: string;
-          nome: string;
-          horas: string;
-        };
-        nivel: string;
-      }
-    ];
-  };
-  ambiente: {
-    id: string;
-    nome: string;
-    capacidade: string;
-    tipo: string;
-    cep: string;
-    complemento: string;
-    ativo: boolean;
-    endereco: string;
-  };
-  cargaDiaria: string;
-  data: string;
-  unidadeCurricular: {
-    id: string;
-    nome: string;
-    horas: string;
-  };
-  curso: {
-    id: string;
-    nome: string;
-    tipo: string;
-    ativo: boolean;
-    unidadeCurricular: [
-      {
-        id: string;
-        nome: string;
-        horas: string;
-      }
-    ];
-  };
-  codTurma: string;
-  periodo: string;
+  data: string
 }
 
 import photoProfile from '../../assets/photoprofile.png'
 
 export function ProfileTeacher({ route }: any) {
   // Arrays que recebem aulas do professor
-  const [classesFic, setClassesFic] = useState<ClassesType[]>();
-  const [classesRegular, setClassesRegular] = useState<ClassesType[]>([]);
+  const [classesFic, setClassesFic] = useState(['']);
+  const [classesRegular, setClassesRegular] = useState(['']);
   const [lessonsFromTeacher, setLessonsFromTeacher] = useState([])
   // const para passar o dia para o indicador maior
   const [daySelected, setDaySelected] = useState(0);
@@ -135,7 +84,7 @@ export function ProfileTeacher({ route }: any) {
 
 
   async function getLessonFromTeacherDidMount() {
-    const respose = await API.get(`/api/aula/prof?idProf=${route.params.data.id}&data=${dayIndicator == '' ? dateCurrent : dayIndicator}`)
+    const respose = await API.get(`/api/aula/prof?idProf=${route.params.data.id}&data=${dayIndicator === '' ? dateCurrent : dayIndicator}`)
     setLessonsFromTeacher(respose.data)
   }
 
@@ -162,14 +111,6 @@ export function ProfileTeacher({ route }: any) {
     }
   }
 
-  // TESTE de dados aulas por tipo
-  console.log(classesFic)
-  console.log(classesRegular)
-
-  const typeDayStyle = {
-    // [classesFicDate]: { selected: true, marked: true, color:THEME.COLORS.AZUL_300, textColor:THEME.COLORS.WHITE},
-    //[classesRegular]: { selected: true, marked: true, color:THEME.COLORS.AZUL_500, textColor:THEME.COLORS.WHITE},
-  };
 
   useEffect(() => {
     LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
@@ -180,7 +121,42 @@ export function ProfileTeacher({ route }: any) {
     getLessonFromTeacherDidMount()
   }, [dayIndicator])
 
-  console.log('dia selec: ' + dayIndicator)
+
+
+  const getMarkedDates = (TODAY, FIC, REGULAR) => {
+    let markedDates = {}
+
+    markedDates[TODAY] = {
+      ...markedDates[TODAY],
+      selected: true, marked: true, selectedColor: 'green', dotColor: THEME.COLORS.AZUL_300
+    }
+
+
+
+    FIC.forEach(lessonFIC => {
+      markedDates[lessonFIC] = {
+        ...markedDates[lessonFIC],
+        selected: true, marked: true, selectedColor: THEME.COLORS.AZUL_300, dotColor: THEME.COLORS.AZUL_300
+      }
+
+    });
+
+    REGULAR.forEach(lessonREGULAR => {
+      markedDates[lessonREGULAR] = {
+        ...markedDates[lessonREGULAR],
+        selected: true, marked: true, selectedColor: THEME.COLORS.AZUL_500, dotColor: THEME.COLORS.AZUL_500
+
+      }
+    });
+
+
+
+
+    return markedDates
+  }
+
+
+  console.log(getMarkedDates(dayIndicator, classesFic, classesRegular))
   return (
     <ScrollView>
       <Background>
@@ -222,8 +198,6 @@ export function ProfileTeacher({ route }: any) {
                 todayTextColor: "#25B5E9",
                 dayTextColor: "#1E1E40",
                 textDisabledColor: "rgba(17, 17, 17, 0.2)",
-                dotColor: "#fff",
-                selectedDotColor: "#25B5E9",
                 arrowColor: "#1E1E40",
                 disabledArrowColor: "#d9e1e8",
                 monthTextColor: "#1E1E40",
@@ -234,6 +208,7 @@ export function ProfileTeacher({ route }: any) {
                 textDayFontSize: 16,
                 textMonthFontSize: 20,
                 textDayHeaderFontSize: 15,
+
               }}
 
               onDayPress={(day) => {
@@ -246,16 +221,14 @@ export function ProfileTeacher({ route }: any) {
                 setDayIndicator(dateSelectCurrent)
               }}
 
-              markedDates={{
-                [dayIndicator]: { selected: true, marked: true },
-              }}
+              markedDates={getMarkedDates(dayIndicator, classesFic, classesRegular)}
             />
             <View style={styles.contentSubTitleCalendar}>
               <View style={styles.subTitleCalendar}>
                 <View
-                  style={{ width: 18, height: 18, backgroundColor: "#CDCDCD" }}
+                  style={{ width: 18, height: 18, backgroundColor: "#f69528" }}
                 />
-                <Text>Dias Disponíveis</Text>
+                <Text>Férias</Text>
               </View>
               <View style={styles.subTitleCalendar}>
                 <View
