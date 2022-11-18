@@ -46,9 +46,11 @@ export function Courses() {
   // useStates para o Select
   const [typeCourses, setTypeCourses] = useState([]);
   // para guardar o que foi selecionado no select
-  const [selectTypeCourses, setSelectTypeCourses] = useState([]);
+  const [selectTypeCourses, setSelectTypeCourses] = useState();
   // IOS
-  const [selectTypeCoursesIOS, setSelectTypeCoursesIOS] = useState('Selecione um tipo de curso');
+  const [selectTypeCoursesIOS, setSelectTypeCoursesIOS] = useState(
+    "Selecione um tipo de curso"
+  );
   // para receber os cursos conforme a busca
   const [searchCourses, setSearchCourses] = useState<Curso[]>([]);
   // value do Search para ser limpado
@@ -71,9 +73,8 @@ export function Courses() {
   // pegando as Enums do tipo curso
   async function getTypesCoursesDidMount() {
     try {
-      const response =  await API.get("/api/curso/tipocurso"); 
+      const response = await API.get("/api/curso/tipocurso");
       setTypeCourses(response.data);
-      
     } catch (error) {
       console.log(error);
     }
@@ -82,7 +83,7 @@ export function Courses() {
   // buscando cursos pelo filtro tipo de curso
   async function getSearchTypesCoursesDidMount() {
     try {
-      if (Platform.OS === 'ios') {
+      if (Platform.OS === "ios") {
         const response = await API.get(
           "/api/curso/buscacurso/" + selectTypeCoursesIOS
         );
@@ -97,7 +98,6 @@ export function Courses() {
         searchTypeCourses.splice(0);
         setSearchTypeCourses(response.data);
       }
-
     } catch (error) {
       console.log(error);
     }
@@ -169,8 +169,7 @@ export function Courses() {
     }
   };
 
- 
-
+  
   return (
     <Pressable onPress={Keyboard.dismiss} style={styles.container}>
       <Background>
@@ -184,7 +183,11 @@ export function Courses() {
           />
 
           <TouchableOpacity
-            style={Platform.OS === 'ios' ? styles.btnModalIOS : styles.btnModalANDROID}
+            style={
+              Platform.OS === "ios"
+                ? styles.btnModalIOS
+                : styles.btnModalANDROID
+            }
             onPress={() => setShowModal(true)}
           >
             <Filter />
@@ -192,68 +195,65 @@ export function Courses() {
         </View>
 
         {/* // Operador ternário  para aplicar as buscas* */}
-        {
-          courses.length == 0 ?
-            <Loading />
-            :
-            filter == true ? (
-              // se filtro for aplicado aparecera essa flatList
-              <FlatList
-                ListHeaderComponent={
-                  <ConfigApplicator
-                    text="Filtro Aplicado"
-                    functionFilter={validateCloseSearch}
-                  />
-                }
-                data={searchTypeCourses}
-                keyExtractor={(item) => item?.id}
-                renderItem={({ item }) => <CursoCard data={item} />}
-                horizontal={false}
-                showsVerticalScrollIndicator
-                style={styles.list}
-                ListEmptyComponent={<Loading />}
+        {courses.length == 0 ? (
+          <Loading />
+        ) : filter == true ? (
+          // se filtro for aplicado aparecera essa flatList
+          <FlatList
+            ListHeaderComponent={
+              <ConfigApplicator
+                text="Filtro Aplicado"
+                functionFilter={validateCloseSearch}
               />
-            ) : // Se buscar estiver sendo feita aparecera essa flatList
-              search == true ? (
-                <FlatList
-                  ListHeaderComponent={
-                    <ConfigApplicator
-                      text="Busca Aplicado"
-                      functionFilter={validateCloseSearch}
-                    />
-                  }
-                  data={searchCourses}
-                  keyExtractor={(item) => item?.id}
-                  renderItem={({ item }) => <CursoCard data={item} />}
-                  horizontal={false}
-                  showsVerticalScrollIndicator
-                  style={styles.list}
-                ></FlatList>
-              ) : (
-                // Flatlist que aparece quando não tem nenhuma busca personalizada feita
-                <FlatList
-                  /*  ListHeaderComponent={} */
-                  data={courses}
-                  keyExtractor={(item) => item?.id}
-                  renderItem={({ item }) => <CursoCard data={item} />}
-                  horizontal={false}
-                  showsVerticalScrollIndicator
-                  style={styles.list}
-                ></FlatList>
-              )}
+            }
+            data={searchTypeCourses}
+            keyExtractor={(item) => item?.id}
+            renderItem={({ item }) => <CursoCard data={item} />}
+            horizontal={false}
+            showsVerticalScrollIndicator
+            style={styles.list}
+            ListEmptyComponent={<Loading />}
+          />
+        ) : // Se buscar estiver sendo feita aparecera essa flatList
+        search == true ? (
+          <FlatList
+            ListHeaderComponent={
+              <ConfigApplicator
+                text="Busca Aplicado"
+                functionFilter={validateCloseSearch}
+              />
+            }
+            data={searchCourses}
+            keyExtractor={(item) => item?.id}
+            renderItem={({ item }) => <CursoCard data={item} />}
+            horizontal={false}
+            showsVerticalScrollIndicator
+            style={styles.list}
+          ></FlatList>
+        ) : (
+          // Flatlist que aparece quando não tem nenhuma busca personalizada feita
+          <FlatList
+            /*  ListHeaderComponent={} */
+            data={courses}
+            keyExtractor={(item) => item?.id}
+            renderItem={({ item }) => <CursoCard data={item} />}
+            horizontal={false}
+            showsVerticalScrollIndicator
+            style={styles.list}
+          ></FlatList>
+        )}
 
         {showModal == true ? (
           <Pressable
             style={styles.background}
             onPress={() => setShowModal(false)}
           >
-            <Pressable style={styles.modal}
-              onPress={() => setShowModal(true)}
-            >
+            <Pressable style={styles.modal} onPress={() => setShowModal(true)}>
               <View style={styles.modalHeader}>
                 <TouchableOpacity
                   style={styles.close}
-                  onPress={() => setShowModal(false)}>
+                  onPress={() => setShowModal(false)}
+                >
                   <Text style={styles.txtClose}>X</Text>
                 </TouchableOpacity>
                 <View style={styles.vwTitle}>
@@ -261,55 +261,65 @@ export function Courses() {
                 </View>
               </View>
               <View style={styles.containerFilter}>
-                {
-                  Platform.OS === 'ios'
-                    ?
-                    <TouchableOpacity
-                      onPress={() => ActionSheetIOS.showActionSheetWithOptions(
+                {Platform.OS === "ios" ? (
+                  <TouchableOpacity
+                    onPress={() =>
+                      ActionSheetIOS.showActionSheetWithOptions(
                         {
-                          title:'Selecione uma opção',
-                          options: ['cancelar','LIMPAR'].concat(
-                            typeCourses
-                            ),
+                          title: "Selecione uma opção",
+                          options: ["cancelar", "LIMPAR"].concat(typeCourses),
                           cancelButtonIndex: 0,
                           destructiveButtonIndex: 1,
-                          userInterfaceStyle: 'dark',
+                          userInterfaceStyle: "dark",
                         },
-                        buttonIndex => {
+                        (buttonIndex) => {
                           if (buttonIndex === 0) {
                             // cancel action
-                          }else if (buttonIndex === 1){
-                            setSelectTypeCoursesIOS('Selecione um tipo de curso')
-                          }else{
-                            setSelectTypeCoursesIOS(typeCourses[buttonIndex - 2])
+                          } else if (buttonIndex === 1) {
+                            setSelectTypeCoursesIOS(
+                              "Selecione um tipo de curso"
+                            );
+                          } else {
+                            setSelectTypeCoursesIOS(
+                              typeCourses[buttonIndex - 2]
+                            );
                           }
                         }
-                      )}
-
-                      style={styles.input}
-                    >
-                      <Text>{selectTypeCoursesIOS}</Text>
-                    </TouchableOpacity>
-                    :
-                    <Picker
-                      selectedValue={selectTypeCourses}
-                      style={styles.datePickerANDROID}
-                      onValueChange={(itemValue) => setSelectTypeCourses(itemValue)}
-                      mode={'dropdown'}
-                    >
-                      {typeCourses.map((cr) => {
-                        return (
-                          <Picker.Item
-                            key={cr}
-                            label={cr}
-                            value={cr}
-                            style={styles.itemDatePicker}
-                          />
-                        );
-                      })}
-                    </Picker>
-                }
+                      )
+                    }
+                    style={styles.input}
+                  >
+                    <Text>{selectTypeCoursesIOS}</Text>
+                  </TouchableOpacity>
+                ) : (
+                  <Picker
+                    selectedValue={selectTypeCourses}
+                    style={styles.datePickerANDROID}
+                    onValueChange={(itemValue) =>
+                      setSelectTypeCourses(itemValue)
+                    }
+                    mode={"dropdown"}
+                  >
+                    <Picker.Item
+                      key={0}
+                      label={"Selecione um tipo de curso"}
+                      value={'default'}
+                      style={styles.itemDatePicker}
+                    />
+                    {typeCourses.map((cr) => {
+                      return (
+                        <Picker.Item
+                          key={cr}
+                          label={cr}
+                          value={cr}
+                          style={styles.itemDatePicker}
+                        />
+                      );
+                    })}
+                  </Picker>
+                )}
               </View>
+              
               <TouchableOpacity
                 style={styles.button}
                 onPress={() => onPressFilter()}
