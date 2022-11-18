@@ -8,6 +8,13 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  titleEnvironment: {
+    width: '100%',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingTop: 5,
+  },
   card: {
     width: '90%',
     justifyContent: 'center',
@@ -24,7 +31,7 @@ export const styles = StyleSheet.create({
   },
   header: {
     width: '100%',
-    height: 60,
+    paddingVertical: 5,
     flexDirection: 'column',
     justifyContent: 'space-between',
     backgroundColor: THEME.COLORS.AZUL_500,
@@ -32,21 +39,13 @@ export const styles = StyleSheet.create({
     borderTopRightRadius: 14,
     borderTopLeftRadius: 14,
   },
-  titleHeader:{
-    width: '100%',
-    height: 30,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  subTitleHeader:{
+
+  subTitleHeader: {
     width: '100%',
     height: 30,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingLeft: 10,
-    
   },
   containerPeriodos: {
     width: '100%',
@@ -56,6 +55,11 @@ export const styles = StyleSheet.create({
     marginTop: 6,
     marginBottom: 6,
   },
-  
- 
+  containerNameClass: {
+    width: '46%',
+    alignItems: 'center',
+    backgroundColor: THEME.COLORS.ALERT
+  }
+
+
 });

@@ -158,7 +158,7 @@ export function AdvancedSearch() {
     await API.post("/api/professor/disponibilidade", {
       dataInicio: valueDateInit,
       diasSemana: [dayDom, daySeg, dayTer, dayQua, dayQui, daySex, daySab],
-      dataFinal: "2022-10-19",
+      dataFinal:valueDateFinal,
       unidadeCurricular: { selectedCompetenceId },
       periodo: Platform.OS == "android" ? selectedPeriod : selectedPeriodIos,
     })
@@ -644,13 +644,14 @@ export function AdvancedSearch() {
                       );
                       setSelectedCompetence(itemValue);
                       setSelectedCompetenceId(
-                        unidadeCurricular[itemIndex - 2].id
+                        unidadeCurricular[itemIndex - 1].id
                       );
                       console.log("ID da competencia: " + selectedCompetenceId);
                     }}
                     mode={"dropdown"}
                   >
                     <Picker.Item
+                      key={0}
                       label="Selecione a Competência"
                       value="default"
                       style={styles.itemSelect}
@@ -658,6 +659,7 @@ export function AdvancedSearch() {
                     {unidadeCurricular.map((cr) => {
                       return (
                         <Picker.Item
+                          key={cr.id}
                           label={cr.nome}
                           value={cr.nome}
                           style={styles.itemSelect}
@@ -941,6 +943,7 @@ export function AdvancedSearch() {
                     {periods.map((cr) => {
                       return (
                         <Picker.Item
+                          key={cr}
                           label={cr}
                           value={cr}
                           style={styles.itemSelect}
