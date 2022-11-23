@@ -179,7 +179,9 @@ export function Home() {
       classesSearch.splice(0);
       setClassesSearch(response.data);
     } catch (error) {
-      console.log(`Erro ao receber a requisição de buscar aula por palavra ${error}`)
+      console.log(
+        `Erro ao receber a requisição de buscar aula por palavra ${error}`
+      );
     }
   }
 
@@ -369,13 +371,12 @@ export function Home() {
           <ModalHome valueShowModal={setShowModal} data={dataAulaModal} />
         </View>
       ) : (
-        <ScrollView>
+        <ScrollView bounces={true}>
           <Background>
             <Header
               title="Bem Vindo"
               subTitle="Selecione um dia e veja as ocupações dos ambientes"
             />
-
             <View style={styles.sectionCalendar}>
               <Calendar
                 // Para estilização do calendário
