@@ -16,15 +16,16 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 interface Props extends TouchableOpacityProps {
   data: Aula;
   valueModal: any;
-  idItem: any;
+  sendsId: any;
 }
-export function InicioCard({ data, valueModal, idItem }: Props) {
+export function InicioCard({ data, valueModal, sendsId}: Props) {
   const [showModal, setShowModal] = useState(false);
 
-  function validModal() {
+  function validModal(id) {
     if (showModal == true) {
       valueModal(false);
     } else {
+      sendsId(id)
       valueModal(true);
     }
   }
@@ -56,10 +57,10 @@ export function InicioCard({ data, valueModal, idItem }: Props) {
           </View>
         </View>
         <View style={styles.containerPeriods}>
-          <TouchableOpacity style={styles.containerPeriod}>
+          <TouchableOpacity style={styles.containerPeriod} onPress={() => validModal(data.id)}>
             {/* Manha */}
             <View style={styles.containerPeriodLeft}>
-              <Ionicons name="sunny" size={30} color={THEME.COLORS.AZUL_400} />
+              <Ionicons name="sunny" size={30} color={'#F2CB05'} />
             </View>
             <View style={styles.containerPeriodRight}>
               {data.periodo === "MANHA" ? (
@@ -76,10 +77,10 @@ export function InicioCard({ data, valueModal, idItem }: Props) {
               )}
             </View>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.containerPeriod}>
+          <TouchableOpacity style={styles.containerPeriod} onPress={() => validModal(data.id)}>
             {/* Tarde */}
             <View style={styles.containerPeriodLeft}>
-              <Ionicons name="partly-sunny" size={30} color={THEME.COLORS.AZUL_500} />
+              <Ionicons name="partly-sunny" size={30} color={'#A6A6A6'} />
             </View>
             <View style={styles.containerPeriodRight}>
               {data.periodo === "TARDE" ? (
@@ -96,10 +97,10 @@ export function InicioCard({ data, valueModal, idItem }: Props) {
               )}
             </View>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.containerPeriod}>
+          <TouchableOpacity style={styles.containerPeriod} onPress={() => validModal(data.id)}>
             {/* Noite */}
             <View style={styles.containerPeriodLeft}>
-              <Ionicons name="moon" size={30} color={THEME.COLORS.AZUL_600} />
+              <Ionicons name="moon" size={30} color={'#11233E'} />
             </View>
             <View style={styles.containerPeriodRight}>
               {data.periodo === "NOITE" ? (
