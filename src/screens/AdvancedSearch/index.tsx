@@ -665,7 +665,7 @@ export function AdvancedSearch() {
                 </View>
               ) : (
                 <TouchableOpacity
-                
+
                   onPress={() =>
                     ActionSheetIOS.showActionSheetWithOptions(
                       {
@@ -785,25 +785,15 @@ export function AdvancedSearch() {
                   />
                 </TouchableOpacity>
                 {openDateInit == true ? (
-                  Platform.OS === 'android' ?
-                    (
-                      <RNDateTimePicker
-                        testID="dateTimePicker"
-                        value={dateInit}
-                        mode={"date"}
-                        is24Hour={true}
-                        display={"default"}
-                        onChange={onChangeDateInit}
-                        style={{ width: 400, backgroundColor: "white" }} //add this
-                      />
-                    ) : (<RNDateTimePicker
-                      value={dateInit}
-                      mode={"date"}
-                      is24Hour={true}
-                      display={"default"}
-                      onChange={onChangeDateInit}
-                      style={{ width: 400, backgroundColor: "white" }}
-                    />)
+                  <RNDateTimePicker
+                    testID="dateTimePicker"
+                    value={dateInit}
+                    mode={"date"}
+                    is24Hour={true}
+                    display={"default"}
+                    onChange={onChangeDateInit}
+                    style={{ width: 400, backgroundColor: "white" }} //add this
+                  />
                 ) : (
                   ""
                 )}
@@ -832,6 +822,7 @@ export function AdvancedSearch() {
                     display={"default"}
                     onChange={onChangeDateFinal}
                     minimumDate={dateInit}
+                    style={{ width: 320, backgroundColor: "white" }}
                   />
                 ) : (
                   ""
@@ -1009,10 +1000,10 @@ export function AdvancedSearch() {
                 size={70}
                 color={THEME.COLORS.ALERT}
               />
-              <Text style={styles.erroTitle}>{erroResultTitle} :(</Text>
+              <Text style={styles.erroTitle}>{erroResultTitle} : </Text>
               <View style={styles.divTextModal}>
                 <Text style={styles.erroText}>
-                  Para mudar esse resultado você precisa alterar as datas e {Teachers.length == 0?"a competência, ":""}
+                  Para mudar esse resultado você precisa alterar as datas e {Teachers.length == 0 ? 'a competência, ' : ""}
                   assim achar uma forma de solicitar essa aula..
                 </Text>
               </View>
