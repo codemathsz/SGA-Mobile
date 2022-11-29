@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import {
   View,
   Text,
@@ -31,6 +31,7 @@ import { FlatSearchAvanced } from "../../components/FlatSearchAvanced";
 import { Teachers } from "../Teachers";
 import { Ambientes } from "../Environments";
 import { EnvironmentsOptionsCard } from "../../components/EnvironmentsOptionsCard";
+import RNDateTimePicker from "@react-native-community/datetimepicker";
 
 interface unidadeCurricular {
   id: string;
@@ -39,16 +40,13 @@ interface unidadeCurricular {
 }
 
 export function AdvancedSearch() {
-  // const para value do TextInput
   const [valueCurso, setValueCurso] = useState("");
   const [valueCompany, setValueCompany] = useState("");
   const [valueCep, setValueCep] = useState("");
-  // valores pela seleção de resultados da busca
   const [selectedTeachers, setSelectedTeachers] = useState("");
   const [valueTeacher, setValueTeacher] = useState();
   const [selectedEnvironments, setSelectedEnvironments] = useState("");
   const [valueEnvironment, setValueEnvironment] = useState();
-  // const para o select da competência
   const [selectedCompetence, setSelectedCompetence] = useState([]);
   const [selectedCompetenceIos, setSelectedCompetenceIos] = useState(
     "Selecione uma competência"
@@ -65,9 +63,7 @@ export function AdvancedSearch() {
     "TARDE",
     "NOITE",
   ]);
-  // const para RadioButton
   const [localeClasses, setLocaleClasses] = useState("senai");
-  // Dias Selecionados
   const [dayDom, setDayDom] = useState(false);
   const [daySeg, setDaySeg] = useState(false);
   const [dayTer, setDayTer] = useState(false);
@@ -75,11 +71,9 @@ export function AdvancedSearch() {
   const [dayQui, setDayQui] = useState(false);
   const [daySex, setDaySex] = useState(false);
   const [daySab, setDaySab] = useState(false);
-  // const para select de unidade curricular
   const [unidadeCurricular, setUnidadeCurricular] = useState<
     unidadeCurricular[]
   >([]);
-  // Guarda respostas consumidas da API
   const [teachers, setTeachers] = useState<Teachers[]>([]);
   const [environment, setEnvironment] = useState<Ambientes[]>([]);
   // const para a data inicio e data final
@@ -119,6 +113,12 @@ export function AdvancedSearch() {
       ? DateFinalEqualsInit()
       : String(`${dayDateFin}/${monthDateFin}/${dateFinal.getFullYear()}`);
 
+  const erroInputCourse = useRef(null)
+  const erroInputCompetence = useRef(null)
+  const erroInputCompany = useRef(null)
+  const erroInputDaysWeek = useRef(null)
+  const erroInputCapacity = useRef(null)
+
   useEffect(() => {
     getUnidadeCurricularDidMount();
   }, []);
@@ -153,12 +153,11 @@ export function AdvancedSearch() {
     }
   }
 
-  // ALTERAR FUTURAMENTE recebe professores conforme a busca avançada
   async function getTeachersDidMount() {
     await API.post("/api/professor/disponibilidade", {
       dataInicio: valueDateInit,
       diasSemana: [dayDom, daySeg, dayTer, dayQua, dayQui, daySex, daySab],
-      dataFinal:valueDateFinal,
+      dataFinal: valueDateFinal,
       unidadeCurricular: { selectedCompetenceId },
       periodo: Platform.OS == "android" ? selectedPeriod : selectedPeriodIos,
     })
@@ -171,12 +170,10 @@ export function AdvancedSearch() {
     // setTeachers(response.data);
   }
 
-  // ALTERAR FUTURAMENTE recebe ambientes conforme a busca Avançada
   async function getEnvironmentDidMount() {
     try {
       const response = await API.get(
-        `/api/ambiente/disponivel?dataInicio=${valueDateInit}&dias=${dayDom},${daySeg},${dayTer},${dayQua},${dayQui},${daySex},${daySab}&dataFinal=${valueDateFinal}&periodo=${
-          Platform.OS == "android" ? selectedPeriod : selectedPeriodIos
+        `/api/ambiente/disponivel?dataInicio=${valueDateInit}&dias=${dayDom},${daySeg},${dayTer},${dayQua},${dayQui},${daySex},${daySab}&dataFinal=${valueDateFinal}&periodo=${Platform.OS == "android" ? selectedPeriod : selectedPeriodIos
         }`
       );
       setEnvironment(response.data);
@@ -281,8 +278,9 @@ export function AdvancedSearch() {
     erroReset();
     // Validate Campos
     if (valueCurso === "") {
-      Vibration.vibrate();
-      setErroMessage("Campo obrigatório*");
+      Vibration.vibrate()
+      setErroMessage("Campo obrigatório*")
+      erroInputCourse.current.focus()
       return setErroCurse(true);
     } else if (
       (Platform.OS == "android" && selectedCompetence.length == 0) ||
@@ -290,6 +288,7 @@ export function AdvancedSearch() {
     ) {
       Vibration.vibrate();
       setErroMessage("Selecione uma competência*");
+      erroInputCompetence.current.focus()
       return setErroCompetence(true);
     } else if (valueCompany == "") {
       Vibration.vibrate();
@@ -372,19 +371,14 @@ export function AdvancedSearch() {
 
   // Share result message
   const onShare = async () => {
-    let messageShare = `A solicitação do ${valueCurso}, pela ${valueCompany} poderá ser marcado. Sendo assim a data é de ${valueDateInit} até ${valueDateFinal}, incluindo os dias da semana${
-      dayDom == true ? " Domingo " : ""
-    }${daySeg == true ? " Segunda " : ""}${dayTer == true ? " Terça " : ""}${
-      dayQua == true ? " Quarta " : ""
-    }${dayQui == true ? " Quinta " : ""}${daySex == true ? " Sexta " : ""}${
-      daySab == true ? " Sábado " : ""
-    }, no período da ${
-      Platform.OS == "android" ? selectedPeriod : selectedPeriodIos
-    }}.Será realizado pelo professor(a) ${selectedTeachers}, ${
-      localeClasses == "company"
+    let messageShare = `A solicitação do ${valueCurso}, pela ${valueCompany} poderá ser marcado. Sendo assim a data é de ${valueDateInit} até ${valueDateFinal}, incluindo os dias da semana${dayDom == true ? " Domingo " : ""
+      }${daySeg == true ? " Segunda " : ""}${dayTer == true ? " Terça " : ""}${dayQua == true ? " Quarta " : ""
+      }${dayQui == true ? " Quinta " : ""}${daySex == true ? " Sexta " : ""}${daySab == true ? " Sábado " : ""
+      }, no período da ${Platform.OS == "android" ? selectedPeriod : selectedPeriodIos
+      }}.Será realizado pelo professor(a) ${selectedTeachers}, ${localeClasses == "company"
         ? "no endereço solicitado pela empresa cujo o CEP é " + valueCep
         : "em " + selectedEnvironments
-    }`;
+      }`;
 
     const result = await Share.share({
       message: messageShare,
@@ -611,7 +605,7 @@ export function AdvancedSearch() {
           <View style={styles.containerForm}>
             {/* TextInput Curso */}
             <View style={styles.divForm}>
-              <Text style={styles.titleForm}>Curso</Text>
+              <Text style={styles.titleForm} >Curso</Text>
               {erroCurse ? (
                 <Text style={styles.erroMessage}>{erroMessage}</Text>
               ) : (
@@ -619,6 +613,7 @@ export function AdvancedSearch() {
               )}
               <TextInput
                 style={styles.inputForm}
+                ref={erroInputCourse}
                 placeholder="Digite o nome do Curso"
                 value={valueCurso}
                 onChangeText={(t) => setValueCurso(t)}
@@ -635,7 +630,7 @@ export function AdvancedSearch() {
 
               {/* Validação para trocar o picker conforme o sistema operacional */}
               {Platform.OS === "android" ? (
-                <View style={styles.selectForm}>
+                <View style={styles.selectForm} >
                   <Picker
                     selectedValue={selectedCompetence}
                     onValueChange={(itemValue, itemIndex) => {
@@ -670,6 +665,7 @@ export function AdvancedSearch() {
                 </View>
               ) : (
                 <TouchableOpacity
+
                   onPress={() =>
                     ActionSheetIOS.showActionSheetWithOptions(
                       {
@@ -789,13 +785,14 @@ export function AdvancedSearch() {
                   />
                 </TouchableOpacity>
                 {openDateInit == true ? (
-                  <DateTimePicker
+                  <RNDateTimePicker
                     testID="dateTimePicker"
                     value={dateInit}
                     mode={"date"}
                     is24Hour={true}
                     display={"default"}
                     onChange={onChangeDateInit}
+                    style={{ width: 400, backgroundColor: "white" }} //add this
                   />
                 ) : (
                   ""
@@ -825,6 +822,7 @@ export function AdvancedSearch() {
                     display={"default"}
                     onChange={onChangeDateFinal}
                     minimumDate={dateInit}
+                    style={{ width: 320, backgroundColor: "white" }}
                   />
                 ) : (
                   ""
@@ -1002,10 +1000,10 @@ export function AdvancedSearch() {
                 size={70}
                 color={THEME.COLORS.ALERT}
               />
-              <Text style={styles.erroTitle}>{erroResultTitle} :(</Text>
+              <Text style={styles.erroTitle}>{erroResultTitle} : </Text>
               <View style={styles.divTextModal}>
                 <Text style={styles.erroText}>
-                  Para mudar esse resultado você precisa alterar as datas e
+                  Para mudar esse resultado você precisa alterar as datas e {Teachers.length == 0 ? 'a competência, ' : ""}
                   assim achar uma forma de solicitar essa aula..
                 </Text>
               </View>
