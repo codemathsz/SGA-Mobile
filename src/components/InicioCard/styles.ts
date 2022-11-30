@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 import { THEME } from "../../themes";
 
 export const styles = StyleSheet.create({
-  container: {
+  containerA: {
     width: "100%",
     flexDirection: "column",
     justifyContent: "center",
