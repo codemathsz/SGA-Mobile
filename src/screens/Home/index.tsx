@@ -375,7 +375,7 @@ export function Home() {
                       <View style={styles.containerLessons}>
                         <View style={styles.titleEnvironment}>
                           <Text
-                            style={{
+                            style={{ 
                               fontFamily: THEME.FONT_FAMILY.BOLD,
                               fontSize: THEME.FONT_SIZE.LG,
                               color: THEME.COLORS.AZUL_500,
