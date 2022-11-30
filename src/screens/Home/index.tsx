@@ -113,6 +113,7 @@ export function Home() {
   const [idClickClass, setIdClickClass] = useState();
   const [daySelected, setDaySelected] = useState(0);
   const [dayIndicator, setDayIndicator] = useState("");
+  const [dayFromHolidayAndVacation, setDayFromHolidayAndVacation] = useState([''])
   const [periodSelected, setPeriodSelected] = useState("all");
   const [valueSearch, setValueSearch] = useState();
   const [filter, setFilter] = useState(false);
@@ -177,6 +178,16 @@ export function Home() {
     }
   };
 
+  async function getDaysFormHolidayAndVacation() {
+    try {
+      
+      const response = await API.get('/api/dnl/buscaDnls');
+      setDayFromHolidayAndVacation(response.data)
+    } catch (error) {
+      return error
+    }
+  }
+
   async function getSearchClasseDidMount(textValue) {
     try {
       setValueSearch(textValue);
@@ -203,11 +214,6 @@ export function Home() {
     }
   }
 
-  useEffect(() => {
-    getAulaFromDaySelected();
-
-  }, [dayIndicator]);
-
   const clickModal = (v) => {
     setShowModal(v);
   };
@@ -226,9 +232,16 @@ export function Home() {
     setEnvironmentFromDataSelected(item)
   }
 
-  console.log("Lista de aulas do dia selecionado  " + aulasDeTalDia);
+  console.log("feriados " + dayFromHolidayAndVacation);
 
+  useEffect(() =>{
+    getDaysFormHolidayAndVacation()
+  }, [])
 
+  useEffect(() => {
+    getAulaFromDaySelected();
+
+  }, [dayIndicator]);
   return (
     <View>
       <View style={{ height: "100%" }}>
@@ -286,6 +299,7 @@ export function Home() {
                 }}
                 markedDates={{
                   [dayIndicator]: { selected: true, marked: true },
+                  [dayFromHolidayAndVacation.push()] : {disabled: true , color: '#D6D6D6'},
                 }}
               />
             </View>
