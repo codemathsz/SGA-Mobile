@@ -74,7 +74,7 @@ export function Teachers() {
   // para guardar o que foi selecionado no select unid. curricular
   const [selectCurricularUnit, setSelectCurricularUnit] = useState([]);
   // Arrays para as filtragens
-  const [filterUnityCurses, setFilterUnityCurses] = useState([]);
+  const [filterUnityCurses, setFilterUnityCurses] = useState<Teachers[]>([]);
 
   // Recebe os professores
   async function getProfessorDidMount() {
@@ -123,19 +123,16 @@ export function Teachers() {
     }
   }
 
-  // Recebe Dados conforme a filtragem de Professor
   async function getFilterUnityCursesDidMount(){
     try {
-      // deixando a Array vazia para não entrar em conflito com novos valores
       filterUnityCurses.splice(0)
-      // Validando o tipo de filtragem
-      // FAZER DEPOIS
       const response = await API.get(
-        `/api/professor?nomeCr=${selectCourses}&nomeUc=${selectCurricularUnit}`
+        `/api/professor/buscProf?nomeCurso=${selectCourses}&nomeUnidade=${selectCurricularUnit}`
       )
       setFilterUnityCurses(response.data);
+      console.log(`RESULTADO DA REQUISIÇÂO: ${filterUnityCurses}`)
     } catch (error) {
-      console.log(error);
+      console.log(`Erro ao receber os professores pela filtragem de Curso e Unidade Curricular: ${error}`);
     }
   }
 
@@ -162,14 +159,10 @@ export function Teachers() {
 
   // função para aplicar o search
   const searchReceive = (textValue) => {
-    // pegar o valor e colocar no value,
-    // para depois poder anular ele em qualquer momento
     setValueSearch(textValue);
-    // função da api que recebe os professores conforme o search
     getTeachersSearchDidMount(textValue);
   };
 
-  // função que vai chamar todas as coisas que devem ser aplicadas ao clicar no botão
   function onPressFilter() {
     setShowModal(false);
     filterAplic();
