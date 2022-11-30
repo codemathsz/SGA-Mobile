@@ -102,10 +102,10 @@ export function Environments({ id, ...rest }: Ambientes) {
   // trazer todos os tipos de ambiente para alimentar o picker
   async function getTypeAmbientesDidMount() {
     try {
-      const response = await API.get("/api/ambiente/tipo");
+      const response = await API.get("/api/ambiente/tipoambiente");
       setTypeAmbiente(response.data);
     } catch (error) {
-      console.log(error);
+      console.log(`Erro ao trazer tipo de ambiente: ${error}`);
     }
   }
 
@@ -119,7 +119,7 @@ export function Environments({ id, ...rest }: Ambientes) {
       typeSearchAmbiente.splice(0);
       setTypeSearchAmbiente(response.data);
     } catch (error) {
-      console.log(error);
+      console.log(`Erro ao trazer Filtragem por tipo de ambiente: ${error}`);
     }
   }
 
@@ -186,14 +186,14 @@ export function Environments({ id, ...rest }: Ambientes) {
   async function getTypeAndCapacityDidMount() {
     try {
       const response = await API.get(
-        `/api/ambiente/tipoecapacidade?tipoAmbiente=${selectTypeAmbient}&capacidadeMin=${selectCapacidadeAmbient.slice(
+        `/api/ambiente/tipoecapacidade?tipo=${selectTypeAmbient}&capacidadeMin=${selectCapacidadeAmbient.slice(
           0,
           2
         )}&capacidadeMax=${selectCapacidadeAmbient.slice(3)}`
       );
       setEnvironmentTypeAndCapacity(response.data);
     } catch (error) {
-      console.log(error);
+      console.log(`Erro ao fazer requisição de filtragem por Tipo e Capacidade ${error}`);
     }
   }
 
@@ -224,15 +224,11 @@ export function Environments({ id, ...rest }: Ambientes) {
     getTypeAndCapacityDidMount();
   }
 
-  // função para aplicar o search
   const searchReceive = (textValue) => {
-    // pegar o valor e colocar no value,
-    // para depois poder anular ele em qualquer momento
     setValueSearch(textValue);
     getSearchEnvironmentsDidMount(textValue);
   };
 
-  // deixando a texInput de buscar vazio
   const clearSearch = () => {
     setValueSearch(null);
   };
@@ -263,7 +259,7 @@ export function Environments({ id, ...rest }: Ambientes) {
     }
   };
 
-  console.log(selectTypeAmbient);
+
   return (
     <Pressable onPress={Keyboard.dismiss} style={styles.container}>
       <Background>
