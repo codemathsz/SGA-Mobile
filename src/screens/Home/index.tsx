@@ -11,6 +11,8 @@ import {
 import { Calendar, LocaleConfig } from "react-native-calendars";
 import { RadioButton } from "react-native-paper";
 
+import Ionicons from "react-native-vector-icons/Ionicons";
+
 // definindo a linguagem da biblioteca do calendário em português
 LocaleConfig.locales["pt-br"] = {
   monthNames: [
@@ -117,9 +119,11 @@ export function Home() {
   const [search, setSearch] = useState(false);
   const [classesSearch, setClassesSearch] = useState<Aula[]>([]);
   const [dateSelectedFormat, setDateSelectedFormat] = useState("");
-
+  const [aulasDeTalDia, setAulasDeTalDia] = useState([])
   // id aula clicada
   const [dataAulaModal, setDataAulaModal] = useState([]);
+
+  const [environmentFromDataSelected, setEnvironmentFromDataSelected] = useState()
 
   // listagem de aula na home, por uma data selecionada
   const [listAulaFromDaySelect, setListAulaFromDaySelect] = useState<Aula[]>(
@@ -193,6 +197,7 @@ export function Home() {
       );
       setListAulaFromDaySelect(response.data);
       setLoading(false);
+      setAulasDeTalDia(listAulaFromDaySelect)
     } catch (error) {
       return console.log(error);
     }
@@ -200,6 +205,7 @@ export function Home() {
 
   useEffect(() => {
     getAulaFromDaySelected();
+
   }, [dayIndicator]);
 
   const clickModal = (v) => {
@@ -208,11 +214,21 @@ export function Home() {
 
   const receiveIdClickClass = (id) => {
     setIdClickClass(id);
+    setShowModal(true);
   };
 
   const EmptyListMessage = () => {
     return <Text style={styles.emptyListStyle}>Nenhuma aula encontrada!</Text>;
   };
+
+
+  function getEnvironmentFromDaySelected (item){
+    setEnvironmentFromDataSelected(item)
+  }
+
+  console.log("Lista de aulas do dia selecionado  " + aulasDeTalDia);
+
+
   return (
     <View>
       <View style={{ height: "100%" }}>
@@ -348,26 +364,114 @@ export function Home() {
                       color: THEME.COLORS.SELECT,
                       textTransform: "uppercase",
                     }}
-                  >{`Aulas do dia: ${
-                    dateSelectedFormat == "" ? dateInitial : dateSelectedFormat
-                  }`}</Text>
+                  >{`Aulas do dia: ${dateSelectedFormat == "" ? dateInitial : dateSelectedFormat
+                    }`}</Text>
                 </View>
                 <View style={{ width: "100%" }}>
                   {loading ? (
                     <Loading />
                   ) : (
-                    <FlatList
-                      data={listAulaFromDaySelect}
-                      keyExtractor={(item) => item.id.toString()}
-                      renderItem={({ item }) => (
-                        <InicioCard
-                          data={item}
-                          valueModal={clickModal}
-                          sendsId={receiveIdClickClass}
-                        />
-                      )}
-                      ListEmptyComponent={EmptyListMessage}
-                    />
+                    listAulaFromDaySelect != null ?
+                      <View style={styles.containerLessons}>
+                        <View style={styles.titleEnvironment}>
+                          <Text
+                            style={{
+                              fontFamily: THEME.FONT_FAMILY.BOLD,
+                              fontSize: THEME.FONT_SIZE.LG,
+                              color: THEME.COLORS.AZUL_500,
+                            }}
+                          >
+                            {environmentFromDataSelected}
+                          </Text>
+                        </View>
+
+                        <View style={styles.card}>
+                          <View style={styles.header}>
+                            <View style={styles.containerHeaderLeft}>
+                              <Text style={styles.textSubTitleHeader}>Periodo</Text>
+                            </View>
+                            <View style={styles.containerHeaderRight}>
+                              <Text style={styles.textSubTitleHeader}>Aula</Text>
+                            </View>
+                            <View style={styles.containerHeaderRight}>
+                              <Text style={styles.textSubTitleHeader}>Professor</Text>
+                            </View>
+                          </View>
+
+                          {
+                            <FlatList
+                              data={listAulaFromDaySelect}
+                              keyExtractor={(item) => item.id.toString()}
+                              renderItem={({ item }) => (
+                                
+                                <View style={styles.containerPeriods}>
+
+                                  {
+                                    <TouchableOpacity style={styles.containerPeriod} onPress={() => receiveIdClickClass(item.id)}>
+
+                                      {
+                                        item.periodo === 'MANHA'  ?
+                                          <>
+                                            {
+                                              getEnvironmentFromDaySelected(item.ambiente.nome)
+                                            }
+                                            <View style={styles.containerPeriodLeft}>
+                                              <Ionicons name="sunny" size={30} color={'#F2CB05'} />
+                                            </View>
+                                            <View style={styles.containerPeriodRight}>
+                                              <Text numberOfLines={1} style={styles.textClass}>{item.unidadeCurricular.nome}</Text>
+                                            </View>
+                                            <View style={styles.containerPeriodRight}>
+                                              <Text numberOfLines={1} style={styles.textClass}>{item.professor.nome}</Text>
+                                            </View>
+                                          </>
+                                          : item.periodo === 'TARDE' ?
+                                            <>
+                                              <View style={styles.containerPeriodLeft}>
+                                                <Ionicons name="partly-sunny" size={30} color={'#A6A6A6'} />
+                                              </View>
+                                              <View style={styles.containerPeriodRight}>
+                                                <Text numberOfLines={1} style={styles.textClass}>{item.unidadeCurricular.nome}</Text>
+                                              </View>
+                                              <View style={styles.containerPeriodRight}>
+                                                <Text numberOfLines={1} style={styles.textClass}>{item.professor.nome}</Text>
+                                              </View>
+                                            </>
+                                            : item.periodo === 'NOITE' ?
+                                              <>
+                                                <View style={styles.containerPeriodLeft}>
+                                                  <Ionicons name="moon" size={30} color={'#11233E'} />
+                                                </View>
+                                                <View style={styles.containerPeriodRight}>
+                                                  <Text numberOfLines={1} style={styles.textClass}>{item.unidadeCurricular.nome}</Text>
+                                                </View>
+                                                <View style={styles.containerPeriodRight}>
+                                                  <Text numberOfLines={1} style={styles.textClass}>{item.professor.nome}</Text>
+                                                </View>
+                                              </>
+                                              :
+                                              <>
+                                                <View style={styles.containerPeriodLeft}>
+                                                  <Ionicons name="moon" size={30} color={'#11233E'} />
+                                                </View>
+                                                <View style={styles.containerPeriodRight}>
+                                                  <Text style={styles.textAvailableClass}>Ambiente</Text>
+                                                </View>
+                                                <View style={styles.containerPeriodRight}>
+                                                  <Text style={styles.textAvailableClass}>Disponível</Text>
+                                                </View>
+                                              </>
+                                      }
+                                    </TouchableOpacity>
+                                  }
+                                </View>
+                              )}
+                            />
+                          }
+                        </View>
+                      </View>
+                      :
+                      EmptyListMessage()
                   )}
                 </View>
               </View>
