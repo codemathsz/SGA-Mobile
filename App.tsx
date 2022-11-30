@@ -1,3 +1,9 @@
+/**
+ * @author Kalebe Bezerra And Matheus Oliveira
+ * @since 2022
+ * @augments SGA (Sistema Gerenciador de Ambientes)
+ */
+
 import React,{useEffect} from "react";
 
 import {

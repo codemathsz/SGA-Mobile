@@ -10,7 +10,6 @@ import {
 
 import { Calendar, LocaleConfig } from "react-native-calendars";
 import { RadioButton } from "react-native-paper";
-
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 // definindo a linguagem da biblioteca do calendário em português
@@ -70,7 +69,6 @@ import { Header } from "../../components/Header";
 import { Search } from "../../components/Search";
 import { Filter } from "../../components/Filter";
 
-import { InicioCard } from "../../components/InicioCard";
 import { Loading } from "../../components/Loading";
 import API from "../../services/api";
 import { THEME } from "../../themes";
@@ -108,9 +106,9 @@ export interface Aula {
 }
 
 export function Home() {
-  const [aula, setAula] = useState<Aula[]>([]);
+
   const [showModal, setShowModal] = useState(false);
-  const [idClickClass, setIdClickClass] = useState();
+  const [idFromLessonForModal, setIdFromLessonForModal] = useState();
   const [daySelected, setDaySelected] = useState(0);
   const [dayIndicator, setDayIndicator] = useState("");
   const [dayFromHolidayAndVacation, setDayFromHolidayAndVacation] = useState([''])
@@ -120,16 +118,11 @@ export function Home() {
   const [search, setSearch] = useState(false);
   const [classesSearch, setClassesSearch] = useState<Aula[]>([]);
   const [dateSelectedFormat, setDateSelectedFormat] = useState("");
-  const [aulasDeTalDia, setAulasDeTalDia] = useState([])
-  // id aula clicada
-  const [dataAulaModal, setDataAulaModal] = useState([]);
 
   const [environmentFromDataSelected, setEnvironmentFromDataSelected] = useState()
 
   // listagem de aula na home, por uma data selecionada
-  const [listAulaFromDaySelect, setListAulaFromDaySelect] = useState<Aula[]>(
-    []
-  );
+  const [listLessonFromDaySelected, setListLessonFromDaySelected] = useState<Aula[]>([]);
 
   // loading na flatlist
   const [loading, setLoading] = useState(true);
@@ -150,6 +143,48 @@ export function Home() {
     // passando para o indicador menor
     setDayIndicator(dateCurrent);
   }
+
+
+
+  async function getDaysFormHolidayAndVacation() {
+    try {
+
+      const response = await API.get('/api/dnl/buscaDnls');
+      setDayFromHolidayAndVacation(response.data)
+    } catch (error) {
+      return error
+    }
+  }
+
+  async function getSearchClasseDidMount(textValue) {
+    try {
+      setValueSearch(textValue);
+      const response = await API.get(`/api/aula/filtro/${textValue}`);
+      classesSearch.splice(0);
+      setClassesSearch(response.data);
+    } catch (error) {
+      console.log(
+        `Erro ao receber a requisição de buscar aula por palavra ${error}`
+      );
+    }
+  }
+
+  async function getAulaFromDaySelected() {
+    try {
+      const response = await API.get(
+        `/api/aula/${dayIndicator == "" ? dateCurrent : dayIndicator}`
+      );
+      setListLessonFromDaySelected(response.data);
+      setLoading(false);
+    } catch (error) {
+      return console.log(error);
+    }
+  }
+
+  function getEnvironmentFromDaySelected(item) {
+    setEnvironmentFromDataSelected(item)
+  }
+
 
   // Aplicando a busca e removendo o filtro
   const searchAplic = () => {
@@ -178,63 +213,17 @@ export function Home() {
     }
   };
 
-  async function getDaysFormHolidayAndVacation() {
-    try {
-      
-      const response = await API.get('/api/dnl/buscaDnls');
-      setDayFromHolidayAndVacation(response.data)
-    } catch (error) {
-      return error
-    }
-  }
-
-  async function getSearchClasseDidMount(textValue) {
-    try {
-      setValueSearch(textValue);
-      const response = await API.get(`/api/aula/filtro/${textValue}`);
-      classesSearch.splice(0);
-      setClassesSearch(response.data);
-    } catch (error) {
-      console.log(
-        `Erro ao receber a requisição de buscar aula por palavra ${error}`
-      );
-    }
-  }
-
-  async function getAulaFromDaySelected() {
-    try {
-      const response = await API.get(
-        `/api/aula/${dayIndicator == "" ? dateCurrent : dayIndicator}`
-      );
-      setListAulaFromDaySelect(response.data);
-      setLoading(false);
-      setAulasDeTalDia(listAulaFromDaySelect)
-    } catch (error) {
-      return console.log(error);
-    }
-  }
-
-  const clickModal = (v) => {
-    setShowModal(v);
-  };
-
   const receiveIdClickClass = (id) => {
-    setIdClickClass(id);
+    setIdFromLessonForModal(id);
     setShowModal(true);
   };
 
-  const EmptyListMessage = () => {
+  const isListFromLessonsEmpty = () => {
     return <Text style={styles.emptyListStyle}>Nenhuma aula encontrada!</Text>;
   };
 
 
-  function getEnvironmentFromDaySelected (item){
-    setEnvironmentFromDataSelected(item)
-  }
-
-  console.log("feriados " + dayFromHolidayAndVacation);
-
-  useEffect(() =>{
+  useEffect(() => {
     getDaysFormHolidayAndVacation()
   }, [])
 
@@ -242,6 +231,9 @@ export function Home() {
     getAulaFromDaySelected();
 
   }, [dayIndicator]);
+
+
+  console.log("feriados " + dayFromHolidayAndVacation);
   return (
     <View>
       <View style={{ height: "100%" }}>
@@ -299,7 +291,7 @@ export function Home() {
                 }}
                 markedDates={{
                   [dayIndicator]: { selected: true, marked: true },
-                  [dayFromHolidayAndVacation.push()] : {disabled: true , color: '#D6D6D6'},
+                  [dayFromHolidayAndVacation.push()]: { disabled: true, color: '#D6D6D6' },
                 }}
               />
             </View>
@@ -385,11 +377,11 @@ export function Home() {
                   {loading ? (
                     <Loading />
                   ) : (
-                    listAulaFromDaySelect != null ?
+                    listLessonFromDaySelected != null ?
                       <View style={styles.containerLessons}>
                         <View style={styles.titleEnvironment}>
                           <Text
-                            style={{ 
+                            style={{
                               fontFamily: THEME.FONT_FAMILY.BOLD,
                               fontSize: THEME.FONT_SIZE.LG,
                               color: THEME.COLORS.AZUL_500,
@@ -414,17 +406,17 @@ export function Home() {
 
                           {
                             <FlatList
-                              data={listAulaFromDaySelect}
+                              data={listLessonFromDaySelected}
                               keyExtractor={(item) => item.id.toString()}
                               renderItem={({ item }) => (
-                                
+
                                 <View style={styles.containerPeriods}>
 
                                   {
                                     <TouchableOpacity style={styles.containerPeriod} onPress={() => receiveIdClickClass(item.id)}>
 
                                       {
-                                        item.periodo === 'MANHA'  ?
+                                        item.periodo === 'MANHA' ?
                                           <>
                                             {
                                               getEnvironmentFromDaySelected(item.ambiente.nome)
@@ -485,7 +477,7 @@ export function Home() {
                         </View>
                       </View>
                       :
-                      EmptyListMessage()
+                      isListFromLessonsEmpty()
                   )}
                 </View>
               </View>
@@ -493,7 +485,7 @@ export function Home() {
           </Background>
         </ScrollView>
         {showModal == true ? (
-          <ModalHome valueShowModal={setShowModal} idClass={idClickClass} />
+          <ModalHome valueShowModal={setShowModal} idClass={idFromLessonForModal} />
         ) : (
           ""
         )}
