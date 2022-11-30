@@ -70,7 +70,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     borderLeftWidth: 20,
-    borderLeftColor: '#734BA7',
+    borderLeftColor: THEME.COLORS.AZUL_600,
     marginTop:20,
     marginBottom:20,
     flexDirection: 'column',
