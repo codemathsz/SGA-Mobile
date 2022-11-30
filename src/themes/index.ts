@@ -34,6 +34,7 @@ export const THEME = {
       AZUL_500_DISABLED: 'rgba(54, 127, 191,0.5)',
       AZUL_600: '#0031B0',
 
+      ORANGE_TEACHER: '#f69528',
     },
   
     FONT_FAMILY: {
