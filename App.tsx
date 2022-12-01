@@ -27,6 +27,7 @@ function App() {
 
   useEffect(() => {
     LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+    LogBox.ignoreLogs(['Cannot update a component']);
   }, [])
 
   const [fontsLoaded] = useFonts({

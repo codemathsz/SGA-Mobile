@@ -111,7 +111,7 @@ export function Home() {
   const [idFromLessonForModal, setIdFromLessonForModal] = useState();
   const [daySelected, setDaySelected] = useState(0);
   const [dayIndicator, setDayIndicator] = useState("");
-  const [dayFromHolidayAndVacation, setDayFromHolidayAndVacation] = useState([''])
+  const [dayFromHolidayAndVacation, setDayFromHolidayAndVacation] = useState([""])
   const [periodSelected, setPeriodSelected] = useState("all");
   const [valueSearch, setValueSearch] = useState();
   const [filter, setFilter] = useState(false);
@@ -222,18 +222,36 @@ export function Home() {
     return <Text style={styles.emptyListStyle}>Nenhuma aula encontrada!</Text>;
   };
 
+  const getMarkedDates = (HOLIDAYS, DAYINDICATOR) => {
+    let markedDates = {}
+
+    HOLIDAYS.forEach(holidays => {
+      markedDates[holidays] = {
+        ...markedDates[holidays],
+        disabled: true, dotColor: 'red', marked: false, selected: false
+      }
+
+    });
+
+
+    markedDates[DAYINDICATOR] = {
+      ...markedDates[DAYINDICATOR],
+      selected: true, marked: true 
+    }
+
+
+    return markedDates
+  }
 
   useEffect(() => {
     getDaysFormHolidayAndVacation()
-  }, [])
+  },[])
 
   useEffect(() => {
     getAulaFromDaySelected();
 
   }, [dayIndicator]);
 
-
-  console.log("feriados " + dayFromHolidayAndVacation);
   return (
     <View>
       <View style={{ height: "100%" }}>
@@ -266,7 +284,7 @@ export function Home() {
                   dotColor: "#fff",
                   selectedDotColor: "#25B5E9",
                   arrowColor: "#1E1E40",
-                  disabledArrowColor: "#d9e1e8",
+                  disabledArrowColor: "#da0101",
                   monthTextColor: "#1E1E40",
                   indicatorColor: "blue",
                   textDayFontWeight: "300",
@@ -289,10 +307,7 @@ export function Home() {
                   setDateSelectedFormat(dateSelectCurrent);
                   setDayIndicator(indicatorDay);
                 }}
-                markedDates={{
-                  [dayIndicator]: { selected: true, marked: true },
-                  [dayFromHolidayAndVacation.push()]: { disabled: true, color: '#D6D6D6' },
-                }}
+                markedDates={getMarkedDates(dayFromHolidayAndVacation, dayIndicator)}
               />
             </View>
 
@@ -377,7 +392,7 @@ export function Home() {
                   {loading ? (
                     <Loading />
                   ) : (
-                    listLessonFromDaySelected != null ?
+                    listLessonFromDaySelected.length > 0 ?
                       <View style={styles.containerLessons}>
                         <View style={styles.titleEnvironment}>
                           <Text
@@ -458,13 +473,13 @@ export function Home() {
                                               :
                                               <>
                                                 <View style={styles.containerPeriodLeft}>
-                                                  <Ionicons name="moon" size={30} color={'#11233E'} />
+                                                  <Text>INTEGRAL</Text>
                                                 </View>
                                                 <View style={styles.containerPeriodRight}>
-                                                  <Text style={styles.textAvailableClass}>Ambiente</Text>
+                                                  <Text numberOfLines={1} style={styles.textClass}>{item.unidadeCurricular.nome}</Text>
                                                 </View>
                                                 <View style={styles.containerPeriodRight}>
-                                                  <Text style={styles.textAvailableClass}>Disponível</Text>
+                                                <Text numberOfLines={1} style={styles.textClass}>{item.professor.nome}</Text>
                                                 </View>
                                               </>
                                       }
