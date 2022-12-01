@@ -61,19 +61,20 @@ LocaleConfig.locales["pt-br"] = {
 LocaleConfig.defaultLocale = "pt-br";
 
 export interface ClassesType {
-  data: string
+  data: string;
 }
 
-import photoProfile from '../../assets/photoprofile.png'
+import photoProfile from "../../assets/photoprofile.png";
 
 export function ProfileTeacher({ route }: any) {
   // Arrays que recebem aulas do professor
-  const [classesFic, setClassesFic] = useState(['']);
-  const [classesRegular, setClassesRegular] = useState(['']);
-  const [lessonsFromTeacher, setLessonsFromTeacher] = useState([])
+  const [classesFic, setClassesFic] = useState([""]);
+  const [classesRegular, setClassesRegular] = useState([""]);
+  const [lessonsFromTeacher, setLessonsFromTeacher] = useState([]);
+  const [holidaysTeacher, setHolidaysTeacher] = useState([]);
   // const para passar o dia para o indicador maior
   const [daySelected, setDaySelected] = useState(0);
-  const [dayIndicator, setDayIndicator] = useState('')
+  const [dayIndicator, setDayIndicator] = useState("");
 
   // função para o calendário iniciar na data atual
   var date = new Date();
@@ -82,10 +83,13 @@ export function ProfileTeacher({ route }: any) {
   var yearCurrent = date.getFullYear();
   const dateCurrent = dayCurrent + "/" + monthCurrent + "/" + yearCurrent;
 
-
   async function getLessonFromTeacherDidMount() {
-    const respose = await API.get(`/api/aula/prof?idProf=${route.params.data.id}&data=${dayIndicator === '' ? dateCurrent : dayIndicator}`)
-    setLessonsFromTeacher(respose.data)
+    const response = await API.get(
+      `/api/aula/prof?idProf=${route.params.data.id}&data=${
+        dayIndicator === "" ? dateCurrent : dayIndicator
+      }`
+    );
+    setLessonsFromTeacher(response.data);
   }
 
   // Deixando o dia marcado no calendário
@@ -99,11 +103,11 @@ export function ProfileTeacher({ route }: any) {
 
       // Recebendo da API
       const responseFic = await API.get(
-        `api/aula/aulaTipo?prof=${idProf}&tipo=FIC`
+        `/api/aula/aulaTipo?prof=${idProf}&tipo=FIC`
       );
       setClassesFic(responseFic.data);
       const responseRegular = await API.get(
-        `api/aula/aulaTipo?prof=${idProf}&tipo=REGULAR`
+        `/api/aula/aulaTipo?prof=${idProf}&tipo=REGULAR`
       );
       setClassesRegular(responseRegular.data);
     } catch (error) {
@@ -111,52 +115,89 @@ export function ProfileTeacher({ route }: any) {
     }
   }
 
+  async function getHolidaysTeacherDidMount() {
+    try {
+      let idTeacher = route.params.data.id;
+      holidaysTeacher.splice(0);
+      const response = await API.get(
+        `/api/ausencia/buscaDataAusencia/${idTeacher}`
+      );
+      setHolidaysTeacher(response.data);
+    } catch (error) {
+      console.log(`Erro ao trazer as férias do professor ${error}`);
+    }
+  }
 
   useEffect(() => {
     LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
     getClassesDidMount();
+    getHolidaysTeacherDidMount();
   }, []);
 
   useEffect(() => {
-    getLessonFromTeacherDidMount()
-  }, [dayIndicator])
+    getLessonFromTeacherDidMount();
+  }, [dayIndicator]);
 
-
-
-  const getMarkedDates = (TODAY, FIC, REGULAR) => {
-    let markedDates = {}
+  const getMarkedDates = (TODAY, FIC, REGULAR, holiday) => {
+    let markedDates = {};
 
     markedDates[TODAY] = {
       ...markedDates[TODAY],
-      selected: true, marked: true, selectedColor: 'green', dotColor: THEME.COLORS.AZUL_300
-    }
+      selected: true,
+      marked: true,
+      selectedColor: "green",
+      dotColor: THEME.COLORS.AZUL_300,
+    };
 
-
-
-    FIC.forEach(lessonFIC => {
+    FIC.forEach((lessonFIC) => {
       markedDates[lessonFIC] = {
         ...markedDates[lessonFIC],
-        selected: true, marked: true, selectedColor: THEME.COLORS.AZUL_300, dotColor: THEME.COLORS.AZUL_300
-      }
-
+        selected: true,
+        marked: true,
+        selectedColor: THEME.COLORS.AZUL_300,
+        dotColor: THEME.COLORS.AZUL_300,
+      };
     });
 
-    REGULAR.forEach(lessonREGULAR => {
+    // Datas de cursos regulares
+    REGULAR.forEach((lessonREGULAR) => {
       markedDates[lessonREGULAR] = {
         ...markedDates[lessonREGULAR],
-        selected: true, marked: true, selectedColor: THEME.COLORS.AZUL_500, dotColor: THEME.COLORS.AZUL_500
-
-      }
+        selected: true,
+        marked: true,
+        selectedColor: THEME.COLORS.AZUL_500,
+        dotColor: THEME.COLORS.AZUL_500,
+      };
     });
 
+    // Recebe datas das férias do professor
+    let dateInitial = holiday[0];
+    let dateFinal = holiday[1];
+    let dateHoliday = dateInitial;
 
+    console.log(`ADICIONANDO AS FÉRIAS`)
+    markedDates[dateHoliday] = {
+      ...markedDates[dateHoliday],
+      selected: true,
+      marked: true,
+      selectedColor: THEME.COLORS.ORANGE_TEACHER,
+      dotColor: THEME.COLORS.ORANGE_TEACHER,
+    };
 
+    for (dateInitial in dateFinal) {
+      dateHoliday++;
+      console.log(`Data Holiday: ${dateHoliday}`);
+      markedDates[dateHoliday] = {
+        ...markedDates[dateHoliday],
+        selected: true,
+        marked: true,
+        selectedColor: THEME.COLORS.ORANGE_TEACHER,
+      };
+    }
 
-    return markedDates
-  }
+    return markedDates;
+  };
 
-
-  console.log(getMarkedDates(dayIndicator, classesFic, classesRegular))
   return (
     <ScrollView>
       <Background>
@@ -164,11 +205,15 @@ export function ProfileTeacher({ route }: any) {
           <View style={styles.contentPhoto}>
             <View>
               <Image
-                source={route.params?.data?.foto == null ? photoProfile : { uri: route.params?.data?.foto }}
+                source={
+                  route.params?.data?.foto == null
+                    ? photoProfile
+                    : { uri: route.params?.data?.foto }
+                }
                 style={{
                   width: 200,
                   height: 200,
-                  borderRadius: 200
+                  borderRadius: 200,
                 }}
               />
             </View>
@@ -208,25 +253,31 @@ export function ProfileTeacher({ route }: any) {
                 textDayFontSize: 16,
                 textMonthFontSize: 20,
                 textDayHeaderFontSize: 15,
-
               }}
-
               onDayPress={(day) => {
                 var indicatorDay = day.dateString;
-                var daySelect = day.day
-                var monthSelect = day.month
-                var yearSelect = day.year
-                var dateSelectCurrent = `${daySelect}/${monthSelect}/${yearSelect}`
+                var daySelect = day.day;
+                var monthSelect = day.month;
+                var yearSelect = day.year;
+                var dateSelectCurrent = `${daySelect}/${monthSelect}/${yearSelect}`;
 
-                setDayIndicator(dateSelectCurrent)
+                setDayIndicator(dateSelectCurrent);
               }}
-
-              markedDates={getMarkedDates(dayIndicator, classesFic, classesRegular)}
+              markedDates={getMarkedDates(
+                dayIndicator,
+                classesFic,
+                classesRegular,
+                holidaysTeacher
+              )}
             />
             <View style={styles.contentSubTitleCalendar}>
               <View style={styles.subTitleCalendar}>
                 <View
-                  style={{ width: 18, height: 18, backgroundColor: "#f69528" }}
+                  style={{
+                    width: 18,
+                    height: 18,
+                    backgroundColor: THEME.COLORS.ORANGE_TEACHER,
+                  }}
                 />
                 <Text>Férias</Text>
               </View>
