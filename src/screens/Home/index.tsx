@@ -73,6 +73,7 @@ import { Loading } from "../../components/Loading";
 import API from "../../services/api";
 import { THEME } from "../../themes";
 import { ModalHome } from "../../components/ModalHome";
+import { InicioCard } from "../../components/InicioCard";
 
 export interface Aula {
   id: number;
@@ -118,11 +119,14 @@ export function Home() {
   const [search, setSearch] = useState(false);
   const [classesSearch, setClassesSearch] = useState<Aula[]>([]);
   const [dateSelectedFormat, setDateSelectedFormat] = useState("");
-
+  const [objectEnvironment, setObjectEnvironment] = useState<any[]>([])
   const [environmentFromDataSelected, setEnvironmentFromDataSelected] = useState()
 
   // listagem de aula na home, por uma data selecionada
   const [listLessonFromDaySelected, setListLessonFromDaySelected] = useState<Aula[]>([]);
+
+  const [containerLessonsFromDataSelected, setContainerLessonsFromDataSelected] = useState([])
+
 
   // loading na flatlist
   const [loading, setLoading] = useState(true);
@@ -169,12 +173,45 @@ export function Home() {
     }
   }
 
+  const [data, setData] = useState<String[]>([])
+
   async function getAulaFromDaySelected() {
     try {
       const response = await API.get(
         `/api/aula/${dayIndicator == "" ? dateCurrent : dayIndicator}`
       );
       setListLessonFromDaySelected(response.data);
+      var nameEnviroment: String[] = [];
+      if (response.data.length > 0) {
+        response.data.map((v) => {
+          nameEnviroment.push(v.ambiente.nome);
+        });
+      }
+
+      const a = nameEnviroment.filter((val, id) => nameEnviroment.indexOf(val) == id);
+
+      a.map((v) => {
+        var a = listLessonFromDaySelected.filter((b) => b.ambiente.nome == v)
+        console.log(a.map((v) => console.log('v:' + v.ambiente.nome)));
+
+        a.map((v) => {
+          var dataAula: Aula[] = []
+
+          listLessonFromDaySelected.map((i) => {
+            if (i.ambiente.nome == v.ambiente.nome) {
+              dataAula.push(i)
+              console.log(dataAula.map((v) => console.log('data =>  ' + v.unidadeCurricular.nome)));
+
+            }
+          })
+
+
+        })
+      })
+
+
+
+
       setLoading(false);
     } catch (error) {
       return console.log(error);
@@ -236,7 +273,7 @@ export function Home() {
 
     markedDates[DAYINDICATOR] = {
       ...markedDates[DAYINDICATOR],
-      selected: true, marked: true 
+      selected: true, marked: true
     }
 
 
@@ -245,12 +282,14 @@ export function Home() {
 
   useEffect(() => {
     getDaysFormHolidayAndVacation()
-  },[])
+  }, [])
 
   useEffect(() => {
     getAulaFromDaySelected();
 
   }, [dayIndicator]);
+
+
 
   return (
     <View>
@@ -392,107 +431,22 @@ export function Home() {
                   {loading ? (
                     <Loading />
                   ) : (
-                    listLessonFromDaySelected.length > 0 ?
-                      <View style={styles.containerLessons}>
-                        <View style={styles.titleEnvironment}>
-                          <Text
-                            style={{
-                              fontFamily: THEME.FONT_FAMILY.BOLD,
-                              fontSize: THEME.FONT_SIZE.LG,
-                              color: THEME.COLORS.AZUL_500,
-                            }}
-                          >
-                            {environmentFromDataSelected}
-                          </Text>
-                        </View>
 
-                        <View style={styles.card}>
-                          <View style={styles.header}>
-                            <View style={styles.containerHeaderLeft}>
-                              <Text style={styles.textSubTitleHeader}>Periodo</Text>
-                            </View>
-                            <View style={styles.containerHeaderRight}>
-                              <Text style={styles.textSubTitleHeader}>Aula</Text>
-                            </View>
-                            <View style={styles.containerHeaderRight}>
-                              <Text style={styles.textSubTitleHeader}>Professor</Text>
-                            </View>
-                          </View>
+                    <FlatList
+                      data={listLessonFromDaySelected}
+                      keyExtractor={(item) => item.id.toString()}
+                      renderItem={({ item }) => (
+                        <InicioCard
+                          data={item}
+                          valueModal={receiveIdClickClass}
+                          sendsId={receiveIdClickClass}
+                        />
 
-                          {
-                            <FlatList
-                              data={listLessonFromDaySelected}
-                              keyExtractor={(item) => item.id.toString()}
-                              renderItem={({ item }) => (
+                      )}
+                      ListEmptyComponent={isListFromLessonsEmpty}
+                    />
 
-                                <View style={styles.containerPeriods}>
 
-                                  {
-                                    <TouchableOpacity style={styles.containerPeriod} onPress={() => receiveIdClickClass(item.id)}>
-
-                                      {
-                                        item.periodo === 'MANHA' ?
-                                          <>
-                                            {
-                                              getEnvironmentFromDaySelected(item.ambiente.nome)
-                                            }
-                                            <View style={styles.containerPeriodLeft}>
-                                              <Ionicons name="sunny" size={30} color={'#F2CB05'} />
-                                            </View>
-                                            <View style={styles.containerPeriodRight}>
-                                              <Text numberOfLines={1} style={styles.textClass}>{item.unidadeCurricular.nome}</Text>
-                                            </View>
-                                            <View style={styles.containerPeriodRight}>
-                                              <Text numberOfLines={1} style={styles.textClass}>{item.professor.nome}</Text>
-                                            </View>
-                                          </>
-                                          : item.periodo === 'TARDE' ?
-                                            <>
-                                              <View style={styles.containerPeriodLeft}>
-                                                <Ionicons name="partly-sunny" size={30} color={'#A6A6A6'} />
-                                              </View>
-                                              <View style={styles.containerPeriodRight}>
-                                                <Text numberOfLines={1} style={styles.textClass}>{item.unidadeCurricular.nome}</Text>
-                                              </View>
-                                              <View style={styles.containerPeriodRight}>
-                                                <Text numberOfLines={1} style={styles.textClass}>{item.professor.nome}</Text>
-                                              </View>
-                                            </>
-                                            : item.periodo === 'NOITE' ?
-                                              <>
-                                                <View style={styles.containerPeriodLeft}>
-                                                  <Ionicons name="moon" size={30} color={'#11233E'} />
-                                                </View>
-                                                <View style={styles.containerPeriodRight}>
-                                                  <Text numberOfLines={1} style={styles.textClass}>{item.unidadeCurricular.nome}</Text>
-                                                </View>
-                                                <View style={styles.containerPeriodRight}>
-                                                  <Text numberOfLines={1} style={styles.textClass}>{item.professor.nome}</Text>
-                                                </View>
-                                              </>
-                                              :
-                                              <>
-                                                <View style={styles.containerPeriodLeft}>
-                                                  <Text>INTEGRAL</Text>
-                                                </View>
-                                                <View style={styles.containerPeriodRight}>
-                                                  <Text numberOfLines={1} style={styles.textClass}>{item.unidadeCurricular.nome}</Text>
-                                                </View>
-                                                <View style={styles.containerPeriodRight}>
-                                                <Text numberOfLines={1} style={styles.textClass}>{item.professor.nome}</Text>
-                                                </View>
-                                              </>
-                                      }
-                                    </TouchableOpacity>
-                                  }
-                                </View>
-                              )}
-                            />
-                          }
-                        </View>
-                      </View>
-                      :
-                      isListFromLessonsEmpty()
                   )}
                 </View>
               </View>
