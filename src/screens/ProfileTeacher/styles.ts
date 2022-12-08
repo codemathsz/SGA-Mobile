@@ -12,23 +12,22 @@ export const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-
   },
   nameTeacher:{
-    marginTop: 20,
-
+    marginTop: 30,
   },
   name:{
     fontFamily:THEME.FONT_FAMILY.EXTRA_BOLD,
-    fontSize: THEME.FONT_SIZE.LG,
+    fontSize: 35,
+    color: THEME.COLORS.AZUL_300
   },
   calendarANDROID:{
     width: '100%',
     height: 'auto',
     backgroundColor: THEME.COLORS.WHITE,
-    marginTop:80,
-    borderTopRightRadius:40,
-    borderTopLeftRadius:40,
+    marginTop: 35,
+    borderTopRightRadius:20,
+    borderTopLeftRadius:20,
     shadowOffset: {width: 80, height: -8},  
     shadowColor: '#000',  
     shadowOpacity: 0.4,  
@@ -52,9 +51,10 @@ export const styles = StyleSheet.create({
   },
   contentSubTitleCalendar:{
     width: '100%',
-    height: 50,
+    paddingVertical: 30,
     flexDirection: 'row',
     alignItems: 'center',
+    textAlign: 'center',
     justifyContent: 'space-between'
   },
   subTitleCalendar:{
@@ -62,6 +62,10 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignItems: 'center'
+  },
+  textSubTitle:{
+    fontFamily: THEME.FONT_FAMILY.EXTRA_BOLD,
+    color:THEME.COLORS.TEXT
   },
   containerListANDROID:{
     width: '90%',
