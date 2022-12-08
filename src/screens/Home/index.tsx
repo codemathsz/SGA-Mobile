@@ -76,11 +76,6 @@ import { ModalHome } from "../../components/ModalHome";
 import { InicioCard } from "../../components/InicioCard";
 
 export interface Aula {
-  id: number;
-  cargaDiaria: string;
-  codTurma: string;
-  data: string;
-  periodo: string;
   ambiente: {
     id: number;
     nome: string;
@@ -91,19 +86,38 @@ export interface Aula {
     ativo: string;
     endereco: string;
   };
-  professor: {
-    id: number;
-    nome: string;
-    email: string;
-    crgaSemanal: string;
-    ativo: string;
-    competencia: [];
-  };
-  unidadeCurricular: {
-    id: number;
-    nome: string;
-    horas: string;
-  };
+  aulas: [
+    {
+      id: number;
+      professor: {
+        id: number;
+        nome: string;
+        email: string
+        cargaSemanal: number;
+        ativo: boolean
+        competencia: [
+          {
+            id: number;
+            unidadeCurricular: {
+              id: number;
+              nome: string;
+              horas: number;
+            }
+            nivel:number
+          }
+        ]
+      }
+      cargaDiaria: number;
+      data: string;
+      unidadeCurricular:{
+        id: number;
+        nome: string;
+      }
+      codTurma: string;
+      periodo: string;
+
+    }
+  ]
 }
 
 export function Home() {
@@ -178,7 +192,7 @@ export function Home() {
   async function getAulaFromDaySelected() {
     try {
       const response = await API.get(
-        `/api/aula/${dayIndicator == "" ? dateCurrent : dayIndicator}`
+        `/api/aula/filtroAula?data=${dayIndicator === '' ? dateCurrent : dayIndicator}`
       );
       setListLessonFromDaySelected(response.data);
       var nameEnviroment: String[] = [];
@@ -187,30 +201,7 @@ export function Home() {
           nameEnviroment.push(v.ambiente.nome);
         });
       }
-
       const a = nameEnviroment.filter((val, id) => nameEnviroment.indexOf(val) == id);
-
-      a.map((v) => {
-        var a = listLessonFromDaySelected.filter((b) => b.ambiente.nome == v)
-        console.log(a.map((v) => console.log('v:' + v.ambiente.nome)));
-
-        a.map((v) => {
-          var dataAula: Aula[] = []
-
-          listLessonFromDaySelected.map((i) => {
-            if (i.ambiente.nome == v.ambiente.nome) {
-              dataAula.push(i)
-              console.log(dataAula.map((v) => console.log('data =>  ' + v.unidadeCurricular.nome)));
-
-            }
-          })
-
-
-        })
-      })
-
-
-
 
       setLoading(false);
     } catch (error) {
@@ -265,17 +256,15 @@ export function Home() {
     HOLIDAYS.forEach(holidays => {
       markedDates[holidays] = {
         ...markedDates[holidays],
-        disabled: true, dotColor: 'red', marked: false, selected: false
+        disabled: true, dotColor: THEME.COLORS.ALERT, marked: false,  
       }
 
     });
-
 
     markedDates[DAYINDICATOR] = {
       ...markedDates[DAYINDICATOR],
       selected: true, marked: true
     }
-
 
     return markedDates
   }
@@ -286,15 +275,18 @@ export function Home() {
 
   useEffect(() => {
     getAulaFromDaySelected();
-
+    setLoading(true)
   }, [dayIndicator]);
 
 
+  console.log('day indicator :  '+dayIndicator)
 
   return (
     <View>
       <View style={{ height: "100%" }}>
-        <ScrollView>
+        <ScrollView
+          
+        >
           <Background>
             <Header
               title="Bem Vindo"
@@ -334,10 +326,12 @@ export function Home() {
                   textDayHeaderFontSize: 15,
                 }}
                 // config gerais do calendário
+                
                 initialDate={dateCurrent}
                 minDate={"2022-09-20"}
                 enableSwipeMonths={true}
                 onDayPress={(day) => {
+                  
                   var indicatorDay = day.dateString;
                   var daySelect = day.day;
                   var monthSelect = day.month;
@@ -434,12 +428,13 @@ export function Home() {
 
                     <FlatList
                       data={listLessonFromDaySelected}
-                      keyExtractor={(item) => item.id.toString()}
+                      keyExtractor={(item) => item.ambiente.id.toString()}
                       renderItem={({ item }) => (
                         <InicioCard
                           data={item}
-                          valueModal={receiveIdClickClass}
+                          /* valueModal={showModal} */
                           sendsId={receiveIdClickClass}
+                          valuePeriod={periodSelected}
                         />
 
                       )}

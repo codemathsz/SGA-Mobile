@@ -16,12 +16,53 @@ interface Props {
   idClass;
 }
 
+interface AulaModal {
+  id: number;
+  ambiente: {
+    id: number;
+    nome: string;
+    capacidade: number;
+    tipo: string;
+    ativo: boolean;
+    cep: string;
+    complemento: string
+    endereco: string;
+  }
+  professor: {
+    id: number;
+    nome: string;
+    email: string
+    cargaSemanal: number;
+    ativo: boolean
+    competencia: [
+      {
+        id: number;
+        unidadeCurricular: {
+          id: number;
+          nome: string;
+          horas: number;
+        }
+        nivel: number
+      }
+    ]
+  }
+  cargaDiaria: number;
+  data: string;
+  unidadeCurricular: {
+    id: number;
+    nome: string;
+    horas: number
+  }
+  codTurma: string;
+  periodo: string;
+}
+
 export function ModalHome({ valueShowModal, idClass }) {
-  const [dataClass, setDataClass] = useState<Aula[]>([]);
+  const [dataClass, setDataClass] = useState<AulaModal>();
 
   async function getClassesDidMount() {
     try {
-      dataClass.splice(0);
+
       const response = await API.get(`/api/aula/busca/${idClass}`);
       setDataClass(response.data);
     } catch (error) {
@@ -32,6 +73,9 @@ export function ModalHome({ valueShowModal, idClass }) {
   useEffect(() => {
     getClassesDidMount();
   }, []);
+
+  console.log("id enviado ==> "+idClass);
+  
 
   return (
     <View style={styles.contentModal}>
@@ -48,40 +92,40 @@ export function ModalHome({ valueShowModal, idClass }) {
           <View style={styles.contentInfosModal}>
             <Text style={styles.titleInfoLesson}>Ambiente:</Text>
             <Text style={styles.textEnviroment}>
-              {dataClass[0]?.ambiente?.nome}
+              {dataClass?.ambiente?.nome}
             </Text>
           </View>
           <View style={styles.contentInfosModal}>
             <Text style={styles.titleInfoLesson}>Aula: </Text>
             <Text style={{ color: "#000" }}>
-              {dataClass[0]?.unidadeCurricular?.nome}
+              {dataClass?.unidadeCurricular?.nome}
             </Text>
           </View>
           <View style={styles.contentInfosModal}>
             <Text style={styles.titleInfoLesson}>Carga Horária UC: </Text>
             <Text style={{ color: "#000" }}>
-              {dataClass[0]?.unidadeCurricular?.horas} horas
+              {dataClass?.unidadeCurricular?.horas} horas
             </Text>
           </View>
           <View style={styles.contentInfosModal}>
             <Text style={styles.titleInfoLesson}>Carga Diaria: </Text>
             <Text style={{ color: "#000" }}>
-              {dataClass[0]?.cargaDiaria} horas
+              {dataClass?.cargaDiaria} horas
             </Text>
           </View>
           <View style={styles.contentInfosModal}>
             <Text style={styles.titleInfoLesson}>Professor(a): </Text>
             <Text style={{ color: "#000" }}>
-              {dataClass[0]?.professor?.nome}
+              {dataClass?.professor?.nome}
             </Text>
           </View>
           <View style={styles.contentInfosModal}>
             <Text style={styles.titleInfoLesson}>Período: </Text>
-            <Text style={{ color: "#000" }}>{dataClass[0]?.periodo}</Text>
+            <Text style={{ color: "#000" }}>{dataClass?.periodo}</Text>
           </View>
           <View style={styles.contentInfosModal}>
             <Text style={styles.titleInfoLesson}>Código da Turma: </Text>
-            <Text style={{ color: "#000" }}>{dataClass[0]?.codTurma}</Text>
+            <Text style={{ color: "#000" }}>{dataClass?.codTurma}</Text>
           </View>
         </View>
       </View>
