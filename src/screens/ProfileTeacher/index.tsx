@@ -214,9 +214,15 @@ export function ProfileTeacher({ route }: any) {
                 style={{
                   width: 200,
                   height: 200,
-                  padding: 5,
-                  borderTopRightRadius:40,
-                  borderTopLeftRadius:40,
+                  borderRadius: 100,
+
+                  shadowColor: "#000",
+                  shadowOffset: {
+                    width: 0,
+                    height: 3,
+                  },
+                  shadowOpacity: 0.27,
+                  shadowRadius: 4.65,
                 }}
               />
             </View>
@@ -226,7 +232,7 @@ export function ProfileTeacher({ route }: any) {
                   <Text
                     style={[styles.name, { backgroundColor: "transparent" }]}
                   >
-                   {route.params?.data?.nome}
+                    {route.params?.data?.nome}
                   </Text>
                 }
               >
@@ -235,7 +241,9 @@ export function ProfileTeacher({ route }: any) {
                   end={{ x: 1, y: 1 }}
                   colors={["#25B5E9", "#367FBF"]}
                 >
-                  <Text style={[styles.name, { opacity: 0 }]}>{route.params?.data?.nome}</Text>
+                  <Text style={[styles.name, { opacity: 0 }]}>
+                    {route.params?.data?.nome}
+                  </Text>
                 </LinearGradient>
               </MaskedView>
             </View>
@@ -326,52 +334,77 @@ export function ProfileTeacher({ route }: any) {
               </View>
             </View>
           </View>
-          <View
-            style={{
-              width: "100%",
-              marginTop: 20,
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Text
-              style={{
-                fontFamily: THEME.FONT_FAMILY.SEMI_BOLD,
-                fontSize: THEME.FONT_SIZE.LG,
-              }}
+          <View style={styles.containerTitleClass}>
+            <MaskedView
+              maskElement={
+                <Text
+                  style={[
+                    styles.titleClass,
+                    { backgroundColor: "transparent" },
+                  ]}
+                >
+                  Aulas
+                </Text>
+              }
             >
-              Aulas
-            </Text>
+              <LinearGradient
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                colors={["#25B5E9", "#367FBF"]}
+              >
+                <Text style={[styles.titleClass, { opacity: 0 }]}>Aulas</Text>
+              </LinearGradient>
+            </MaskedView>
           </View>
           {/* Aulas do Professor */}
-          <FlatList
-            data={lessonsFromTeacher}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => (
-              <View
-                style={{
-                  width: "100%",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <View
-                  style={
-                    Platform.OS === "ios"
-                      ? styles.containerListIOS
-                      : styles.containerListANDROID
-                  }
-                >
-                  <View style={styles.item}>
-                    <Text>{item.data}</Text>
-                    <Text>{item.unidadeCurricular.nome}</Text>
-                    <Text>{item.periodo}</Text>
+
+          {lessonsFromTeacher.length != 0 ? (
+            <FlatList
+              data={lessonsFromTeacher}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => (
+                <View style={styles.card}>
+                  <View style={styles.header}>
+                    <View style={styles.containerHeaderLeft}>
+                      <Text style={styles.textSubTitleHeader}>Data</Text>
+                    </View>
+                    <View style={styles.containerHeaderCenter}>
+                      <Text style={styles.textSubTitleHeader}>Aula</Text>
+                    </View>
+                    <View style={styles.containerHeaderRight}>
+                      <Text style={styles.textSubTitleHeader}>Período</Text>
+                    </View>
+                  </View>
+                  <View style={styles.containerClasses}>
+                    <View style={styles.containerClassLeft}>
+                      <Text style={styles.textClass} numberOfLines={1}>
+                        {item.data}
+                      </Text>
+                    </View>
+                    <View style={styles.containerClassCenter}>
+                      <Text style={styles.textClass} numberOfLines={1}>
+                        {item.unidadeCurricular.nome}
+                      </Text>
+                    </View>
+                    <View style={styles.containerClassRight}>
+                      <Text style={styles.textClass} numberOfLines={1}>
+                        {item.periodo}
+                      </Text>
+                    </View>
                   </View>
                 </View>
-              </View>
-            )}
-            style={{ width: "100%" }}
-          />
+              )}
+              style={{ width: "100%" }}
+              contentContainerStyle={{
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            />
+          ) : (
+            <View>
+              <Text>Professor Não Possui a Aula!</Text>
+            </View>
+          )}
         </View>
       </Background>
     </ScrollView>

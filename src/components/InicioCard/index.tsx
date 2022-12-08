@@ -131,7 +131,7 @@ export function InicioCard({ data, sendsId, valuePeriod }: Props) {
                     ) : valuePeriod === 'morning' ? (
 
                       aula.periodo === 'MANHA' && (
-
+                        
                         <TouchableOpacity style={styles.containerPeriod} onPress={() => validModal(aula.id)} key={aula.id}>
                           {/* Manha */}
                           <View style={styles.containerPeriodLeft}>
