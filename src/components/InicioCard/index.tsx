@@ -13,26 +13,28 @@ import { styles } from "./styles";
 
 import Ionicons from "react-native-vector-icons/Ionicons";
 
+
+
 interface Props extends TouchableOpacityProps {
   data: Aula;
-  valueModal: any;
+  
   sendsId: any;
+  valuePeriod: string;
 }
-export function InicioCard({ data, valueModal, sendsId }: Props) {
+export function InicioCard({ data, sendsId, valuePeriod }: Props) {
   const [showModal, setShowModal] = useState(false);
   const [teste, setTeste] = useState([]);
 
   function validModal(id) {
     if (showModal == true) {
-      valueModal(false);
+
     } else {
       sendsId(id)
-      valueModal(true);
     }
   }
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} key={data.ambiente.id}>
       <View style={styles.titleEnvironment}>
         <Text
           style={{
@@ -59,69 +61,143 @@ export function InicioCard({ data, valueModal, sendsId }: Props) {
         </View>
         {
           <View style={styles.containerPeriods}>
-            <TouchableOpacity style={styles.containerPeriod} onPress={() => validModal(data.id)}>
-              {/* Manha */}
-              <View style={styles.containerPeriodLeft}>
-                <Ionicons name="sunny" size={30} color={'#F2CB05'} />
-              </View>
-              <View style={styles.containerPeriodRight}>
-                {data.periodo === "MANHA" ? (
-                  <Text numberOfLines={1} style={styles.textClass}>{data.unidadeCurricular.nome}</Text>
-                ) : (
-                  <Text style={styles.textAvailableClass}>Ambiente</Text>
-                )}
-              </View>
-              <View style={styles.containerPeriodRight}>
-                {data.periodo === "MANHA" ? (
-                  <Text numberOfLines={1} style={styles.textClass}>{data.professor.nome}</Text>
-                ) : (
-                  <Text style={styles.textAvailableClass}>Disponível</Text>
-                )}
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.containerPeriod} onPress={() => validModal(data.id)}>
-              {/* Tarde */}
-              <View style={styles.containerPeriodLeft}>
-                <Ionicons name="partly-sunny" size={30} color={'#A6A6A6'} />
-              </View>
-              <View style={styles.containerPeriodRight}>
-                {data.periodo === "TARDE" ? (
-                  <Text style={styles.textClass} numberOfLines={1}>{data.unidadeCurricular.nome}</Text>
-                ) : (
-                  <Text style={styles.textAvailableClass}>Ambiente</Text>
-                )}
-              </View>
-              <View style={styles.containerPeriodRight}>
-                {data.periodo === "TARDE" ? (
-                  <Text style={styles.textClass} numberOfLines={1}>{data.professor.nome}</Text>
-                ) : (
-                  <Text style={styles.textAvailableClass}>Disponível</Text>
-                )}
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.containerPeriod} onPress={() => validModal(data.id)}>
-              {/* Noite */}
-              <View style={styles.containerPeriodLeft}>
-                <Ionicons name="moon" size={30} color={'#11233E'} />
-              </View>
-              <View style={styles.containerPeriodRight}>
-                {data.periodo === "NOITE" ? (
-                  <Text numberOfLines={1} style={styles.textClass}>{data.unidadeCurricular.nome}</Text>
-                ) : (
-                  <Text style={styles.textAvailableClass}>Ambiente</Text>
-                )}
-              </View>
-              <View style={styles.containerPeriodRight}>
-                {data.periodo === "NOITE" ? (
-                  <Text numberOfLines={1} style={styles.textClass}>{data.professor.nome}</Text>
-                ) : (
-                  <Text style={styles.textAvailableClass}>Disponível</Text>
-                )}
-              </View>
-            </TouchableOpacity>
+
+            {
+              data.aulas.length > 0 ? (
+                data.aulas.map((aula) => {
+
+                  return (
+
+                    valuePeriod === 'all' ? (
+                      aula.periodo === 'MANHA' ? (
+
+                        <TouchableOpacity style={styles.containerPeriod} onPress={() => validModal(aula.id)} key={aula.id}>
+                          {/* Manha */}
+                          <View style={styles.containerPeriodLeft}>
+                            <Ionicons name="sunny" size={30} color={'#F2CB05'} />
+                          </View>
+                          <View style={styles.containerPeriodRight}>
+                            <Text numberOfLines={1} style={styles.textClass}>{aula.unidadeCurricular.nome}</Text>
+                          </View>
+                          <View style={styles.containerPeriodRight}>
+                            <Text numberOfLines={1} style={styles.textClass}>{aula.professor.nome}</Text>
+                          </View>
+                        </TouchableOpacity>
+
+                      ) : aula.periodo === 'TARDE' ? (
+
+                        <TouchableOpacity style={styles.containerPeriod} onPress={() => validModal(aula.id)} key={aula.id}>
+                          {/* Tarde */}
+                          <View style={styles.containerPeriodLeft}>
+                            <Ionicons name="partly-sunny" size={30} color={'#A6A6A6'} />
+                          </View>
+                          <View style={styles.containerPeriodRight}>
+                            <Text style={styles.textClass} numberOfLines={1}>{aula.unidadeCurricular.nome}</Text>
+                          </View>
+                          <View style={styles.containerPeriodRight}>
+                            <Text style={styles.textClass} numberOfLines={1}>{aula.professor.nome}</Text>
+                          </View>
+                        </TouchableOpacity>
+
+                      ) : aula.periodo === 'NOITE' ? (
+
+                        <TouchableOpacity style={styles.containerPeriod} onPress={() => validModal(aula.id)} key={aula.id}>
+                          {/* Noite */}
+                          <View style={styles.containerPeriodLeft}>
+                            <Ionicons name="moon" size={30} color={'#11233E'} />
+                          </View>
+                          <View style={styles.containerPeriodRight}>
+                            <Text numberOfLines={1} style={styles.textClass}>{aula.unidadeCurricular.nome}</Text>
+                          </View>
+                          <View style={styles.containerPeriodRight}>
+                            <Text numberOfLines={1} style={styles.textClass}>{aula.professor.nome}</Text>
+                          </View>
+                        </TouchableOpacity>
+                      ) :
+                        <TouchableOpacity style={styles.containerPeriod} onPress={() => validModal(aula.id)} key={aula.id}>
+                          {/* Noite */}
+                          <View style={styles.containerPeriodLeft}>
+                            <Text>INTEGRAL</Text>
+                          </View>
+                          <View style={styles.containerPeriodRight}>
+                            <Text style={styles.textAvailableClass}>Ambiente</Text>
+                          </View>
+                          <View style={styles.containerPeriodRight}>
+                            <Text style={styles.textAvailableClass}>Disponível</Text>
+                          </View>
+                        </TouchableOpacity>
+
+
+                    ) : valuePeriod === 'morning' ? (
+
+                      aula.periodo === 'MANHA' && (
+
+                        <TouchableOpacity style={styles.containerPeriod} onPress={() => validModal(aula.id)} key={aula.id}>
+                          {/* Manha */}
+                          <View style={styles.containerPeriodLeft}>
+                            <Ionicons name="sunny" size={30} color={'#F2CB05'} />
+                          </View>
+                          <View style={styles.containerPeriodRight}>
+                            <Text numberOfLines={1} style={styles.textClass}>{aula.unidadeCurricular.nome}</Text>
+                          </View>
+                          <View style={styles.containerPeriodRight}>
+                            <Text numberOfLines={1} style={styles.textClass}>{aula.professor.nome}</Text>
+                          </View>
+                        </TouchableOpacity>
+                      )
+                    ) : valuePeriod === 'afternoon' ? (
+                      aula.periodo === 'TARDE' &&(
+
+                        <TouchableOpacity style={styles.containerPeriod} onPress={() => validModal(aula.id)} key={aula.id}>
+                          {/* Tarde */}
+                          <View style={styles.containerPeriodLeft}>
+                            <Ionicons name="partly-sunny" size={30} color={'#A6A6A6'} />
+                          </View>
+                          <View style={styles.containerPeriodRight}>
+                            <Text style={styles.textClass} numberOfLines={1}>{aula.unidadeCurricular.nome}</Text>
+                          </View>
+                          <View style={styles.containerPeriodRight}>
+                            <Text style={styles.textClass} numberOfLines={1}>{aula.professor.nome}</Text>
+                          </View>
+                        </TouchableOpacity>
+
+                      )
+                    ) : (
+                      aula.periodo === 'NOITE' && (
+
+                        <TouchableOpacity style={styles.containerPeriod} onPress={() => validModal(aula.id)} key={aula.id}>
+                          {/* Noite */}
+                          <View style={styles.containerPeriodLeft}>
+                            <Ionicons name="moon" size={30} color={'#11233E'} />
+                          </View>
+                          <View style={styles.containerPeriodRight}>
+                            <Text numberOfLines={1} style={styles.textClass}>{aula.unidadeCurricular.nome}</Text>
+                          </View>
+                          <View style={styles.containerPeriodRight}>
+                            <Text numberOfLines={1} style={styles.textClass}>{aula.professor.nome}</Text>
+                          </View>
+                        </TouchableOpacity>
+                      )
+                    )
+                  )
+                })
+              ) : (
+                <TouchableOpacity style={styles.containerPeriod}>
+                  {/* Noite */}
+                  <View style={styles.containerPeriodLeft}>
+                    <Ionicons name="information-circle-sharp" size={30} color={'#11233E'} />
+                  </View>
+                  <View style={styles.containerPeriodRight}>
+                    <Text style={styles.textAvailableClass}>Ambiente</Text>
+                  </View>
+                  <View style={styles.containerPeriodRight}>
+                    <Text style={styles.textAvailableClass}>Disponível</Text>
+                  </View>
+                </TouchableOpacity>
+              )
+            }
           </View>
         }
-
       </View>
     </View>
   );

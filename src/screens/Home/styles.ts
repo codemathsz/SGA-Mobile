@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+/* import { Keyframe } from "react-native-reanimated"; */
 import { THEME } from "../../themes";
 
 export const styles = StyleSheet.create({
@@ -242,3 +243,18 @@ export const styles = StyleSheet.create({
     color: THEME.COLORS.AZUL_500_DISABLED,
   },
 });
+/* 
+export const load = new Keyframe({
+  0:{
+    opacity: 0,
+    transform:  [{scale: 1},{rotate: '0deg'}],
+  },
+  20:{
+    opacity: 1,
+    transform: [{scale: 1},{rotate: '360deg'}],
+  },
+  100:{
+    transform:  [{scale: 1},{rotate: '360deg'}],
+    opacity: 0,
+  },
+}) */
