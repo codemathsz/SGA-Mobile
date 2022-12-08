@@ -37,25 +37,17 @@ export interface Ambientes {
 }
 
 export function Environments({ id, ...rest }: Ambientes) {
-  // useStates para modal
   const [showModal, setShowModal] = useState(false);
-  // useState para consumir dados de ambientes
   const [ambientes, setAmbientes] = useState<Ambientes[]>([]);
-  // para guardar a busca do ambiente pelo tipo
   const [typeSearchAmbiente, setTypeSearchAmbiente] = useState<Ambientes[]>([]);
-  // para guardar a busca do ambiente pela capacidade
   const [capacitySearchAmbiente, setCapacitySearchAmbiente] = useState<
     Ambientes[]
   >([]);
-  // para guardar a busca do filtro combinando tipo e capacidade
   const [environmentTypeAndCapacity, setEnvironmentTypeAndCapacity] = useState<
     Ambientes[]
   >([]);
-  // useStates para select ambiente
   const [typeAmbiente, setTypeAmbiente] = useState([]);
-  // tipo de ambiente selecionado no select
   const [selectTypeAmbient, setSelectTypeAmbient] = useState();
-  // valor para os picker.item
   const [capacidadeAmbient] = useState([
     "Selecione a capacidade do Ambiente",
     "10-15",
@@ -63,32 +55,21 @@ export function Environments({ id, ...rest }: Ambientes) {
     "25-30",
     "30+",
   ]);
-
-    // valor para o IOS
-    const [capacidadeAmbientIOS] = useState([
-      "10-15",
-      "20-25",
-      "25-30",
-      "30+",
-    ]);
-  
-  // valor do select da capacidade do ambiente
+  const [capacidadeAmbientIOS] = useState(["10-15", "20-25", "25-30", "30+"]);
   const [selectCapacidadeAmbient, setSelectCapacidadeAmbient] = useState([]);
   const [filter, setFilter] = useState(false);
+  const [checkOnPressFilter, setCheckOnPressFilter] = useState(false);
   const [search, setSearch] = useState(false);
-
-  // text input
   const [searchEnvironment, setSearchEnvironment] = useState<Ambientes[]>([]);
-  // value do Search para ser limpado
   const [valueSearch, setValueSearch] = useState();
-
-  // IOS, input tipo ambiente
-  const [selectTypeEnviromentsIOS, setSelectTypeEnviromentsIOS] = useState('Selecione um tipo de ambiente');
-  // IOS
-  const [selectCapacityIOS, setSelectCapacityIOS] = useState('Selecione a capacidade do ambiente');
+  const [selectTypeEnviromentsIOS, setSelectTypeEnviromentsIOS] = useState(
+    "Selecione um tipo de ambiente"
+  );
+  const [selectCapacityIOS, setSelectCapacityIOS] = useState(
+    "Selecione a capacidade do ambiente"
+  );
 
   // APIs
-
   // buscar todos os ambiente
   async function getAmbientesDidMount() {
     try {
@@ -135,12 +116,18 @@ export function Environments({ id, ...rest }: Ambientes) {
         "filtro +30 " + " posição 1 :" + selectCapacidadeAmbient.slice(0, 2)
       );
       const response = await API.get(
-        `/api/ambiente/capacidade?capacidadeMin=${selectCapacidadeAmbient.slice(0,2)}&capacidadeMax=${100}`
+        `/api/ambiente/capacidade?capacidadeMin=${selectCapacidadeAmbient.slice(
+          0,
+          2
+        )}&capacidadeMax=${100}`
       );
       setCapacitySearchAmbiente(response.data);
     } else {
       const response = await API.get(
-        `/api/ambiente/capacidade?capacidadeMin=${selectCapacidadeAmbient.slice(0,2)}&capacidadeMax=${selectCapacidadeAmbient.slice(3)}`
+        `/api/ambiente/capacidade?capacidadeMin=${selectCapacidadeAmbient.slice(
+          0,
+          2
+        )}&capacidadeMax=${selectCapacidadeAmbient.slice(3)}`
       );
       setCapacitySearchAmbiente(response.data);
     }
@@ -148,20 +135,25 @@ export function Environments({ id, ...rest }: Ambientes) {
 
   // filtro para buscar ambientes pela a capacidade selecionada no IOS
   const getFilterCapacityDidMountIOS = async () => {
-   
-    if (selectCapacityIOS == 'Selecione a capacidade do ambiente') {
+    if (selectCapacityIOS == "Selecione a capacidade do ambiente") {
       console.log("filtro não selecionado ");
-    } else if (selectCapacityIOS == '30+') {
+    } else if (selectCapacityIOS == "30+") {
       console.log(
         "filtro +30 " + " posição 1 :" + selectCapacityIOS.slice(0, 2)
       );
       const response = await API.get(
-        `/api/ambiente/capacidade?capacidadeMin=${selectCapacityIOS.slice(0,2)}&capacidadeMax=${100}`
+        `/api/ambiente/capacidade?capacidadeMin=${selectCapacityIOS.slice(
+          0,
+          2
+        )}&capacidadeMax=${100}`
       );
       setCapacitySearchAmbiente(response.data);
     } else {
       const response = await API.get(
-        `/api/ambiente/capacidade?capacidadeMin=${selectCapacidadeAmbient.slice(0,2)}&capacidadeMax=${selectCapacidadeAmbient.slice(3)}`
+        `/api/ambiente/capacidade?capacidadeMin=${selectCapacidadeAmbient.slice(
+          0,
+          2
+        )}&capacidadeMax=${selectCapacidadeAmbient.slice(3)}`
       );
       setCapacitySearchAmbiente(response.data);
     }
@@ -193,18 +185,26 @@ export function Environments({ id, ...rest }: Ambientes) {
       );
       setEnvironmentTypeAndCapacity(response.data);
     } catch (error) {
-      console.log(`Erro ao fazer requisição de filtragem por Tipo e Capacidade ${error}`);
+      console.log(
+        `Erro ao fazer requisição de filtragem por Tipo e Capacidade ${error}`
+      );
     }
   }
 
-  // fazer requisição das APIs
+  // requisição APIs e métodos iniciais
   useEffect(() => {
     getAmbientesDidMount();
     getTypeAmbientesDidMount();
     getFilterTypeEnvironmentsDidMount();
+    validateOnPressFilter();
   }, []);
 
-  // função para aplicar o filtro
+  // Validate Button Filter
+  useEffect(() => {
+    validateOnPressFilter();
+  }, [selectCapacidadeAmbient, selectTypeAmbient]);
+
+  // aplicar filtro
   function filterAplic() {
     setFilter(true);
     setSearch(false);
@@ -215,14 +215,6 @@ export function Environments({ id, ...rest }: Ambientes) {
     setSearch(true);
     setFilter(false);
   };
-
-  function onPressFilter() {
-    setShowModal(false);
-    filterAplic();
-    getFilterTypeEnvironmentsDidMount();
-    getFilterCapacityDidMountANDROID();
-    getTypeAndCapacityDidMount();
-  }
 
   const searchReceive = (textValue) => {
     setValueSearch(textValue);
@@ -244,6 +236,28 @@ export function Environments({ id, ...rest }: Ambientes) {
     }
   };
 
+  // Button Filter
+  const validateOnPressFilter = () => {
+    let capacityPositionInitial = [capacidadeAmbient[0]];
+
+    if (
+      selectTypeAmbient != "default" ||
+      selectCapacidadeAmbient != capacityPositionInitial
+    ) {
+      setCheckOnPressFilter(true);
+    } else {
+      setCheckOnPressFilter(false);
+    }
+  };
+
+  function onPressFilter() {
+    setShowModal(false);
+    filterAplic();
+    getFilterTypeEnvironmentsDidMount();
+    getFilterCapacityDidMountANDROID();
+    getTypeAndCapacityDidMount();
+  }
+
   const getFilters = () => {
     let capacityPositionInitial = [capacidadeAmbient[0]];
 
@@ -259,7 +273,6 @@ export function Environments({ id, ...rest }: Ambientes) {
     }
   };
 
-
   return (
     <Pressable onPress={Keyboard.dismiss} style={styles.container}>
       <Background>
@@ -272,70 +285,69 @@ export function Environments({ id, ...rest }: Ambientes) {
             clenSearch={valueSearch}
           />
           <TouchableOpacity
-            style={Platform.OS === 'ios' ? styles.btnModalIOS : styles.btnModalANDROID}
+            style={
+              Platform.OS === "ios"
+                ? styles.btnModalIOS
+                : styles.btnModalANDROID
+            }
             onPress={() => setShowModal(true)}
           >
             <Filter />
           </TouchableOpacity>
         </View>
-        {
-          ambientes.length == 0 ?
-
-            <Loading />
-
-            :
-            filter == true ? (
-              <FlatList
-                ListHeaderComponent={
-                  <ConfigApplicator
-                    text="Filtro Aplicado"
-                    functionFilter={validateCloseSearch}
-                  />
-                }
-                data={getFilters()}
-                keyExtractor={(item) => item.id}
-                renderItem={({ item }) => <AmbienteCard data={item} />}
-                horizontal={false}
-                showsVerticalScrollIndicator
-                style={styles.list}
-              ></FlatList>
-            ) : search == true ? (
-              <FlatList
-                ListHeaderComponent={
-                  <ConfigApplicator
-                    text="Busca Aplicada"
-                    functionFilter={validateCloseSearch}
-                  />
-                }
-                data={searchEnvironment}
-                keyExtractor={(item) => item.id.toString()}
-                renderItem={({ item }) => <AmbienteCard data={item} />}
-                horizontal={false}
-                showsVerticalScrollIndicator
-                style={styles.list}
-              ></FlatList>
-            ) : (
-              <FlatList
-                data={ambientes}
-                keyExtractor={(item) => item.id.toString()}
-                renderItem={({ item }) => <AmbienteCard data={item} />}
-                horizontal={false}
-                showsVerticalScrollIndicator
-                style={styles.list}
-              ></FlatList>
-            )}
+        {ambientes.length == 0 ? (
+          <Loading />
+        ) : filter == true ? (
+          <FlatList
+            ListHeaderComponent={
+              <ConfigApplicator
+                text="Filtro Aplicado"
+                functionFilter={validateCloseSearch}
+              />
+            }
+            data={getFilters()}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => <AmbienteCard data={item} />}
+            horizontal={false}
+            showsVerticalScrollIndicator
+            style={styles.list}
+          ></FlatList>
+        ) : search == true ? (
+          <FlatList
+            ListHeaderComponent={
+              <ConfigApplicator
+                text="Busca Aplicada"
+                functionFilter={validateCloseSearch}
+              />
+            }
+            data={searchEnvironment}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => <AmbienteCard data={item} />}
+            horizontal={false}
+            showsVerticalScrollIndicator
+            style={styles.list}
+          ></FlatList>
+        ) : (
+          <FlatList
+            data={ambientes}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => <AmbienteCard data={item} />}
+            horizontal={false}
+            showsVerticalScrollIndicator
+            style={styles.list}
+          ></FlatList>
+        )}
         {showModal == true ? (
           <Pressable
             style={styles.background}
             onPress={() => setShowModal(false)}
           >
-            <Pressable style={styles.modal}
-              onPress={() => setShowModal(true)}
-            >
+            <Pressable style={styles.modal} onPress={() => setShowModal(true)}>
               <View style={styles.modalHeader}>
                 <TouchableOpacity
                   style={styles.close}
-                  onPress={() => setShowModal(false)}>
+                  onPress={() => setShowModal(false)}
+                >
                   <Text style={styles.txtClose}>X</Text>
                 </TouchableOpacity>
                 <View style={styles.vwTitle}>
@@ -344,117 +356,138 @@ export function Environments({ id, ...rest }: Ambientes) {
               </View>
               <View style={styles.containerFilter}>
                 <View style={styles.contentFilter}>
-                  {
-                    Platform.OS == 'ios' ?
-                      <TouchableOpacity
-                        onPress={() => ActionSheetIOS.showActionSheetWithOptions(
+                  {Platform.OS == "ios" ? (
+                    <TouchableOpacity
+                      onPress={() =>
+                        ActionSheetIOS.showActionSheetWithOptions(
                           {
-                            title: 'Selecione uma opção',
-                            options: ['cancelar', 'LIMPAR'].concat(typeAmbiente),
+                            title: "Selecione uma opção",
+                            options: ["cancelar", "LIMPAR"].concat(
+                              typeAmbiente
+                            ),
                             cancelButtonIndex: 0,
                             destructiveButtonIndex: 1,
-                            userInterfaceStyle: 'dark',
+                            userInterfaceStyle: "dark",
                           },
-                          buttonIndex => {
+                          (buttonIndex) => {
                             if (buttonIndex === 0) {
                               // cancel action
                             } else if (buttonIndex === 1) {
-                              setSelectTypeEnviromentsIOS('Selecione um tipo de ambiente')
+                              setSelectTypeEnviromentsIOS(
+                                "Selecione um tipo de ambiente"
+                              );
                             } else {
-                              setSelectTypeEnviromentsIOS(typeAmbiente[buttonIndex - 2])
+                              setSelectTypeEnviromentsIOS(
+                                typeAmbiente[buttonIndex - 2]
+                              );
                             }
                           }
-                        )}
-
-                        style={styles.input}
-                      >
-                        <Text>{selectTypeEnviromentsIOS}</Text>
-                      </TouchableOpacity>
-                      :
-                      <Picker
-                        selectedValue={selectTypeAmbient}
-                        style={styles.datePickerANDROID}
-                        mode={"dropdown"}
-                        onValueChange={(itemValue) =>
-                          setSelectTypeAmbient(itemValue)
-                        }
-                      >
-                        <Picker.Item
-                          key={0}
-                          label="Selecione um tipo de Ambiente"
-                          value={"default"}
-                          color="#00000090"
-                        />
-                        {typeAmbiente.map((cr) => {
-                          return (
-                            <Picker.Item
-                              key={cr}
-                              label={cr}
-                              value={cr}
-                              style={styles.itemDatePicker}
-                            />
-                          );
-                        })}
-                      </Picker>
-                  }
-
+                        )
+                      }
+                      style={styles.input}
+                    >
+                      <Text>{selectTypeEnviromentsIOS}</Text>
+                    </TouchableOpacity>
+                  ) : (
+                    <Picker
+                      selectedValue={selectTypeAmbient}
+                      style={styles.datePickerANDROID}
+                      mode={"dropdown"}
+                      onValueChange={(itemValue) =>
+                        setSelectTypeAmbient(itemValue)
+                      }
+                    >
+                      <Picker.Item
+                        key={0}
+                        label="Selecione um tipo de Ambiente"
+                        value={"default"}
+                        color="#00000090"
+                      />
+                      {typeAmbiente.map((cr) => {
+                        return (
+                          <Picker.Item
+                            key={cr}
+                            label={cr}
+                            value={cr}
+                            style={styles.itemDatePicker}
+                          />
+                        );
+                      })}
+                    </Picker>
+                  )}
                 </View>
                 <View style={styles.contentFilter}>
-                  {
-                    Platform.OS == 'ios' ?
-                      <TouchableOpacity
-                        onPress={() => ActionSheetIOS.showActionSheetWithOptions(
+                  {Platform.OS == "ios" ? (
+                    <TouchableOpacity
+                      onPress={() =>
+                        ActionSheetIOS.showActionSheetWithOptions(
                           {
-                            title: 'Selecione uma opção',
-                            options: ['cancelar', 'LIMPAR'].concat(capacidadeAmbientIOS),
+                            title: "Selecione uma opção",
+                            options: ["cancelar", "LIMPAR"].concat(
+                              capacidadeAmbientIOS
+                            ),
                             cancelButtonIndex: 0,
                             destructiveButtonIndex: 1,
-                            userInterfaceStyle: 'dark',
+                            userInterfaceStyle: "dark",
                           },
-                          buttonIndex => {
+                          (buttonIndex) => {
                             if (buttonIndex === 0) {
                               // cancel action
                             } else if (buttonIndex === 1) {
-                              setSelectCapacityIOS('Selecione a capacidade do ambiente')
+                              setSelectCapacityIOS(
+                                "Selecione a capacidade do ambiente"
+                              );
                             } else {
-                              setSelectCapacityIOS(capacidadeAmbientIOS[buttonIndex - 2])
+                              setSelectCapacityIOS(
+                                capacidadeAmbientIOS[buttonIndex - 2]
+                              );
                             }
                           }
-                        )}
-
-                        style={styles.input}
-                      >
-                        <Text>{selectCapacityIOS}</Text>
-                      </TouchableOpacity>
-                      :
-                      <Picker
-                        selectedValue={selectCapacidadeAmbient}
-                        style={styles.datePickerANDROID}
-                        mode={"dropdown"}
-                        onValueChange={(itemValue) =>
-                          setSelectCapacidadeAmbient(itemValue)
-                        }
-                      >
-                        {capacidadeAmbient.map((cr) => {
-                          return (
-                            <Picker.Item
-                              key={cr}
-                              label={cr}
-                              value={cr}
-                              style={styles.itemDatePicker}
-                            />
-                          );
-                        })}
-                      </Picker>
-                  }
+                        )
+                      }
+                      style={styles.input}
+                    >
+                      <Text>{selectCapacityIOS}</Text>
+                    </TouchableOpacity>
+                  ) : (
+                    <Picker
+                      selectedValue={selectCapacidadeAmbient}
+                      style={styles.datePickerANDROID}
+                      mode={"dropdown"}
+                      onValueChange={(itemValue) =>
+                        setSelectCapacidadeAmbient(itemValue)
+                      }
+                    >
+                      {capacidadeAmbient.map((cr) => {
+                        return (
+                          <Picker.Item
+                            key={cr}
+                            label={cr}
+                            value={cr}
+                            style={styles.itemDatePicker}
+                          />
+                        );
+                      })}
+                    </Picker>
+                  )}
                 </View>
               </View>
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => onPressFilter()}
-              >
-                <Text style={styles.txtButton}>Buscar</Text>
-              </TouchableOpacity>
+
+              {/* Validate Button Filter */}
+              {checkOnPressFilter == false ? (
+                <TouchableOpacity
+                  style={styles.buttonDisabled}
+                >
+                  <Text style={styles.txtButton}>Buscar</Text>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={() => onPressFilter()}
+                >
+                  <Text style={styles.txtButton}>Buscar</Text>
+                </TouchableOpacity>
+              )}
             </Pressable>
           </Pressable>
         ) : (

@@ -1,21 +1,21 @@
-import { Platform, StyleSheet } from 'react-native';
-import { THEME } from '../../themes';
+import { Platform, StyleSheet } from "react-native";
+import { THEME } from "../../themes";
 
 export const styles = StyleSheet.create({
   container: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
     flex: 1,
-  },  
-  containerSearch:{
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-around'
   },
-  list:{
-    width: '100%',
-    marginTop:15,
-    paddingTop:20,
+  containerSearch: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-around",
+  },
+  list: {
+    width: "100%",
+    marginTop: 15,
+    paddingTop: 20,
   },
   btnModalANDROID: {
     width: 48,
@@ -25,13 +25,13 @@ export const styles = StyleSheet.create({
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,
     backgroundColor: THEME.COLORS.WHITE,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderColor: '#fff',
+    justifyContent: "center",
+    alignItems: "center",
+    borderColor: "#fff",
     borderWidth: 1,
-    borderStyle: 'solid',
+    borderStyle: "solid",
     shadowOffset: { width: 2, height: -8 },
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOpacity: 0.7,
     shadowRadius: 3,
     elevation: 10,
@@ -44,56 +44,55 @@ export const styles = StyleSheet.create({
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,
     backgroundColor: THEME.COLORS.WHITE,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderColor: '#fff',
+    justifyContent: "center",
+    alignItems: "center",
+    borderColor: "#fff",
     borderWidth: 1,
-    borderStyle: 'solid',
+    borderStyle: "solid",
     shadowOffset: { width: 2, height: 2 },
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOpacity: 0.7,
     shadowRadius: 3,
   },
-  background:{
-    backgroundColor: 'rgba(190,190,190,0.6)',
-    position: 'absolute',
+  background: {
+    backgroundColor: "rgba(190,190,190,0.6)",
+    position: "absolute",
     zIndex: 1000,
-    width: '100%',
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center'
+    width: "100%",
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
   },
-  modal:{
-    width:'90%',
-    height: Platform.OS === 'ios' ? 450 : 350,
-    position: 'absolute',
+  modal: {
+    width: "90%",
+    height: Platform.OS === "ios" ? 450 : 320,
+    position: "absolute",
     zIndex: 1002,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    flexDirection: 'column',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    flexDirection: "column",
     borderRadius: 8,
   },
   modalHeader: {
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    flexDirection: 'row-reverse',
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "space-between",
+    flexDirection: "row-reverse",
     backgroundColor: THEME.COLORS.AZUL_500,
     borderRadius: 8,
-    borderBottomLeftRadius:0,
-    borderBottomRightRadius:0,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
   },
   close: {
-    marginRight: 10
+    marginRight: 10,
   },
   txtClose: {
     fontSize: 20,
     fontFamily: THEME.FONT_FAMILY.BOLD,
-    color: THEME.COLORS.WHITE
+    color: THEME.COLORS.WHITE,
   },
   vwTitle: {
-
-    alignItems: 'flex-start',
+    alignItems: "flex-start",
     padding: 10,
   },
   title: {
@@ -101,45 +100,44 @@ export const styles = StyleSheet.create({
     fontFamily: THEME.FONT_FAMILY.EXTRA_BOLD,
     color: THEME.COLORS.WHITE,
   },
-  contentFilter:{
-    width: '90%',
-    height:Platform.OS === 'ios' ? 100 : 50,
+  contentFilter: {
+    width: "90%",
+    height: Platform.OS === "ios" ? 100 : 50,
     marginTop: 20,
-    marginBottom: Platform.OS === 'ios' ? 10 : 0,
+    marginBottom: Platform.OS === "ios" ? 10 : 0,
     borderColor: THEME.COLORS.SELECT,
-    borderWidth: Platform.OS === 'ios' ? 0 : 2,
-    borderRadius: Platform.OS === 'ios' ? 0 : 8,
-    overflow: 'hidden',
-    alignItems: 'center',
-    justifyContent: 'center',
+    borderWidth: Platform.OS === "ios" ? 0 : 2,
+    borderRadius: Platform.OS === "ios" ? 0 : 8,
+    overflow: "hidden",
+    alignItems: "center",
+    justifyContent: "center",
   },
-  containerFilter:{
-    width: '100%',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
+  containerFilter: {
+    width: "100%",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
     marginTop: 20,
-    
   },
   datePickerANDROID: {
-    width: '90%',
-    borderColor: '#000',
+    width: "90%",
+    borderColor: "#000",
     borderWidth: 4,
     color: THEME.COLORS.SELECT,
   },
   datePickerIOS: {
-    width: '100%',
-    justifyContent: 'center',
-    height: '100%',
-    backgroundColor: '#fff'
+    width: "100%",
+    justifyContent: "center",
+    height: "100%",
+    backgroundColor: "#fff",
   },
-  itemDatePicker:{
-    borderColor: '#000',
+  itemDatePicker: {
+    borderColor: "#000",
     fontSize: THEME.FONT_SIZE.MD,
-    color: THEME.COLORS.TEXT
- },
-  input:{
-    width: '90%',
+    color: THEME.COLORS.TEXT,
+  },
+  input: {
+    width: "90%",
     paddingVertical: 12,
     borderRadius: 8,
     color: THEME.COLORS.TEXT_PLACE,
@@ -153,72 +151,82 @@ export const styles = StyleSheet.create({
     shadowOpacity: 0.23,
     shadowRadius: 2.62,
 
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     elevation: 4,
   },
-  containerImg:{
+  containerImg: {
     width: 40,
-    height:40,
-    justifyContent: 'center',
-    alignItems: 'center',
+    height: 40,
+    justifyContent: "center",
+    alignItems: "center",
     backgroundColor: THEME.COLORS.WHITE,
-    borderColor: '#fff',
+    borderColor: "#fff",
     borderWidth: 1,
-    borderStyle: 'solid',
-    shadowOffset: {width: 2, height: 2},  
-    shadowColor: '#000',  
-    shadowOpacity: 0.7,  
-    shadowRadius: 3,  
+    borderStyle: "solid",
+    shadowOffset: { width: 2, height: 2 },
+    shadowColor: "#000",
+    shadowOpacity: 0.7,
+    shadowRadius: 3,
     elevation: 5,
-    borderRadius:8,
+    borderRadius: 8,
   },
-  button:{
-    width: '50%',
-    height:40,
+  button: {
+    width: "50%",
     backgroundColor: THEME.COLORS.AZUL_500,
-    position: 'absolute',
-    bottom: '10%',
-    borderRadius:8,
-    justifyContent: 'center',
-    alignItems: 'center',
-    elevation: 2,
+    position: "absolute",
+    bottom: "10%",
+    borderRadius: 8,
+    justifyContent: "center",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+
+    elevation: 4,
   },
-  txtButton:{
+  buttonDisabled: {
+    width: "50%",
+    backgroundColor: THEME.COLORS.AZUL_500_DISABLED,
+    position: "absolute",
+    bottom: "10%",
+    borderRadius: 8,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  txtButton: {
     fontSize: THEME.FONT_SIZE.LG,
     fontFamily: THEME.FONT_FAMILY.SEMI_BOLD,
     color: THEME.COLORS.WHITE,
-    textTransform: 'uppercase',
+    textTransform: "uppercase",
   },
-  containerList:{
-    width: '100%',
-    flexDirection: 'column',
-    justifyContent: 'space-around',
-    alignItems: 'center',
+  containerList: {
+    width: "100%",
+    flexDirection: "column",
+    justifyContent: "space-around",
+    alignItems: "center",
   },
-  card:{
-    width: '90%',
-    height: 'auto',
-    padding:6, 
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop:10,
-    marginBottom:10,
+  card: {
+    width: "90%",
+    height: "auto",
+    padding: 6,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 10,
+    marginBottom: 10,
   },
-  contentData:{
+  contentData: {
     backgroundColor: THEME.COLORS.AZUL_300,
-    width:'20%',
+    width: "20%",
     height: 30,
-    justifyContent: 'center',
-    alignItems: 'center'
+    justifyContent: "center",
+    alignItems: "center",
   },
-  contentProfessor:{
-
-  },
-  contentPerido:{
-
-  },
-  contentDia:{
-
-  }
+  contentProfessor: {},
+  contentPerido: {},
+  contentDia: {},
 });

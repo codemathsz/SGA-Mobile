@@ -100,6 +100,8 @@ export function AdvancedSearch() {
   const [completForm, setCompletForm] = useState(false);
 
   // Feita para saber os valores obtidos ao escolher a data do Date Picker
+  var dateToday = new Date();
+
   var monthDateInit = String(dateInit.getMonth() + 1).padStart(2, "0");
   var dayDateInit = String(dateInit.getDate()).padStart(2, "0");
   var valueDateInit = String(
@@ -778,20 +780,43 @@ export function AdvancedSearch() {
             )}
             {/* Data Inicio e Data Final */}
             <View style={styles.divForm}>
-              <Text style={styles.titleForm}>Data Inicio</Text>
-              <View style={styles.divDate}>
-                <TouchableOpacity
-                  onPress={showDateInit}
-                  style={styles.divCalendar}
-                >
-                  <Text style={styles.textDate}>{valueDateInit}</Text>
-                  <Ionicons
-                    name="calendar"
-                    size={30}
-                    color={THEME.COLORS.TEXT_PLACE}
-                  />
-                </TouchableOpacity>
-                {openDateInit == true ? (
+              {Platform.OS == "android" ? (
+                <Text style={styles.titleForm}>Data Inicio</Text>
+              ) : (
+                ""
+              )}
+
+              {Platform.OS == "android" ? (
+                <View style={styles.divDate}>
+                  <TouchableOpacity
+                    onPress={showDateInit}
+                    style={styles.divCalendar}
+                  >
+                    <Text style={styles.textDate}>{valueDateInit}</Text>
+                    <Ionicons
+                      name="calendar"
+                      size={30}
+                      color={THEME.COLORS.TEXT_PLACE}
+                    />
+                  </TouchableOpacity>
+                  {openDateInit == true ? (
+                    <RNDateTimePicker
+                      testID="dateTimePicker"
+                      value={dateInit}
+                      mode={"date"}
+                      is24Hour={true}
+                      display={"default"}
+                      onChange={onChangeDateInit}
+                      locale={"pt"}
+                      minimumDate={dateToday}
+                    />
+                  ) : (
+                    ""
+                  )}
+                </View>
+              ) : (
+                <View style={styles.divDateIOS}>
+                  <Text style={styles.titleForm}>Data Inicio</Text>
                   <RNDateTimePicker
                     testID="dateTimePicker"
                     value={dateInit}
@@ -799,42 +824,65 @@ export function AdvancedSearch() {
                     is24Hour={true}
                     display={"default"}
                     onChange={onChangeDateInit}
-                    style={{ width: 400, backgroundColor: "white" }} //add this
+                    accentColor={THEME.COLORS.AZUL_300}
+                    locale={"pt"}
+                    minimumDate={dateToday}
+                    style={{ width: "50%", paddingVertical: 15 }}
                   />
-                ) : (
-                  ""
-                )}
-              </View>
+                </View>
+              )}
             </View>
             <View style={styles.divForm}>
-              <Text style={styles.titleForm}>Data Final</Text>
-              <View style={styles.divDate}>
-                <TouchableOpacity
-                  onPress={showDateFinal}
-                  style={styles.divCalendar}
-                >
-                  <Text style={styles.textDate}>{valueDateFinal}</Text>
-                  <Ionicons
-                    name="calendar"
-                    size={30}
-                    color={THEME.COLORS.TEXT_PLACE}
-                  />
-                </TouchableOpacity>
-                {openDateFinal == true ? (
-                  <DateTimePicker
+              {Platform.OS == "android" ? (
+                <Text style={styles.titleForm}>Data Final</Text>
+              ) : (
+                ""
+              )}
+              {Platform.OS == "android" ? (
+                <View style={styles.divDate}>
+                  <TouchableOpacity
+                    onPress={showDateFinal}
+                    style={styles.divCalendar}
+                  >
+                    <Text style={styles.textDate}>{valueDateFinal}</Text>
+                    <Ionicons
+                      name="calendar"
+                      size={30}
+                      color={THEME.COLORS.TEXT_PLACE}
+                    />
+                  </TouchableOpacity>
+                  {openDateFinal == true ? (
+                    <RNDateTimePicker
+                      testID="dateTimePicker"
+                      value={dateFinal}
+                      mode={"date"}
+                      is24Hour={true}
+                      display={"default"}
+                      onChange={onChangeDateFinal}
+                      locale={"pt"}
+                      minimumDate={dateToday}
+                    />
+                  ) : (
+                    ""
+                  )}
+                </View>
+              ) : (
+                <View style={styles.divDateIOS}>
+                  <Text style={styles.titleForm}>Data Final</Text>
+                  <RNDateTimePicker
                     testID="dateTimePicker"
                     value={dateFinal}
                     mode={"date"}
                     is24Hour={true}
                     display={"default"}
                     onChange={onChangeDateFinal}
+                    accentColor={THEME.COLORS.AZUL_300}
+                    locale={"pt"}
                     minimumDate={dateInit}
-                    style={{ width: 320, backgroundColor: "white" }}
+                    style={{ width: "50%", paddingVertical: 15 }}
                   />
-                ) : (
-                  ""
-                )}
-              </View>
+                </View>
+              )}
             </View>
             {/* Selecionador de dias*/}
             <View style={styles.divForm}>

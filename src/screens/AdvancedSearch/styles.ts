@@ -58,7 +58,7 @@ export const styles = StyleSheet.create({
     elevation: 4,
   },
 
-  selectFormIos:{
+  selectFormIos: {
     marginTop: 5,
     paddingVertical: 14,
     paddingLeft: 10,
@@ -81,7 +81,7 @@ export const styles = StyleSheet.create({
     fontWeight: "800",
   },
 
-  itemSelectIos:{
+  itemSelectIos: {
     color: THEME.COLORS.TEXT_PLACE,
     fontFamily: THEME.FONT_FAMILY.EXTRA_BOLD,
   },
@@ -158,6 +158,27 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     paddingVertical: 12,
     paddingLeft: 15,
+    borderRadius: 8,
+    color: THEME.COLORS.TEXT_PLACE,
+    fontFamily: THEME.FONT_FAMILY.EXTRA_BOLD,
+    backgroundColor: THEME.COLORS.WHITE,
+    shadowColor: THEME.COLORS.BLACK,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+    elevation: 4,
+  },
+  divDateIOS: {
+    width: "100%",
+    marginTop: 5,
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingVertical: 10,
+    paddingHorizontal: 5,
     borderRadius: 8,
     color: THEME.COLORS.TEXT_PLACE,
     fontFamily: THEME.FONT_FAMILY.EXTRA_BOLD,

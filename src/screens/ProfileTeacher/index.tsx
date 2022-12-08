@@ -65,14 +65,15 @@ export interface ClassesType {
 }
 
 import photoProfile from "../../assets/photoprofile.png";
+import MaskedView from "@react-native-masked-view/masked-view";
+import { LinearGradient } from "expo-linear-gradient";
 
 export function ProfileTeacher({ route }: any) {
-  // Arrays que recebem aulas do professor
   const [classesFic, setClassesFic] = useState([""]);
   const [classesRegular, setClassesRegular] = useState([""]);
   const [lessonsFromTeacher, setLessonsFromTeacher] = useState([]);
+
   const [holidaysTeacher, setHolidaysTeacher] = useState([]);
-  // const para passar o dia para o indicador maior
   const [daySelected, setDaySelected] = useState(0);
   const [dayIndicator, setDayIndicator] = useState("");
 
@@ -175,13 +176,13 @@ export function ProfileTeacher({ route }: any) {
     let dateFinal = holiday[1];
     let dateHoliday = dateInitial;
 
-    console.log(`ADICIONANDO AS FÉRIAS`)
+    console.log(`ADICIONANDO AS FÉRIAS`);
     markedDates[dateHoliday] = {
       ...markedDates[dateHoliday],
       selected: true,
       marked: true,
-      selectedColor: THEME.COLORS.ORANGE_TEACHER,
-      dotColor: THEME.COLORS.ORANGE_TEACHER,
+      selectedColor: THEME.COLORS.CAPTION_500,
+      dotColor: THEME.COLORS.CAPTION_500,
     };
 
     for (dateInitial in dateFinal) {
@@ -213,12 +214,30 @@ export function ProfileTeacher({ route }: any) {
                 style={{
                   width: 200,
                   height: 200,
-                  borderRadius: 200,
+                  padding: 5,
+                  borderTopRightRadius:40,
+                  borderTopLeftRadius:40,
                 }}
               />
             </View>
             <View style={styles.nameTeacher}>
-              <Text style={styles.name}>{route.params?.data?.nome}</Text>
+              <MaskedView
+                maskElement={
+                  <Text
+                    style={[styles.name, { backgroundColor: "transparent" }]}
+                  >
+                   {route.params?.data?.nome}
+                  </Text>
+                }
+              >
+                <LinearGradient
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  colors={["#25B5E9", "#367FBF"]}
+                >
+                  <Text style={[styles.name, { opacity: 0 }]}>{route.params?.data?.nome}</Text>
+                </LinearGradient>
+              </MaskedView>
             </View>
           </View>
           <View
@@ -230,8 +249,9 @@ export function ProfileTeacher({ route }: any) {
           >
             <Calendar
               style={{
-                width: "100%",
+                width: "90%",
                 height: "auto",
+                marginHorizontal: 20,
               }}
               theme={{
                 backgroundColor: "#FEFEFE",
@@ -276,10 +296,11 @@ export function ProfileTeacher({ route }: any) {
                   style={{
                     width: 18,
                     height: 18,
-                    backgroundColor: THEME.COLORS.ORANGE_TEACHER,
+                    backgroundColor: THEME.COLORS.CAPTION_500,
+                    borderRadius: 10,
                   }}
                 />
-                <Text>Férias</Text>
+                <Text style={styles.textSubTitle}>Férias</Text>
               </View>
               <View style={styles.subTitleCalendar}>
                 <View
@@ -287,9 +308,10 @@ export function ProfileTeacher({ route }: any) {
                     width: 18,
                     height: 18,
                     backgroundColor: THEME.COLORS.AZUL_300,
+                    borderRadius: 10,
                   }}
                 />
-                <Text>FIC</Text>
+                <Text style={styles.textSubTitle}>FIC</Text>
               </View>
               <View style={styles.subTitleCalendar}>
                 <View
@@ -297,9 +319,10 @@ export function ProfileTeacher({ route }: any) {
                     width: 18,
                     height: 18,
                     backgroundColor: THEME.COLORS.AZUL_500,
+                    borderRadius: 10,
                   }}
                 />
-                <Text>REGULAR</Text>
+                <Text style={styles.textSubTitle}>REGULAR</Text>
               </View>
             </View>
           </View>
