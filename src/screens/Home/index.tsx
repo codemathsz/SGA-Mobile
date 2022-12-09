@@ -247,6 +247,8 @@ export function Home() {
   };
 
   const isListFromLessonsEmpty = () => {
+
+    setLoading(false)
     return <Text style={styles.emptyListStyle}>Nenhuma aula encontrada!</Text>;
   };
 
@@ -280,6 +282,8 @@ export function Home() {
 
 
   console.log('day indicator :  '+dayIndicator)
+  console.log("loading ==>  "+loading);
+  
 
   return (
     <View>
@@ -422,7 +426,7 @@ export function Home() {
                     }`}</Text>
                 </View>
                 <View style={{ width: "100%" }}>
-                  {loading ? (
+                  {loading === true ? (
                     <Loading />
                   ) : (
 

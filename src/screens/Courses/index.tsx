@@ -60,11 +60,15 @@ export function Courses() {
   const [filter, setFilter] = useState(false);
   const [search, setSearch] = useState(false);
 
+  // loading na flatlist
+  const [loading, setLoading] = useState(true);
+
   // pegando todos os curso
   async function getCoursesDidMount() {
     try {
       const response = await API.get("/api/curso");
       setCourses(response.data);
+      setLoading(false)
     } catch (error) {
       console.log(error);
     }
@@ -169,7 +173,12 @@ export function Courses() {
     }
   };
 
-  
+  const isListFromLessonsEmpty = () => {
+
+    return <Text style={styles.emptyListStyle}>Nenhuma curso encontrado!</Text>;
+  };
+
+
   return (
     <Pressable onPress={Keyboard.dismiss} style={styles.container}>
       <Background>
@@ -195,7 +204,7 @@ export function Courses() {
         </View>
 
         {/* // Operador ternário  para aplicar as buscas* */}
-        {courses.length == 0 ? (
+        {loading  == true ? (
           <Loading />
         ) : filter == true ? (
           // se filtro for aplicado aparecera essa flatList
@@ -203,7 +212,7 @@ export function Courses() {
             ListHeaderComponent={
               <ConfigApplicator
                 text="Filtro Aplicado"
-                functionFilter={validateCloseSearch}
+                functionFilter={isListFromLessonsEmpty()}
               />
             }
             data={searchTypeCourses}
@@ -212,36 +221,38 @@ export function Courses() {
             horizontal={false}
             showsVerticalScrollIndicator
             style={styles.list}
-            ListEmptyComponent={<Loading />}
+            ListEmptyComponent={isListFromLessonsEmpty()}
           />
         ) : // Se buscar estiver sendo feita aparecera essa flatList
-        search == true ? (
-          <FlatList
-            ListHeaderComponent={
-              <ConfigApplicator
-                text="Busca Aplicado"
-                functionFilter={validateCloseSearch}
-              />
-            }
-            data={searchCourses}
-            keyExtractor={(item) => item?.id}
-            renderItem={({ item }) => <CursoCard data={item} />}
-            horizontal={false}
-            showsVerticalScrollIndicator
-            style={styles.list}
-          ></FlatList>
-        ) : (
-          // Flatlist que aparece quando não tem nenhuma busca personalizada feita
-          <FlatList
-            /*  ListHeaderComponent={} */
-            data={courses}
-            keyExtractor={(item) => item?.id}
-            renderItem={({ item }) => <CursoCard data={item} />}
-            horizontal={false}
-            showsVerticalScrollIndicator
-            style={styles.list}
-          ></FlatList>
-        )}
+          search == true ? (
+            <FlatList
+              ListHeaderComponent={
+                <ConfigApplicator
+                  text="Busca Aplicado"
+                  functionFilter={validateCloseSearch}
+                />
+              }
+              data={searchCourses}
+              keyExtractor={(item) => item?.id}
+              renderItem={({ item }) => <CursoCard data={item} />}
+              horizontal={false}
+              showsVerticalScrollIndicator
+              style={styles.list}
+              ListEmptyComponent={isListFromLessonsEmpty()}
+            ></FlatList>
+          ) : (
+            // Flatlist que aparece quando não tem nenhuma busca personalizada feita
+            <FlatList
+              /*  ListHeaderComponent={} */
+              data={courses}
+              keyExtractor={(item) => item?.id}
+              renderItem={({ item }) => <CursoCard data={item} />}
+              horizontal={false}
+              showsVerticalScrollIndicator
+              style={styles.list}
+              ListEmptyComponent={isListFromLessonsEmpty()}
+            ></FlatList>
+          )}
 
         {showModal == true ? (
           <Pressable
@@ -319,7 +330,7 @@ export function Courses() {
                   </Picker>
                 )}
               </View>
-              
+
               <TouchableOpacity
                 style={styles.button}
                 onPress={() => onPressFilter()}
