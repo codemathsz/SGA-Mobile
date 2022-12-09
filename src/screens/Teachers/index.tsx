@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   Image,
   Platform,
+  ActionSheetIOS,
 } from "react-native";
 import { TextInput } from "react-native-paper";
 
@@ -35,7 +36,7 @@ export interface Teachers {
   competencia: [];
   ativo: boolean;
   email: string;
-  foto: string
+  foto: string;
 }
 
 export interface Course {
@@ -65,14 +66,12 @@ export function Teachers() {
   const [valueSearch, setValueSearch] = useState();
   // receber o get de professor
   const [professor, setProfessor] = useState<Teachers[]>([]);
-  // curso para colocar no select
-  const [course, setCourses] = useState<Course[]>([]);
-  // para guardar o que foi selecionado no select curso
-  const [selectCourses, setSelectCourses] = useState([]);
   // unidade curricular para colocar no select
   const [curricularUnit, setCurricularUnit] = useState<CurricularUnit[]>([]);
+  const [curricularUnitIos, setCurricularUnitIos] = useState([]);
   // para guardar o que foi selecionado no select unid. curricular
   const [selectCurricularUnit, setSelectCurricularUnit] = useState([]);
+  const [selectCurricularUnitIos, setSelectCurricularUnitIos] = useState('Selecione uma Unidade Curricular')
   // Arrays para as filtragens
   const [filterUnityCurses, setFilterUnityCurses] = useState<Teachers[]>([]);
 
@@ -86,21 +85,12 @@ export function Teachers() {
     }
   }
 
-  // Recebe os Cursos
-  async function getCoursesDidMount() {
-    try {
-      const response = await API.get("/api/curso");
-      setCourses(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   // Recebe as Unidades Curriculares
   async function getCurricularUnitDidMount() {
     try {
       const response = await API.get("/api/unidade");
       setCurricularUnit(response.data);
+      setCurricularUnitIos(response.data.nome)
     } catch (error) {
       console.log(error);
     }
@@ -123,23 +113,15 @@ export function Teachers() {
     }
   }
 
-  async function getFilterUnityCursesDidMount(){
-    try {
-      filterUnityCurses.splice(0)
-      const response = await API.get(
-        `/api/professor/buscProf?nomeCurso=${selectCourses}&nomeUnidade=${selectCurricularUnit}`
-      )
-      setFilterUnityCurses(response.data);
-      console.log(`RESULTADO DA REQUISIÇÂO: ${filterUnityCurses}`)
-    } catch (error) {
-      console.log(`Erro ao receber os professores pela filtragem de Curso e Unidade Curricular: ${error}`);
-    }
+  async function getUnidadeSearchTeachers(){
+
+    const response = await API.get(`api/professor/buscProf?nomeUnidade=${Platform.OS=='android'?selectCurricularUnit:selectCurricularUnitIos}`) 
+    setFilterUnityCurses(response.data);
   }
 
   // Aciona o método de receber Professores, Cursos e Unidade Curricular
   useEffect(() => {
     getProfessorDidMount();
-    getCoursesDidMount();
     getCurricularUnitDidMount();
   }, []);
 
@@ -148,7 +130,7 @@ export function Teachers() {
     setFilter(true);
     setSearch(false);
     setValueSearch(null);
-    getFilterUnityCursesDidMount();
+    getUnidadeSearchTeachers();
   }
 
   // Aplicando a busca e removendo o filtro
@@ -196,7 +178,11 @@ export function Teachers() {
             clenSearch={valueSearch}
           />
           <TouchableOpacity
-            style={Platform.OS === 'ios' ? styles.btnModalIOS : styles.btnModalANDROID}
+            style={
+              Platform.OS === "ios"
+                ? styles.btnModalIOS
+                : styles.btnModalANDROID
+            }
             onPress={() => setShowModal(true)}
           >
             <Filter />
@@ -205,65 +191,60 @@ export function Teachers() {
 
         {/* Operador ternário para sabe se está sendo feita uma busca personalizada */}
 
-        {
-          professor.length == 0 ?
-            <Loading />
-            :
-            filter == true ? (
-              <FlatList
-                ListHeaderComponent={
-                  <ConfigApplicator
-                    text="Filtro Aplicado"
-                    functionFilter={validateCloseSearch}
-                  />
-                }
-                data={filterUnityCurses}
-                keyExtractor={(item) => item.id.toString()}
-                renderItem={({ item }) => <ProfessoresCard data={item} />}
-                horizontal={false}
-                showsVerticalScrollIndicator
-                style={styles.list}
+        {professor.length == 0 ? (
+          <Loading />
+        ) : filter == true ? (
+          <FlatList
+            ListHeaderComponent={
+              <ConfigApplicator
+                text="Filtro Aplicado"
+                functionFilter={validateCloseSearch}
               />
-            ) : search == true ? (
-              <FlatList
-                ListHeaderComponent={
-                  <ConfigApplicator
-                    text="Busca Aplicado"
-                    functionFilter={validateCloseSearch}
-                  />
-                }
-                data={teachersSearch}
-                keyExtractor={(item) => item.id.toString()}
-                renderItem={({ item }) => <ProfessoresCard data={item} />}
-                horizontal={false}
-                showsVerticalScrollIndicator
-                style={styles.list}
+            }
+            data={filterUnityCurses}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => <ProfessoresCard data={item} />}
+            horizontal={false}
+            showsVerticalScrollIndicator
+            style={styles.list}
+          />
+        ) : search == true ? (
+          <FlatList
+            ListHeaderComponent={
+              <ConfigApplicator
+                text="Busca Aplicado"
+                functionFilter={validateCloseSearch}
               />
-            ) : (
-              <FlatList
-                data={professor}
-                keyExtractor={(item) => item.id.toString()}
-                renderItem={({ item }) => <ProfessoresCard data={item} />}
-                horizontal={false}
-                showsVerticalScrollIndicator
-                style={styles.list}
-              />
-            )
-
-        }
+            }
+            data={teachersSearch}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => <ProfessoresCard data={item} />}
+            horizontal={false}
+            showsVerticalScrollIndicator
+            style={styles.list}
+          />
+        ) : (
+          <FlatList
+            data={professor}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => <ProfessoresCard data={item} />}
+            horizontal={false}
+            showsVerticalScrollIndicator
+            style={styles.list}
+          />
+        )}
 
         {showModal == true ? (
           <Pressable
             style={styles.background}
             onPress={() => setShowModal(false)}
           >
-            <Pressable style={styles.modal}
-              onPress={() => setShowModal(true)}
-            >
+            <Pressable style={styles.modal} onPress={() => setShowModal(true)}>
               <View style={styles.modalHeader}>
                 <TouchableOpacity
                   style={styles.close}
-                  onPress={() => setShowModal(false)}>
+                  onPress={() => setShowModal(false)}
+                >
                   <Text style={styles.txtClose}>X</Text>
                 </TouchableOpacity>
                 <View style={styles.vwTitle}>
@@ -271,45 +252,59 @@ export function Teachers() {
                 </View>
               </View>
               <View style={styles.containerFilter}>
-                <View style={styles.contentFilter}>
-                  <Picker
-                    selectedValue={selectCourses}
-                    style={Platform.OS === 'ios' ? styles.datePickerIOS : styles.datePickerANDROID}
-                    onValueChange={(itemValue) => setSelectCourses(itemValue)}
-                    mode={"dropdown"}
+                {Platform.OS == "android" ? (
+                  <View style={styles.contentFilter}>
+                    <Picker
+                      selectedValue={selectCurricularUnit}
+                      style={styles.datePickerANDROID}
+                      onValueChange={(itemValue) =>
+                        setSelectCurricularUnit(itemValue)
+                      }
+                      mode={"dropdown"}
+                    >
+                      {curricularUnit?.map((cru) => {
+                        return (
+                          <Picker.Item
+                            key={cru.id}
+                            label={cru.nome}
+                            value={cru.nome}
+                            style={styles.itemDatePicker}
+                          />
+                        );
+                      })}
+                    </Picker>
+                  </View>
+                ) : (
+                  <TouchableOpacity
+                    onPress={() =>
+                      ActionSheetIOS.showActionSheetWithOptions(
+                        {
+                          title: "Selecione uma opção",
+                          options: ["cancelar", "LIMPAR"].concat(curricularUnitIos),
+                          cancelButtonIndex: 0,
+                          destructiveButtonIndex: 1,
+                          userInterfaceStyle: "dark",
+                        },
+                        (buttonIndex) => {
+                          if (buttonIndex === 0) {
+                            // cancel action
+                          } else if (buttonIndex === 1) {
+                            setSelectCurricularUnitIos(
+                              'Selecione uma Unidade Curricular'
+                            );
+                          } else {
+                            setSelectCurricularUnitIos(
+                              curricularUnitIos[buttonIndex - 2]
+                            );
+                          }
+                        }
+                      )
+                    }
+                    style={styles.input}
                   >
-                    {course?.map((cr) => {
-                      return (
-                        <Picker.Item
-                          key={cr.id}
-                          label={cr.nome}
-                          value={cr.nome}
-                          style={styles.itemDatePicker}
-                        />
-                      );
-                    })}
-                  </Picker>
-                </View>
-
-                <View style={styles.contentFilter}>
-                  <Picker
-                    selectedValue={selectCurricularUnit}
-                    style={Platform.OS === 'ios' ? styles.datePickerIOS : styles.datePickerANDROID}
-                    onValueChange={(itemValue) => setSelectCurricularUnit(itemValue)}
-                    mode={"dropdown"}
-                  >
-                    {curricularUnit?.map((cru) => {
-                      return (
-                        <Picker.Item
-                          key={cru.id}
-                          label={cru.nome}
-                          value={cru.nome}
-                          style={styles.itemDatePicker}
-                        />
-                      );
-                    })}
-                  </Picker>
-                </View>
+                    <Text>{selectCurricularUnitIos}</Text>
+                  </TouchableOpacity>
+                )}
               </View>
               <TouchableOpacity
                 style={styles.button}
