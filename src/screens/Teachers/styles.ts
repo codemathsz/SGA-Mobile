@@ -65,7 +65,7 @@ export const styles = StyleSheet.create({
   },
   modal:{
     width:'90%',
-    height: Platform.OS === 'ios' ? 450 : 350,
+    height: Platform.OS === 'ios' ? 300 : 250,
     position: 'absolute',
     zIndex: 1002,
     backgroundColor: '#fff',
@@ -187,5 +187,24 @@ export const styles = StyleSheet.create({
   },
   contentDia:{
 
-  }
+  },
+  input: {
+    width: '80%',
+    paddingVertical: 12,
+    borderRadius: 8,
+    color: THEME.COLORS.TEXT_PLACE,
+    fontFamily: THEME.FONT_FAMILY.EXTRA_BOLD,
+    backgroundColor: THEME.COLORS.WHITE,
+    shadowColor: THEME.COLORS.BLACK,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 4,
+  },
 });
