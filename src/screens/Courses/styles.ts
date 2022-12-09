@@ -175,5 +175,12 @@ export const styles = StyleSheet.create({
     fontFamily: THEME.FONT_FAMILY.SEMI_BOLD,
     color: THEME.COLORS.WHITE,
     textTransform: 'uppercase',
-  }
+  },
+  emptyListStyle: {
+    padding: 10,
+    alignItems: 'center',
+    fontSize: 22,
+    textAlign: 'center',
+    color: THEME.COLORS.SELECT,
+  },
 });

@@ -12,7 +12,6 @@ import {
   ActionSheetIOS,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
-import Icon from "../../assets/icon_curso.png";
 
 import { AmbienteCard } from "../../components/AmbienteCard";
 import { Background } from "../../components/Background";
@@ -93,12 +92,20 @@ export function Environments({ id, ...rest }: Ambientes) {
   // filtro para buscar ambientes pela a tipo de ambiente selecionada no picker
   async function getFilterTypeEnvironmentsDidMount() {
     try {
-      const response = await API.get(
-        "/api/ambiente/buscaambiente/" + selectTypeAmbient
-      );
 
-      typeSearchAmbiente.splice(0);
-      setTypeSearchAmbiente(response.data);
+      if (Platform.OS === 'android') {
+        const response = await API.get(
+          "/api/ambiente/buscaambiente/" + selectTypeAmbient
+        );
+        typeSearchAmbiente.splice(0);
+        setTypeSearchAmbiente(response.data);
+      } else {
+        const response = await API.get(
+          "/api/ambiente/buscaambiente/" + selectTypeEnviromentsIOS
+        );
+        typeSearchAmbiente.splice(0);
+        setTypeSearchAmbiente(response.data);
+      }
     } catch (error) {
       console.log(`Erro ao trazer Filtragem por tipo de ambiente: ${error}`);
     }
@@ -195,14 +202,15 @@ export function Environments({ id, ...rest }: Ambientes) {
   useEffect(() => {
     getAmbientesDidMount();
     getTypeAmbientesDidMount();
-    getFilterTypeEnvironmentsDidMount();
     validateOnPressFilter();
   }, []);
 
   // Validate Button Filter
   useEffect(() => {
     validateOnPressFilter();
-  }, [selectCapacidadeAmbient, selectTypeAmbient]);
+  }, [selectCapacidadeAmbient, selectTypeAmbient, showModal]);
+
+  
 
   // aplicar filtro
   function filterAplic() {
@@ -252,26 +260,49 @@ export function Environments({ id, ...rest }: Ambientes) {
 
   function onPressFilter() {
     setShowModal(false);
-    filterAplic();
-    getFilterTypeEnvironmentsDidMount();
-    getFilterCapacityDidMountANDROID();
-    getTypeAndCapacityDidMount();
+    filterAplic();    
+
+    if (Platform.OS === 'android') {
+      let capacityPositionInitial = [capacidadeAmbient[0]];
+      if (selectTypeAmbient != "default" &&
+        selectCapacidadeAmbient != capacityPositionInitial) {
+
+        getTypeAndCapacityDidMount();
+      } else if (selectTypeAmbient !== "default") {
+        getFilterTypeEnvironmentsDidMount();
+      } else if (selectCapacidadeAmbient !== capacityPositionInitial) {
+        getFilterCapacityDidMountANDROID();
+      }
+    } else if (Platform.OS === 'ios'){
+      let capacityPositionInitial = [capacidadeAmbientIOS[0]];
+      if (selectTypeEnviromentsIOS !== "default" &&
+      selectCapacityIOS !== capacityPositionInitial[0]) {
+
+      getTypeAndCapacityDidMount();
+    } else if (selectTypeEnviromentsIOS !== "default") {
+      getFilterTypeEnvironmentsDidMount();
+    } else if (selectCapacityIOS !== capacityPositionInitial[0]) {
+      getFilterCapacityDidMountIOS();
+    }
+    }
   }
 
   const getFilters = () => {
     let capacityPositionInitial = [capacidadeAmbient[0]];
 
-    if (
-      selectTypeAmbient != "default" &&
-      selectCapacidadeAmbient != capacityPositionInitial
-    ) {
+    if (selectTypeAmbient !== "default" &&
+      selectCapacidadeAmbient !== capacityPositionInitial) {
+
       return environmentTypeAndCapacity;
-    } else if (selectTypeAmbient != "default") {
+    } else if (selectTypeAmbient !== "default") {
       return typeSearchAmbiente;
-    } else if (selectCapacidadeAmbient != capacityPositionInitial) {
+    } else if (selectCapacidadeAmbient !== capacityPositionInitial) {
       return capacitySearchAmbiente;
     }
   };
+
+  console.log(selectTypeAmbient);
+  console.log("select tipe ios =>  " + selectTypeEnviromentsIOS);
 
   return (
     <Pressable onPress={Keyboard.dismiss} style={styles.container}>
@@ -380,6 +411,7 @@ export function Environments({ id, ...rest }: Ambientes) {
                               setSelectTypeEnviromentsIOS(
                                 typeAmbiente[buttonIndex - 2]
                               );
+
                             }
                           }
                         )
@@ -476,6 +508,7 @@ export function Environments({ id, ...rest }: Ambientes) {
               {/* Validate Button Filter */}
               {checkOnPressFilter == false ? (
                 <TouchableOpacity
+                  disabled
                   style={styles.buttonDisabled}
                 >
                   <Text style={styles.txtButton}>Buscar</Text>
