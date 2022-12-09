@@ -7,7 +7,6 @@ import {
   FlatList,
   Platform,
 } from "react-native";
-import { Aula } from "../../screens/Home";
 import API from "../../services/api";
 
 import { styles } from "./styles";
@@ -25,15 +24,15 @@ interface AulaModal {
     tipo: string;
     ativo: boolean;
     cep: string;
-    complemento: string
+    complemento: string;
     endereco: string;
-  }
+  };
   professor: {
     id: number;
     nome: string;
-    email: string
+    email: string;
     cargaSemanal: number;
-    ativo: boolean
+    ativo: boolean;
     competencia: [
       {
         id: number;
@@ -41,30 +40,34 @@ interface AulaModal {
           id: number;
           nome: string;
           horas: number;
-        }
-        nivel: number
+        };
+        nivel: number;
       }
-    ]
-  }
+    ];
+  };
   cargaDiaria: number;
   data: string;
   unidadeCurricular: {
     id: number;
     nome: string;
-    horas: number
-  }
+    horas: number;
+  };
   codTurma: string;
   periodo: string;
 }
 
 export function ModalHome({ valueShowModal, idClass }) {
-  const [dataClass, setDataClass] = useState<AulaModal>();
+  const [dataClass, setDataClass] = useState<AulaModal[]>([]);
 
   async function getClassesDidMount() {
     try {
-
       const response = await API.get(`/api/aula/busca/${idClass}`);
-      setDataClass(response.data);
+      if (response != null) {
+        setDataClass(response.data);
+      }else{
+        console.log('Erro ao trazer os dados da aula');
+        
+      }
     } catch (error) {
       console.error(`Erro ao receber a aula clicada para a modal ${error}`);
     }
@@ -74,9 +77,9 @@ export function ModalHome({ valueShowModal, idClass }) {
     getClassesDidMount();
   }, []);
 
-  console.log("id enviado ==> "+idClass);
+  console.log("id recebido ==> " + idClass);
+  console.log(`DADOS DA AULA ${dataClass[0]?.unidadeCurricular?.nome}`);
   
-
   return (
     <View style={styles.contentModal}>
       <View style={styles.modal}>
@@ -88,44 +91,42 @@ export function ModalHome({ valueShowModal, idClass }) {
             <Text style={styles.closeModal}>X</Text>
           </TouchableOpacity>
         </View>
-        <View >
+        <View style={styles.containerInfo}>
           <View style={styles.contentInfosModal}>
             <Text style={styles.titleInfoLesson}>Ambiente:</Text>
             <Text style={styles.textEnviroment}>
-              {dataClass?.ambiente?.nome}
+              {dataClass[0]?.ambiente?.nome}
             </Text>
           </View>
           <View style={styles.contentInfosModal}>
             <Text style={styles.titleInfoLesson}>Aula: </Text>
             <Text style={{ color: "#000" }}>
-              {dataClass?.unidadeCurricular?.nome}
+              {dataClass[0]?.unidadeCurricular?.nome}
             </Text>
           </View>
           <View style={styles.contentInfosModal}>
             <Text style={styles.titleInfoLesson}>Carga Horária UC: </Text>
             <Text style={{ color: "#000" }}>
-              {dataClass?.unidadeCurricular?.horas} horas
+              {dataClass[0]?.unidadeCurricular?.horas} horas
             </Text>
           </View>
           <View style={styles.contentInfosModal}>
             <Text style={styles.titleInfoLesson}>Carga Diaria: </Text>
             <Text style={{ color: "#000" }}>
-              {dataClass?.cargaDiaria} horas
+              {dataClass[0]?.cargaDiaria} horas
             </Text>
           </View>
           <View style={styles.contentInfosModal}>
             <Text style={styles.titleInfoLesson}>Professor(a): </Text>
-            <Text style={{ color: "#000" }}>
-              {dataClass?.professor?.nome}
-            </Text>
+            <Text style={{ color: "#000" }}>{dataClass[0]?.professor?.nome}</Text>
           </View>
           <View style={styles.contentInfosModal}>
             <Text style={styles.titleInfoLesson}>Período: </Text>
-            <Text style={{ color: "#000" }}>{dataClass?.periodo}</Text>
+            <Text style={{ color: "#000" }}>{dataClass[0]?.periodo}</Text>
           </View>
           <View style={styles.contentInfosModal}>
             <Text style={styles.titleInfoLesson}>Código da Turma: </Text>
-            <Text style={{ color: "#000" }}>{dataClass?.codTurma}</Text>
+            <Text style={{ color: "#000" }}>{dataClass[0]?.codTurma}</Text>
           </View>
         </View>
       </View>

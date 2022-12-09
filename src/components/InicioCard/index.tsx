@@ -17,7 +17,6 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 
 interface Props extends TouchableOpacityProps {
   data: Aula;
-  
   sendsId: any;
   valuePeriod: string;
 }
@@ -26,11 +25,9 @@ export function InicioCard({ data, sendsId, valuePeriod }: Props) {
   const [teste, setTeste] = useState([]);
 
   function validModal(id) {
-    if (showModal == true) {
-
-    } else {
+    if (showModal != true) {
       sendsId(id)
-    }
+    } 
   }
 
   return (
@@ -131,7 +128,7 @@ export function InicioCard({ data, sendsId, valuePeriod }: Props) {
                     ) : valuePeriod === 'morning' ? (
 
                       aula.periodo === 'MANHA' && (
-                        
+
                         <TouchableOpacity style={styles.containerPeriod} onPress={() => validModal(aula.id)} key={aula.id}>
                           {/* Manha */}
                           <View style={styles.containerPeriodLeft}>
