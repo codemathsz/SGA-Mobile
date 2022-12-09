@@ -47,9 +47,13 @@ export const styles = StyleSheet.create({
     fontFamily: THEME.FONT_FAMILY.BOLD,
     color: "#fff",
   },
+  containerInfo: {
+    width: "100%",
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+  },
   containerInfoModal:{
     width:'100%',
-    paddingHorizontal: 1,
     paddingVertical: 20,
     alignItems:'center',
     textAlign: 'center',

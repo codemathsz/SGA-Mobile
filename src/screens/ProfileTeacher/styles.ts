@@ -1,115 +1,172 @@
-import { StyleSheet } from 'react-native';
-import { THEME } from '../../themes';
+import { StyleSheet } from "react-native";
+import { THEME } from "../../themes";
 
 export const styles = StyleSheet.create({
   container: {
-    width:'100%',
-    marginTop: 80,// por enquanto
-    justifyContent: 'center',
-    alignItems: 'center',
+    width: "100%",
+    marginTop: 80, // por enquanto
+    justifyContent: "center",
+    alignItems: "center",
   },
-  contentPhoto:{
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
+  contentPhoto: {
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
   },
-  nameTeacher:{
+  nameTeacher: {
     marginTop: 30,
   },
-  name:{
-    fontFamily:THEME.FONT_FAMILY.EXTRA_BOLD,
+  name: {
+    fontFamily: THEME.FONT_FAMILY.EXTRA_BOLD,
     fontSize: 35,
-    color: THEME.COLORS.AZUL_300
+    color: THEME.COLORS.AZUL_300,
   },
-  calendarANDROID:{
-    width: '100%',
-    height: 'auto',
+  calendarANDROID: {
+    width: "100%",
+    height: "auto",
     backgroundColor: THEME.COLORS.WHITE,
     marginTop: 35,
-    borderTopRightRadius:20,
-    borderTopLeftRadius:20,
-    shadowOffset: {width: 80, height: -8},  
-    shadowColor: '#000',  
-    shadowOpacity: 0.4,  
-    shadowRadius: 3,  
+    borderTopRightRadius: 20,
+    borderTopLeftRadius: 20,
+    shadowOffset: { width: 80, height: -8 },
+    shadowColor: "#000",
+    shadowOpacity: 0.4,
+    shadowRadius: 3,
     elevation: 10,
-    flexDirection: 'column'
+    flexDirection: "column",
   },
-  calendarIOS:{
-    width: '100%',
-    height: 'auto',
+  calendarIOS: {
+    width: "100%",
+    height: "auto",
     backgroundColor: THEME.COLORS.WHITE,
-    marginTop:80,
-    borderTopRightRadius:40,
-    borderTopLeftRadius:40,
+    marginTop: 80,
+    borderTopRightRadius: 40,
+    borderTopLeftRadius: 40,
     shadowOffset: { width: 2, height: -4 },
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOpacity: 0.2,
-    shadowRadius: 3, 
+    shadowRadius: 3,
     elevation: 10,
-    flexDirection: 'column'
+    flexDirection: "column",
   },
-  contentSubTitleCalendar:{
-    width: '100%',
+  contentSubTitleCalendar: {
+    width: "100%",
     paddingVertical: 30,
-    flexDirection: 'row',
-    alignItems: 'center',
-    textAlign: 'center',
-    justifyContent: 'space-between'
+    flexDirection: "row",
+    alignItems: "center",
+    textAlign: "center",
+    justifyContent: "space-between",
   },
-  subTitleCalendar:{
-    width: '33%',
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    alignItems: 'center'
+  subTitleCalendar: {
+    width: "33%",
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    alignItems: "center",
   },
-  textSubTitle:{
+  textSubTitle: {
     fontFamily: THEME.FONT_FAMILY.EXTRA_BOLD,
-    color:THEME.COLORS.TEXT
+    color: THEME.COLORS.TEXT,
   },
-  containerListANDROID:{
-    width: '90%',
-    height:100,
-    backgroundColor: THEME.COLORS.WHITE, 
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    borderLeftWidth: 20,
-    borderLeftColor: THEME.COLORS.AZUL_600,
-    marginTop:20,
-    marginBottom:20,
-    flexDirection: 'column',
-    borderTopRightRadius:15,
-    borderBottomRightRadius:15,
-    shadowOffset: { width: 2, height: -4 },
-    shadowColor: '#000',
-    shadowOpacity: 0.2,
-    shadowRadius: 3, 
-    elevation: 10,
+  containerTitleClass: {
+    width: "100%",
+    marginTop: 30,
+    marginBottom: 5,
+    paddingLeft: 35,
+    alignItems: "flex-start",
+    justifyContent: "center",
   },
-  containerListIOS:{
-    width: '90%',
-    height:100,
-    backgroundColor: THEME.COLORS.WHITE, 
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    borderLeftWidth: 20,
-    borderLeftColor: '#734BA7',
-    marginTop:20,
-    marginBottom:20,
-    flexDirection: 'column',
-    borderTopRightRadius:15,
-    borderBottomRightRadius:15,
-    shadowOffset: {width: 2, height: -8},  
-    shadowColor: '#000',  
-    shadowOpacity: 0.7,  
-    shadowRadius: 3,  
+  titleClass: {
+    fontFamily: THEME.FONT_FAMILY.EXTRA_BOLD,
+    fontSize: 40,
+    color: THEME.COLORS.AZUL_600,
+  },
+  card: {
+    width: "95%",
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 18,
+    backgroundColor: THEME.COLORS.BACKGROUND_FORM,
+    borderRadius: 8,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+
     elevation: 4,
+
   },
-  item:{
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    position: 'relative',
-    alignItems: 'center'
-  }
+  header: {
+    width: "100%",
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: THEME.COLORS.AZUL_500,
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
+  },
+
+  containerHeaderLeft: {
+    width: "30%",
+    justifyContent: "center",
+    alignItems: "center",
+    textAlign: "center",
+  },
+  containerHeaderCenter:{
+    width: "50%",
+    justifyContent: "center",
+    alignItems: "center",
+    textAlign: "center",
+  },
+  containerHeaderRight: {
+    width: "20%",
+    justifyContent: "center",
+    alignItems: "center",
+    textAlign: "center",
+  },
+  textSubTitleHeader: {
+    fontFamily: THEME.FONT_FAMILY.BOLD,
+    fontSize: 16,
+    color: THEME.COLORS.WHITE,
+  },
+  containerClasses: {
+    width: "100%",
+    paddingVertical: 15,
+    flexDirection: "row",
+  },
+  containerClass: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: 12,
+    borderWidth: 0.2,
+    borderColor: THEME.COLORS.CAPTION_300,
+  },
+  containerClassLeft: {
+    width: "30%",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignContent: "center",
+    alignItems: "center",
+  },
+  containerClassCenter: {
+    width: "50%",
+    justifyContent: "center",
+    alignItems: "center",
+    textAlign: "center",
+  },
+  containerClassRight: {
+    width: "20%",
+    justifyContent: "center",
+    alignItems: "center",
+    textAlign: "center",
+  },
+  textClass: {
+    fontFamily: THEME.FONT_FAMILY.BOLD,
+  },
 });

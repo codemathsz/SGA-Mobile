@@ -128,7 +128,24 @@ export function AdvancedSearch() {
   useEffect(() => {
     getTeachersDidMount();
     getEnvironmentDidMount();
-  }, [completForm]);
+  }, [
+    completForm,
+    valueCurso,
+    valueCompany,
+    valueCep,
+    dateInit,
+    dateFinal,
+    daySeg,
+    dayTer,
+    dayQua,
+    dayQui,
+    daySex,
+    daySab,
+    dayDom,
+    selectedCompetence,
+    selectedPeriod,
+    selectedPeriodIos,
+  ]);
 
   // usado para a validação de compartilhamento
   useEffect(() => {
@@ -156,14 +173,14 @@ export function AdvancedSearch() {
   }
 
   async function getTeachersDidMount() {
-    await API.post("/api/professor/disponibilidade", {
-      dataInicio: valueDateInit,
+    await API.post("/api/professor/disponibilidadeMobile", {
+      dtInicio: valueDateInit,
+      dtFinal: valueDateFinal,
       diasSemana: [dayDom, daySeg, dayTer, dayQua, dayQui, daySex, daySab],
-      dataFinal: valueDateFinal,
+      periodo: Platform.OS == "android" ? selectedPeriod : selectedPeriodIos,
       unidadeCurricular: {
         id: selectedCompetenceId,
       },
-      periodo: Platform.OS == "android" ? selectedPeriod : selectedPeriodIos,
     })
       .then((response) => setTeachers(response.data))
       .catch((error) => {
@@ -326,8 +343,7 @@ export function AdvancedSearch() {
       Vibration.vibrate();
       setErroMessage("Selecione um período*");
       return setErroPeriod(true);
-      // Validate Dados
-    } else {
+    }else{
       setCompletForm(true);
     }
 
