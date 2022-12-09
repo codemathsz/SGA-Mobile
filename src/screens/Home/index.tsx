@@ -187,8 +187,6 @@ export function Home() {
     }
   }
 
-  const [data, setData] = useState<String[]>([])
-
   async function getAulaFromDaySelected() {
     try {
       const response = await API.get(
@@ -205,6 +203,7 @@ export function Home() {
 
       setLoading(false);
     } catch (error) {
+      setLoading(false);
       return console.log(error);
     }
   }

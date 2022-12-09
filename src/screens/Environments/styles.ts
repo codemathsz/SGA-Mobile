@@ -226,7 +226,11 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  contentProfessor: {},
-  contentPerido: {},
-  contentDia: {},
+  emptyListStyle: {
+    padding: 10,
+    alignItems: 'center',
+    fontSize: 22,
+    textAlign: 'center',
+    color: THEME.COLORS.SELECT,
+  },
 });

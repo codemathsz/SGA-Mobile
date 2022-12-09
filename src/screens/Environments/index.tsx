@@ -36,6 +36,8 @@ export interface Ambientes {
 }
 
 export function Environments({ id, ...rest }: Ambientes) {
+  // loading na flatlist
+  const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [ambientes, setAmbientes] = useState<Ambientes[]>([]);
   const [typeSearchAmbiente, setTypeSearchAmbiente] = useState<Ambientes[]>([]);
@@ -46,16 +48,15 @@ export function Environments({ id, ...rest }: Ambientes) {
     Ambientes[]
   >([]);
   const [typeAmbiente, setTypeAmbiente] = useState([]);
-  const [selectTypeAmbient, setSelectTypeAmbient] = useState();
+  const [selectTypeAmbient, setSelectTypeAmbient] = useState('default');
   const [capacidadeAmbient] = useState([
-    "Selecione a capacidade do ambiente",
     "10-15",
     "20-25",
     "25-30",
     "30+",
   ]);
   const [capacidadeAmbientIOS] = useState(["10-15", "20-25", "25-30", "30+"]);
-  const [selectCapacidadeAmbient, setSelectCapacidadeAmbient] = useState(["Selecione a capacidade do ambiente"]);
+  const [selectCapacidadeAmbient, setSelectCapacidadeAmbient] = useState(["d"]);
   const [filter, setFilter] = useState(false);
   const [checkOnPressFilter, setCheckOnPressFilter] = useState(false);
   const [search, setSearch] = useState(false);
@@ -68,13 +69,17 @@ export function Environments({ id, ...rest }: Ambientes) {
     "Selecione a capacidade do ambiente"
   );
 
+
+
   // APIs
   // buscar todos os ambiente
   async function getAmbientesDidMount() {
     try {
       const response = await API.get("/api/ambiente");
+      setLoading(false)
       setAmbientes(response.data);
     } catch (error) {
+      setLoading(false)
       console.log(error);
     }
   }
@@ -83,6 +88,7 @@ export function Environments({ id, ...rest }: Ambientes) {
   async function getTypeAmbientesDidMount() {
     try {
       const response = await API.get("/api/ambiente/tipoambiente");
+     
       setTypeAmbiente(response.data);
     } catch (error) {
       console.log(`Erro ao trazer tipo de ambiente: ${error}`);
@@ -93,10 +99,13 @@ export function Environments({ id, ...rest }: Ambientes) {
   async function getFilterTypeEnvironmentsDidMount() {
     try {
 
+      console.log("entrou na requisição");
+
       if (Platform.OS === 'android') {
         const response = await API.get(
           "/api/ambiente/buscaambiente/" + selectTypeAmbient
         );
+        setLoading(false)
         typeSearchAmbiente.splice(0);
         setTypeSearchAmbiente(response.data);
       } else {
@@ -104,9 +113,11 @@ export function Environments({ id, ...rest }: Ambientes) {
           "/api/ambiente/buscaambiente/" + selectTypeEnviromentsIOS
         );
         typeSearchAmbiente.splice(0);
+        setLoading(false)
         setTypeSearchAmbiente(response.data);
       }
     } catch (error) {
+      setLoading(false)
       console.log(`Erro ao trazer Filtragem por tipo de ambiente: ${error}`);
     }
   }
@@ -118,7 +129,7 @@ export function Environments({ id, ...rest }: Ambientes) {
 
     if (Platform.OS === 'android') {
 
-      if (selectCapacidadeAmbient == capacityPositionInitial) {
+      if (selectCapacidadeAmbient[0] == 'd') {
         console.log("filtro não selecionado ");
       } else if (selectCapacidadeAmbient == capacityPositionFinal) {
         console.log(
@@ -130,6 +141,7 @@ export function Environments({ id, ...rest }: Ambientes) {
             2
           )}&capacidadeMax=${100}`
         );
+        setLoading(false)
         setCapacitySearchAmbiente(response.data);
       } else {
         const response = await API.get(
@@ -138,6 +150,7 @@ export function Environments({ id, ...rest }: Ambientes) {
             2
           )}&capacidadeMax=${selectCapacidadeAmbient.slice(3)}`
         );
+        setLoading(false)
         setCapacitySearchAmbiente(response.data);
       }
     } else if (Platform.OS === 'ios') {
@@ -153,6 +166,7 @@ export function Environments({ id, ...rest }: Ambientes) {
             2
           )}&capacidadeMax=${100}`
         );
+        setLoading(false)
         setCapacitySearchAmbiente(response.data);
       } else {
         const response = await API.get(
@@ -161,6 +175,7 @@ export function Environments({ id, ...rest }: Ambientes) {
             2
           )}&capacidadeMax=${selectCapacidadeAmbient.slice(3)}`
         );
+        setLoading(false)
         setCapacitySearchAmbiente(response.data);
       }
     }
@@ -177,8 +192,10 @@ export function Environments({ id, ...rest }: Ambientes) {
       const response = await API.get("/api/ambiente/buscapalavra/" + textValue);
 
       searchEnvironment.splice(0);
+      setLoading(false)
       setSearchEnvironment(response.data);
     } catch (error) {
+      setLoading(false)
       console.log(error);
     }
   }
@@ -192,8 +209,10 @@ export function Environments({ id, ...rest }: Ambientes) {
           2
         )}&capacidadeMax=${selectCapacidadeAmbient.slice(3)}`
       );
+      setLoading(false)
       setEnvironmentTypeAndCapacity(response.data);
     } catch (error) {
+      setLoading(false)
       console.log(
         `Erro ao fazer requisição de filtragem por Tipo e Capacidade ${error}`
       );
@@ -210,7 +229,7 @@ export function Environments({ id, ...rest }: Ambientes) {
   // Validate Button Filter
   useEffect(() => {
     validateOnPressFilter();
-  }, [selectCapacidadeAmbient, selectTypeAmbient, showModal]);
+  });
 
 
 
@@ -248,11 +267,10 @@ export function Environments({ id, ...rest }: Ambientes) {
 
   // Button Filter
   const validateOnPressFilter = () => {
-    let capacityPositionInitial = [capacidadeAmbient[0]];
 
     if (
       selectTypeAmbient != "default" ||
-      selectCapacidadeAmbient != capacityPositionInitial
+      selectCapacidadeAmbient[0] != 'd'
     ) {
       setCheckOnPressFilter(true);
     } else {
@@ -263,21 +281,24 @@ export function Environments({ id, ...rest }: Ambientes) {
   function onPressFilter() {
     setShowModal(false);
     filterAplic();
+    setLoading(true)
 
-    console.log("ENTROUUUUU");
-    
+
+
     if (Platform.OS === 'android') {
       let capacityPositionInitial = [capacidadeAmbient[0]];
 
-      console.log("posição inicial array"+capacityPositionInitial);
-      console.log("o que esta vindo select capacidade"+ selectCapacidadeAmbient[0]);
-      
-      if (selectTypeAmbient != "default" && selectCapacidadeAmbient[0] != 'Selecione a capacidade do ambiente') {
-          console.log("ENTROUUUUU");
+      console.log("posição inicial array" + capacityPositionInitial);
+      console.log("o que esta vindo select capacidade" + selectCapacidadeAmbient[0]);
+      console.log("tipo ambiente => " + selectTypeAmbient);
+
+
+      if (selectTypeAmbient != "default" && selectCapacidadeAmbient[0] != "d") {
+        console.log("ENTROUUUUU");
         getTypeAndCapacityDidMount();
-      } else if (selectTypeAmbient !== "default") {
+      } else if (selectTypeAmbient != "default") {
         getFilterTypeEnvironmentsDidMount();
-      } else if (selectCapacidadeAmbient !== capacityPositionInitial) {
+      } else if (selectCapacidadeAmbient[0] != "d") {
         getFilterCapacityDidMount();
       }
     } else if (Platform.OS === 'ios') {
@@ -295,17 +316,25 @@ export function Environments({ id, ...rest }: Ambientes) {
   }
 
   const getFilters = () => {
-    let capacityPositionInitial = [capacidadeAmbient[0]];
-
-    if (selectTypeAmbient !== "default" &&
-      selectCapacidadeAmbient !== capacityPositionInitial) {
+   
+    if (selectTypeAmbient != "default" &&
+      selectCapacidadeAmbient[0] != "d") {
 
       return environmentTypeAndCapacity;
-    } else if (selectTypeAmbient !== "default") {
+    } else if (selectTypeAmbient != "default") {
       return typeSearchAmbiente;
-    } else if (selectCapacidadeAmbient !== capacityPositionInitial) {
+    } else if (selectCapacidadeAmbient[0] != "d") {
+
+      console.log(`************************** retornando api capacidade ==  ${capacitySearchAmbiente}  **************************`);
+
       return capacitySearchAmbiente;
     }
+  };
+
+  const isListEmpty = () => {
+
+    setLoading(false)
+    return <Text style={styles.emptyListStyle}>Nenhum ambiente encontrado!</Text>;
   };
 
   console.log(selectTypeAmbient);
@@ -333,7 +362,7 @@ export function Environments({ id, ...rest }: Ambientes) {
             <Filter />
           </TouchableOpacity>
         </View>
-        {ambientes.length == 0 ? (
+        {loading ? (
           <Loading />
         ) : filter == true ? (
           <FlatList
@@ -349,6 +378,8 @@ export function Environments({ id, ...rest }: Ambientes) {
             horizontal={false}
             showsVerticalScrollIndicator
             style={styles.list}
+            ListEmptyComponent={isListEmpty}
+
           ></FlatList>
         ) : search == true ? (
           <FlatList
@@ -364,6 +395,7 @@ export function Environments({ id, ...rest }: Ambientes) {
             horizontal={false}
             showsVerticalScrollIndicator
             style={styles.list}
+            ListEmptyComponent={isListEmpty}
           ></FlatList>
         ) : (
           <FlatList
@@ -373,6 +405,7 @@ export function Environments({ id, ...rest }: Ambientes) {
             horizontal={false}
             showsVerticalScrollIndicator
             style={styles.list}
+            ListEmptyComponent={isListEmpty}
           ></FlatList>
         )}
         {showModal == true ? (
@@ -494,10 +527,16 @@ export function Environments({ id, ...rest }: Ambientes) {
                       style={styles.datePickerANDROID}
                       mode={"dropdown"}
                       onValueChange={(itemValue) =>
-                        
+
                         setSelectCapacidadeAmbient(itemValue)
                       }
                     >
+                      <Picker.Item
+                        key={0}
+                        label="Selecione a capacidade do ambiente"
+                        value={"d"}
+                        color="#00000090"
+                      />
                       {capacidadeAmbient.map((cr) => {
                         return (
                           <Picker.Item
@@ -518,6 +557,7 @@ export function Environments({ id, ...rest }: Ambientes) {
                 <TouchableOpacity
                   disabled
                   style={styles.buttonDisabled}
+                  onPress={() => onPressFilter()}
                 >
                   <Text style={styles.txtButton}>Buscar</Text>
                 </TouchableOpacity>
@@ -528,7 +568,8 @@ export function Environments({ id, ...rest }: Ambientes) {
                 >
                   <Text style={styles.txtButton}>Buscar</Text>
                 </TouchableOpacity>
-              )}
+              )
+              }
             </Pressable>
           </Pressable>
         ) : (

@@ -60,7 +60,7 @@ export function InicioCard({ data, sendsId, valuePeriod }: Props) {
           <View style={styles.containerPeriods}>
 
             {
-              data.aulas.length > 0 ? (
+              data?.aulas?.length > 0 ? (
                 data.aulas.map((aula) => {
 
                   return (
