@@ -305,6 +305,8 @@ export function Home() {
                   height: "auto",
 
                   marginHorizontal: 20,
+                  marginTop: 10,
+                  marginBottom: 14,
                 }}
                 theme={{
                   backgroundColor: "#FEFEFE",
@@ -346,24 +348,6 @@ export function Home() {
                 }}
                 markedDates={getMarkedDates(dayFromHolidayAndVacation, dayIndicator)}
               />
-            </View>
-
-            <View style={styles.containerSearch}>
-              <Search
-                placeholder="Pesquisar..."
-                aplicSearch={searchAplic}
-                receiveSearch={searchReceive}
-                clenSearch={valueSearch}
-              />
-              <TouchableOpacity
-                style={
-                  Platform.OS === "ios"
-                    ? styles.btnModalIOS
-                    : styles.btnModalANDROID
-                }
-              >
-                <Filter />
-              </TouchableOpacity>
             </View>
 
             <View style={styles.containerRadios}>
