@@ -48,14 +48,14 @@ export function Environments({ id, ...rest }: Ambientes) {
   const [typeAmbiente, setTypeAmbiente] = useState([]);
   const [selectTypeAmbient, setSelectTypeAmbient] = useState();
   const [capacidadeAmbient] = useState([
-    "Selecione a capacidade do Ambiente",
+    "Selecione a capacidade do ambiente",
     "10-15",
     "20-25",
     "25-30",
     "30+",
   ]);
   const [capacidadeAmbientIOS] = useState(["10-15", "20-25", "25-30", "30+"]);
-  const [selectCapacidadeAmbient, setSelectCapacidadeAmbient] = useState([]);
+  const [selectCapacidadeAmbient, setSelectCapacidadeAmbient] = useState(["Selecione a capacidade do ambiente"]);
   const [filter, setFilter] = useState(false);
   const [checkOnPressFilter, setCheckOnPressFilter] = useState(false);
   const [search, setSearch] = useState(false);
@@ -112,59 +112,61 @@ export function Environments({ id, ...rest }: Ambientes) {
   }
 
   // filtro para buscar ambientes pela a capacidade selecionada no picker
-  const getFilterCapacityDidMountANDROID = async () => {
+  const getFilterCapacityDidMount = async () => {
     let capacityPositionInitial = [capacidadeAmbient[0]];
     let capacityPositionFinal = [capacidadeAmbient[4]];
 
-    if (selectCapacidadeAmbient == capacityPositionInitial) {
-      console.log("filtro não selecionado ");
-    } else if (selectCapacidadeAmbient == capacityPositionFinal) {
-      console.log(
-        "filtro +30 " + " posição 1 :" + selectCapacidadeAmbient.slice(0, 2)
-      );
-      const response = await API.get(
-        `/api/ambiente/capacidade?capacidadeMin=${selectCapacidadeAmbient.slice(
-          0,
-          2
-        )}&capacidadeMax=${100}`
-      );
-      setCapacitySearchAmbiente(response.data);
-    } else {
-      const response = await API.get(
-        `/api/ambiente/capacidade?capacidadeMin=${selectCapacidadeAmbient.slice(
-          0,
-          2
-        )}&capacidadeMax=${selectCapacidadeAmbient.slice(3)}`
-      );
-      setCapacitySearchAmbiente(response.data);
+    if (Platform.OS === 'android') {
+
+      if (selectCapacidadeAmbient == capacityPositionInitial) {
+        console.log("filtro não selecionado ");
+      } else if (selectCapacidadeAmbient == capacityPositionFinal) {
+        console.log(
+          "filtro +30 " + " posição 1 :" + selectCapacidadeAmbient.slice(0, 2)
+        );
+        const response = await API.get(
+          `/api/ambiente/capacidade?capacidadeMin=${selectCapacidadeAmbient.slice(
+            0,
+            2
+          )}&capacidadeMax=${100}`
+        );
+        setCapacitySearchAmbiente(response.data);
+      } else {
+        const response = await API.get(
+          `/api/ambiente/capacidade?capacidadeMin=${selectCapacidadeAmbient.slice(
+            0,
+            2
+          )}&capacidadeMax=${selectCapacidadeAmbient.slice(3)}`
+        );
+        setCapacitySearchAmbiente(response.data);
+      }
+    } else if (Platform.OS === 'ios') {
+      if (selectCapacityIOS == "Selecione a capacidade do ambiente") {
+        console.log("filtro não selecionado ");
+      } else if (selectCapacityIOS == "30+") {
+        console.log(
+          "filtro +30 " + " posição 1 :" + selectCapacityIOS.slice(0, 2)
+        );
+        const response = await API.get(
+          `/api/ambiente/capacidade?capacidadeMin=${selectCapacityIOS.slice(
+            0,
+            2
+          )}&capacidadeMax=${100}`
+        );
+        setCapacitySearchAmbiente(response.data);
+      } else {
+        const response = await API.get(
+          `/api/ambiente/capacidade?capacidadeMin=${selectCapacidadeAmbient.slice(
+            0,
+            2
+          )}&capacidadeMax=${selectCapacidadeAmbient.slice(3)}`
+        );
+        setCapacitySearchAmbiente(response.data);
+      }
     }
+
   };
 
-  // filtro para buscar ambientes pela a capacidade selecionada no IOS
-  const getFilterCapacityDidMountIOS = async () => {
-    if (selectCapacityIOS == "Selecione a capacidade do ambiente") {
-      console.log("filtro não selecionado ");
-    } else if (selectCapacityIOS == "30+") {
-      console.log(
-        "filtro +30 " + " posição 1 :" + selectCapacityIOS.slice(0, 2)
-      );
-      const response = await API.get(
-        `/api/ambiente/capacidade?capacidadeMin=${selectCapacityIOS.slice(
-          0,
-          2
-        )}&capacidadeMax=${100}`
-      );
-      setCapacitySearchAmbiente(response.data);
-    } else {
-      const response = await API.get(
-        `/api/ambiente/capacidade?capacidadeMin=${selectCapacidadeAmbient.slice(
-          0,
-          2
-        )}&capacidadeMax=${selectCapacidadeAmbient.slice(3)}`
-      );
-      setCapacitySearchAmbiente(response.data);
-    }
-  };
 
   // busca por palavra chave, TextInput
   async function getSearchEnvironmentsDidMount(textValue) {
@@ -210,7 +212,7 @@ export function Environments({ id, ...rest }: Ambientes) {
     validateOnPressFilter();
   }, [selectCapacidadeAmbient, selectTypeAmbient, showModal]);
 
-  
+
 
   // aplicar filtro
   function filterAplic() {
@@ -260,30 +262,35 @@ export function Environments({ id, ...rest }: Ambientes) {
 
   function onPressFilter() {
     setShowModal(false);
-    filterAplic();    
+    filterAplic();
 
+    console.log("ENTROUUUUU");
+    
     if (Platform.OS === 'android') {
       let capacityPositionInitial = [capacidadeAmbient[0]];
-      if (selectTypeAmbient != "default" &&
-        selectCapacidadeAmbient != capacityPositionInitial) {
 
+      console.log("posição inicial array"+capacityPositionInitial);
+      console.log("o que esta vindo select capacidade"+ selectCapacidadeAmbient[0]);
+      
+      if (selectTypeAmbient != "default" && selectCapacidadeAmbient[0] != 'Selecione a capacidade do ambiente') {
+          console.log("ENTROUUUUU");
         getTypeAndCapacityDidMount();
       } else if (selectTypeAmbient !== "default") {
         getFilterTypeEnvironmentsDidMount();
       } else if (selectCapacidadeAmbient !== capacityPositionInitial) {
-        getFilterCapacityDidMountANDROID();
+        getFilterCapacityDidMount();
       }
-    } else if (Platform.OS === 'ios'){
+    } else if (Platform.OS === 'ios') {
       let capacityPositionInitial = [capacidadeAmbientIOS[0]];
       if (selectTypeEnviromentsIOS !== "default" &&
-      selectCapacityIOS !== capacityPositionInitial[0]) {
+        selectCapacityIOS !== capacityPositionInitial[0]) {
 
-      getTypeAndCapacityDidMount();
-    } else if (selectTypeEnviromentsIOS !== "default") {
-      getFilterTypeEnvironmentsDidMount();
-    } else if (selectCapacityIOS !== capacityPositionInitial[0]) {
-      getFilterCapacityDidMountIOS();
-    }
+        getTypeAndCapacityDidMount();
+      } else if (selectTypeEnviromentsIOS !== "default") {
+        getFilterTypeEnvironmentsDidMount();
+      } else if (selectCapacityIOS !== capacityPositionInitial[0]) {
+        getFilterCapacityDidMount();
+      }
     }
   }
 
@@ -487,6 +494,7 @@ export function Environments({ id, ...rest }: Ambientes) {
                       style={styles.datePickerANDROID}
                       mode={"dropdown"}
                       onValueChange={(itemValue) =>
+                        
                         setSelectCapacidadeAmbient(itemValue)
                       }
                     >

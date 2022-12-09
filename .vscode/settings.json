@@ -38,7 +38,7 @@
       "dotenv" : "tune"
     },
     "typescript.updateImportsOnFileMove.enabled" : "never",
-    "workbench.colorTheme" : "Bearded Theme Black & Diamond",
+    "workbench.colorTheme" : "Bearded Theme Monokai Black",
     "material-icon-theme.files.associations" : {
       "tsconfig.json" : "tune",
       "*.webpack.js" : "webpack",
