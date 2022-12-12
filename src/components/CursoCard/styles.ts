@@ -6,7 +6,6 @@ export const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop:20,
   },
   content:{
     width: '95%',
@@ -15,8 +14,17 @@ export const styles = StyleSheet.create({
     backgroundColor: THEME.COLORS.WHITE,
     marginTop:10,
     marginBottom:20,
+    paddingHorizontal: 5,
     borderRadius:15,
-    
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
   },
   informations:{
     width:'70%',
